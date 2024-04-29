@@ -31,3 +31,4 @@ bin/
 *.ipr
 *.iws
 .idea/
+*.nuget.info

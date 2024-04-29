@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\duart\\Documents\\GitHub\\proofOfConcept\\BackEnd\\FileData\\FileData.csproj": {}
+    "C:\\Users\\duart\\OneDrive\\Ambiente de Trabalho\\BackEnd\\BackEnd\\FileData\\FileData.csproj": {}
   },
   "projects": {
-    "C:\\Users\\duart\\Documents\\GitHub\\proofOfConcept\\BackEnd\\Application\\Application.csproj": {
+    "C:\\Users\\duart\\OneDrive\\Ambiente de Trabalho\\BackEnd\\BackEnd\\Application\\Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\duart\\Documents\\GitHub\\proofOfConcept\\BackEnd\\Application\\Application.csproj",
+        "projectUniqueName": "C:\\Users\\duart\\OneDrive\\Ambiente de Trabalho\\BackEnd\\BackEnd\\Application\\Application.csproj",
         "projectName": "Application",
-        "projectPath": "C:\\Users\\duart\\Documents\\GitHub\\proofOfConcept\\BackEnd\\Application\\Application.csproj",
+        "projectPath": "C:\\Users\\duart\\OneDrive\\Ambiente de Trabalho\\BackEnd\\BackEnd\\Application\\Application.csproj",
         "packagesPath": "C:\\Users\\duart\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\duart\\Documents\\GitHub\\proofOfConcept\\BackEnd\\Application\\obj\\",
+        "outputPath": "C:\\Users\\duart\\OneDrive\\Ambiente de Trabalho\\BackEnd\\BackEnd\\Application\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\duart\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -26,8 +26,8 @@
           "net7.0": {
             "targetAlias": "net7.0",
             "projectReferences": {
-              "C:\\Users\\duart\\Documents\\GitHub\\proofOfConcept\\BackEnd\\Domain\\Domain.csproj": {
-                "projectPath": "C:\\Users\\duart\\Documents\\GitHub\\proofOfConcept\\BackEnd\\Domain\\Domain.csproj"
+              "C:\\Users\\duart\\OneDrive\\Ambiente de Trabalho\\BackEnd\\BackEnd\\Domain\\Domain.csproj": {
+                "projectPath": "C:\\Users\\duart\\OneDrive\\Ambiente de Trabalho\\BackEnd\\BackEnd\\Domain\\Domain.csproj"
               }
             }
           }
@@ -57,18 +57,18 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.404\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.400\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\duart\\Documents\\GitHub\\proofOfConcept\\BackEnd\\Domain\\Domain.csproj": {
+    "C:\\Users\\duart\\OneDrive\\Ambiente de Trabalho\\BackEnd\\BackEnd\\Domain\\Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\duart\\Documents\\GitHub\\proofOfConcept\\BackEnd\\Domain\\Domain.csproj",
+        "projectUniqueName": "C:\\Users\\duart\\OneDrive\\Ambiente de Trabalho\\BackEnd\\BackEnd\\Domain\\Domain.csproj",
         "projectName": "Domain",
-        "projectPath": "C:\\Users\\duart\\Documents\\GitHub\\proofOfConcept\\BackEnd\\Domain\\Domain.csproj",
+        "projectPath": "C:\\Users\\duart\\OneDrive\\Ambiente de Trabalho\\BackEnd\\BackEnd\\Domain\\Domain.csproj",
         "packagesPath": "C:\\Users\\duart\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\duart\\Documents\\GitHub\\proofOfConcept\\BackEnd\\Domain\\obj\\",
+        "outputPath": "C:\\Users\\duart\\OneDrive\\Ambiente de Trabalho\\BackEnd\\BackEnd\\Domain\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\duart\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -110,18 +110,18 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.404\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.400\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\duart\\Documents\\GitHub\\proofOfConcept\\BackEnd\\FileData\\FileData.csproj": {
+    "C:\\Users\\duart\\OneDrive\\Ambiente de Trabalho\\BackEnd\\BackEnd\\FileData\\FileData.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\duart\\Documents\\GitHub\\proofOfConcept\\BackEnd\\FileData\\FileData.csproj",
+        "projectUniqueName": "C:\\Users\\duart\\OneDrive\\Ambiente de Trabalho\\BackEnd\\BackEnd\\FileData\\FileData.csproj",
         "projectName": "FileData",
-        "projectPath": "C:\\Users\\duart\\Documents\\GitHub\\proofOfConcept\\BackEnd\\FileData\\FileData.csproj",
+        "projectPath": "C:\\Users\\duart\\OneDrive\\Ambiente de Trabalho\\BackEnd\\BackEnd\\FileData\\FileData.csproj",
         "packagesPath": "C:\\Users\\duart\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\duart\\Documents\\GitHub\\proofOfConcept\\BackEnd\\FileData\\obj\\",
+        "outputPath": "C:\\Users\\duart\\OneDrive\\Ambiente de Trabalho\\BackEnd\\BackEnd\\FileData\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\duart\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -136,8 +136,8 @@
           "net7.0": {
             "targetAlias": "net7.0",
             "projectReferences": {
-              "C:\\Users\\duart\\Documents\\GitHub\\proofOfConcept\\BackEnd\\Application\\Application.csproj": {
-                "projectPath": "C:\\Users\\duart\\Documents\\GitHub\\proofOfConcept\\BackEnd\\Application\\Application.csproj"
+              "C:\\Users\\duart\\OneDrive\\Ambiente de Trabalho\\BackEnd\\BackEnd\\Application\\Application.csproj": {
+                "projectPath": "C:\\Users\\duart\\OneDrive\\Ambiente de Trabalho\\BackEnd\\BackEnd\\Application\\Application.csproj"
               }
             }
           }
@@ -167,7 +167,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.404\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.400\\RuntimeIdentifierGraph.json"
         }
       }
     }

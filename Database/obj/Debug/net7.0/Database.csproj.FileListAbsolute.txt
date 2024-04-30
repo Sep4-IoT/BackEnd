@@ -1,5 +1,0 @@
-C:\Users\duart\my-app\proofOfConcept\BackEnd\Database\obj\Debug\net7.0\Database.csproj.AssemblyReference.cache
-C:\Users\duart\my-app\proofOfConcept\BackEnd\Database\obj\Debug\net7.0\Database.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\duart\my-app\proofOfConcept\BackEnd\Database\obj\Debug\net7.0\Database.AssemblyInfoInputs.cache
-C:\Users\duart\my-app\proofOfConcept\BackEnd\Database\obj\Debug\net7.0\Database.AssemblyInfo.cs
-C:\Users\duart\my-app\proofOfConcept\BackEnd\Database\obj\Debug\net7.0\Database.csproj.CoreCompileInputs.cache

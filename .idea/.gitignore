@@ -28,3 +28,4 @@ bin/
 .idea/
 *.nuget.info
 **/project
+**/net7.0/

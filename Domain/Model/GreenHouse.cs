@@ -40,6 +40,10 @@ public class GreenHouse
     }
     
     public GreenHouse() {}
-    
+
+    public void changeWindowStatus()
+    {
+        IsWindowOpen = !IsWindowOpen;
+    }
 
 }

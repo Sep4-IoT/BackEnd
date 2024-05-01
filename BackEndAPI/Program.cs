@@ -17,12 +17,19 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 
-builder.Services.AddSingleton<List<GreenHouse>>(); 
-builder.Services.AddScoped<IGreenHouseLogic, GreenHouseLogic>(); 
+builder.Services.AddSingleton<List<GreenHouse>>();
+builder.Services.AddScoped<IGreenHouseLogic, GreenHouseLogic>();
 builder.Services.AddScoped<FileContext>();
 builder.Services.AddScoped<IGreenHouseDAO, GreenHouseFileDAO>();
 
+
 var app = builder.Build();
+
+app.UseCors(x => x
+	.AllowAnyMethod()
+	.AllowAnyHeader()
+	.SetIsOriginAllowed(origin => true) // allow any origin
+	.AllowCredentials());
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

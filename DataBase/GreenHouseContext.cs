@@ -13,7 +13,12 @@ namespace Database
         public GreenHouseContext()
         {
             var folder = Environment.SpecialFolder.LocalApplicationData;
-            var path = Environment.GetFolderPath(folder);
+            //var path = Environment.GetFolderPath(folder);
+            var path = @"C:\Users\dfold\OneDrive\Skrivebord\BackEnd\Database";
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
             DbPath = Path.Combine(path, "App.db");
         }
         

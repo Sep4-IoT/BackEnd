@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataBase.Migrations
 {
     [DbContext(typeof(GreenHouseContext))]
-    [Migration("20240430085236_Initial")]
+    [Migration("20240501085052_Initial")]
     partial class Initial
     {
         /// <inheritdoc />

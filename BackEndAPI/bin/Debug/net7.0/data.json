@@ -12,13 +12,13 @@
     },
     {
       "GreenHouseId": 2,
-      "GreenHouseName": "GreenHouse",
-      "Description": "string",
-      "Temperature": 0,
-      "LightIntensity": 0,
-      "Co2Levels": 0,
-      "Humidity": 0,
-      "IsWindowOpen": false
+      "GreenHouseName": null,
+      "Description": null,
+      "Temperature": null,
+      "LightIntensity": null,
+      "Co2Levels": null,
+      "Humidity": null,
+      "IsWindowOpen": true
     }
   ]
 }

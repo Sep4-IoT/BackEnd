@@ -1,0 +1,8 @@
+
+/Application
+*.dll
+*.pdb
+/Application/obj
+/Services
+/FileData
+/Domain

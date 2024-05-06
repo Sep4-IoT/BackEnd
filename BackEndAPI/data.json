@@ -1,16 +1,6 @@
 {
   "GreenHouses": [
     {
-      "GreenHouseId": 1,
-      "GreenHouseName": "aaa",
-      "Description": "string",
-      "Temperature": 0,
-      "LightIntensity": 0,
-      "Co2Levels": 0,
-      "Humidity": 0,
-      "IsWindowOpen": false
-    },
-    {
       "GreenHouseId": 2,
       "GreenHouseName": "GreenHouse",
       "Description": "This is a green house",

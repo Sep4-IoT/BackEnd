@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "TxN6BYFX2KA2nnb4u8dMf6PmmA5mYvuWH9wt3hqG2GILsN2quhvdGgHuZdnVLSQcLaPt0T78VWKf2UIx/eGMDA==",
+  "dgSpecHash": "hq68h/e/vOBpugJ8Ct5dZfQI4Fw6zwxyiIpghJ8tLnWMmt0OozvCMEuSgrs7jiXp4fCauCa9Sk+Fl2lu4TLIIg==",
   "success": true,
-  "projectFilePath": "/Users/jakubkuka/Desktop/school/5semester-internship/BackEnd/Domain/Domain.csproj",
+  "projectFilePath": "C:\\Users\\duart\\Documents\\GitHub\\BackEnd\\Domain\\Domain.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

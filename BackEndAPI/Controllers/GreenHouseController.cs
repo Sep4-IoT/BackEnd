@@ -31,7 +31,7 @@ public class  GreenHouseController : ControllerBase
         }
     }
     
-    [HttpGet ]
+    [HttpGet]
     public async Task<ActionResult<IEnumerable<GreenHouse>>> GetAsync([FromQuery] int? greenHouseId)
     { 
         try
@@ -48,13 +48,22 @@ public class  GreenHouseController : ControllerBase
     }
     
     [HttpPatch("{greenHouseId}")]
-    public async Task<ActionResult<GreenHouse>> UpdateAsync(int greenHouseId, [FromBody] UpdateGreenHouseDTO dto)
+    public async Task<ActionResult<UpdateGreenHouseDTO>> UpdateAsync(int greenHouseId,
+        string? greenHouseName, string? description, bool? isWindowOpen)
     {
         try
         {
-            Console.WriteLine(greenHouseId);
-            await greenHouseLogic.UpdateAsync(greenHouseId, dto);
-            return Ok();
+            var existingGreenHouse = await greenHouseLogic.GetByIdAsync(greenHouseId);
+            
+            greenHouseName ??= existingGreenHouse.GreenHouseName;
+            description ??= existingGreenHouse.Description;
+            isWindowOpen ??= existingGreenHouse.IsWindowOpen;
+
+            UpdateGreenHouseDTO updated =
+                new UpdateGreenHouseDTO(greenHouseId, greenHouseName, description, isWindowOpen);
+        
+            var greenHouse = await greenHouseLogic.UpdateAsync(updated);
+            return Ok(greenHouse);
         }
         catch (Exception e)
         {
@@ -62,6 +71,7 @@ public class  GreenHouseController : ControllerBase
             return StatusCode(500, e.Message);
         }
     }
+
 
 
     

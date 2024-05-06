@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "/Users/jakubkuka/Desktop/school/5semester-internship/BackEnd/Domain/Domain.csproj": {}
+    "C:\\Users\\duart\\Documents\\GitHub\\BackEnd\\Domain\\Domain.csproj": {}
   },
   "projects": {
-    "/Users/jakubkuka/Desktop/school/5semester-internship/BackEnd/Domain/Domain.csproj": {
+    "C:\\Users\\duart\\Documents\\GitHub\\BackEnd\\Domain\\Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/jakubkuka/Desktop/school/5semester-internship/BackEnd/Domain/Domain.csproj",
+        "projectUniqueName": "C:\\Users\\duart\\Documents\\GitHub\\BackEnd\\Domain\\Domain.csproj",
         "projectName": "Domain",
-        "projectPath": "/Users/jakubkuka/Desktop/school/5semester-internship/BackEnd/Domain/Domain.csproj",
-        "packagesPath": "/Users/jakubkuka/.nuget/packages/",
-        "outputPath": "/Users/jakubkuka/Desktop/school/5semester-internship/BackEnd/Domain/obj/",
+        "projectPath": "C:\\Users\\duart\\Documents\\GitHub\\BackEnd\\Domain\\Domain.csproj",
+        "packagesPath": "C:\\Users\\duart\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\duart\\Documents\\GitHub\\BackEnd\\Domain\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/jakubkuka/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\duart\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
@@ -53,7 +53,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/7.0.400/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.404\\RuntimeIdentifierGraph.json"
         }
       }
     }

@@ -40,32 +40,24 @@ public class GreenHouseLogic : IGreenHouseLogic
     
         return created;
     }
-    
 
-    //NOT WORKING
-    public async Task UpdateAsync(int greenHouseId, UpdateGreenHouseDTO dto)
+    public async Task<GreenHouse> GetByIdAsync(int greenHouseId)
     {
-        GreenHouse? existing = await greenHouseDao.GetByIdAsync(greenHouseId);
         
-        if (existing == null)
+        GreenHouse? greenHouse = await greenHouseDao.GetByIdAsync(greenHouseId);
+        if (greenHouse == null)
         {
-            throw new Exception($"Greenhouse with ID {greenHouseId} not found!");
+            throw new Exception($"Item with id {greenHouseDao} not found");
         }
 
-        bool windowStateChanged = dto.IsWindowOpen != existing.IsWindowOpen;
+        return greenHouse;
+    }
 
-        GreenHouse updated = new GreenHouse(
-            greenHouseId,
-            dto.GreenHouseName,
-            dto.Description,
-            dto.Temperature,
-            dto.LightIntensity,
-            dto.Co2Levels,
-            dto.Humidity,
-            dto.IsWindowOpen);
-        
-            await greenHouseDao.UpdateAsync(updated);
-        
+
+    public async Task<UpdateGreenHouseDTO> UpdateAsync(UpdateGreenHouseDTO updatedData)
+    {
+        UpdateGreenHouseDTO greenHouseDto = await greenHouseDao.UpdateAsync(updatedData);
+        return greenHouseDto;
     }
 
 

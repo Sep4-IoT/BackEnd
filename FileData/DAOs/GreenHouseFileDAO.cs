@@ -49,20 +49,23 @@ public class GreenHouseFileDAO : IGreenHouseDAO
         return Task.FromResult(existing);
     }
 
-    public Task UpdateAsync(GreenHouse toUpdateGreenHouse)
+    public async Task<UpdateGreenHouseDTO> UpdateAsync(UpdateGreenHouseDTO updateGreenHouseDto)
     {
-        GreenHouse? existing = context.GreenHouses.FirstOrDefault(g => g.GreenHouseId == toUpdateGreenHouse.GreenHouseId);
+        GreenHouse? existing = context.GreenHouses.FirstOrDefault(g => g.GreenHouseId == updateGreenHouseDto.GreenHouseID);
         if (existing == null)
         {
-            throw new Exception($"GreenHouse with id {toUpdateGreenHouse.GreenHouseId} does not exist!");
+            throw new Exception($"GreenHouse with id {updateGreenHouseDto.GreenHouseID} does not exist!");
         }
 
-        context.GreenHouses.Remove(existing);
-        context.GreenHouses.Add(toUpdateGreenHouse);
-
-        context.SaveChanges();
-        return Task.CompletedTask;
+        existing.GreenHouseName = updateGreenHouseDto.GreenHouseName;
+        existing.Description = updateGreenHouseDto.Description;
+        existing.IsWindowOpen = updateGreenHouseDto.IsWindowOpen;
+        
+        await Task.Run(() => context.SaveChanges());
+        
+        return updateGreenHouseDto;
     }
+
 
 
     public Task<GreenHouse?> GetByIdAsync(int id)

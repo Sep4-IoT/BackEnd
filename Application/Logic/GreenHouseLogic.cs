@@ -1,6 +1,7 @@
 using Application.DAOInterfaces;
 using Application.LogicInterfaces;
 using Domain.DTOs;
+using Domain.DTOs.GreenHouseDtos;
 using Domain.Model;
 
 namespace Application.Logic;
@@ -8,10 +9,12 @@ namespace Application.Logic;
 public class GreenHouseLogic : IGreenHouseLogic
 {
     private readonly IGreenHouseDAO greenHouseDao;
+    private readonly IUserDAO userDao;
 
-    public GreenHouseLogic(IGreenHouseDAO greenHouseDao)
+    public GreenHouseLogic(IGreenHouseDAO greenHouseDao, IUserDAO userDao)
     {
         this.greenHouseDao = greenHouseDao;
+        this.userDao = userDao;
     }
     
     public Task<IEnumerable<GreenHouse>> GetAsync(SearchGreenHouseDTO searchParameters)
@@ -21,12 +24,19 @@ public class GreenHouseLogic : IGreenHouseLogic
 
     public async Task<GreenHouse> CreateAsync(GreenHouseCreationDTO dto)
     {
+        User? user = await userDao.GetByIdAsync(dto.OwnerId);
+        if (user == null)
+        {
+            throw new Exception($"User with id {dto.OwnerId} was not found.");
+        }
+        
         GreenHouse? existing = await greenHouseDao.GetByNameAsync(dto.GreenHouseName);
         if (existing != null)
             throw new Exception("GreenHouse Name already exists!");
 
         ValidateData(dto);
         GreenHouse toCreate = new GreenHouse(
+            dto.OwnerId,
             dto.GreenHouseName,
             dto.Description,
             dto.Temperature,
@@ -34,7 +44,6 @@ public class GreenHouseLogic : IGreenHouseLogic
             dto.Co2Levels,
             dto.Humidity,
             false);
-            
         
         GreenHouse created = await greenHouseDao.CreateAsync(toCreate);
     
@@ -47,7 +56,7 @@ public class GreenHouseLogic : IGreenHouseLogic
         GreenHouse? greenHouse = await greenHouseDao.GetByIdAsync(greenHouseId);
         if (greenHouse == null)
         {
-            throw new Exception($"Item with id {greenHouseDao} not found");
+            throw new Exception($"Greenhouse with id {greenHouseId} not found");
         }
 
         return greenHouse;
@@ -60,15 +69,20 @@ public class GreenHouseLogic : IGreenHouseLogic
         return greenHouseDto;
     }
 
+    public Task<IEnumerable<GreenHouse>> GetByOwnerIdAsync(int ownerId)
+    {
+        return greenHouseDao.GetByOwnerIdAsync(ownerId);
+    }
+
 
     private static void ValidateData(GreenHouseCreationDTO greenHouseCreation)
     {
-        string userName = greenHouseCreation.GreenHouseName;
+        string greenHouseName = greenHouseCreation.GreenHouseName;
 
-        if (userName.Length < 3)
+        if (greenHouseName.Length < 3)
             throw new Exception("GreenHouse name must be at least 3 characters!");
 
-        if (userName.Length > 20)
+        if (greenHouseName.Length > 20)
             throw new Exception("GreenHouse must be less than 21 characters!");
     }
     

@@ -18,7 +18,7 @@ public class GreenHouseFileDAO : IGreenHouseDAO
         IEnumerable<GreenHouse> greenHouses = context.GreenHouses.AsEnumerable();
         if (searchParameters.GreenHouseID != null)
         {
-           greenHouses = context.GreenHouses.Where(u => u.GreenHouseId == searchParameters.GreenHouseID);
+           greenHouses = context.GreenHouses.Where(g => g.GreenHouseId == searchParameters.GreenHouseID);
         }
 
         return Task.FromResult(greenHouses);
@@ -65,12 +65,22 @@ public class GreenHouseFileDAO : IGreenHouseDAO
         
         return updateGreenHouseDto;
     }
-
-
-
+    
     public Task<GreenHouse?> GetByIdAsync(int id)
     {
         GreenHouse? existing = context.GreenHouses.FirstOrDefault(g => g.GreenHouseId == id);
         return Task.FromResult(existing);
+    }
+
+    public Task<IEnumerable<GreenHouse>> GetByOwnerIdAsync(int ownerId)
+    {
+        
+        IEnumerable<GreenHouse> greenHouses = context.GreenHouses.AsEnumerable();
+        if (ownerId != null)
+        {
+            greenHouses = context.GreenHouses.Where(g => g.OwnerId == ownerId);
+        }
+
+        return Task.FromResult(greenHouses);
     }
 }

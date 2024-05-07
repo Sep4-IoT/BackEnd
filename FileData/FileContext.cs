@@ -17,6 +17,15 @@ public class FileContext
         }
     }
     
+    public ICollection<User> Users
+    {
+        get
+        {
+            LoadData();
+            return dataContainer!.Users;
+        }
+    }
+    
     
     private void LoadData()
     {
@@ -26,6 +35,7 @@ public class FileContext
         {
             dataContainer = new ()
             {
+                Users = new List<User>(),
                 GreenHouses = new List<GreenHouse>()
             };
             return;

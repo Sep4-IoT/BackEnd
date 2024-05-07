@@ -1,5 +1,6 @@
 using Application.LogicInterfaces;
 using Domain.DTOs;
+using Domain.DTOs.GreenHouseDtos;
 using Domain.Model;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,7 +18,7 @@ public class  GreenHouseController : ControllerBase
     }
     
     [HttpPost]
-    public async Task<ActionResult<GreenHouse>> CreateAsync(GreenHouseCreationDTO dto)
+    public async Task<ActionResult<GreenHouse>> CreateAsync([FromBody] GreenHouseCreationDTO dto)
     {
         try
         {
@@ -37,8 +38,8 @@ public class  GreenHouseController : ControllerBase
         try
         {
             SearchGreenHouseDTO parameters = new(greenHouseId);
-            IEnumerable<GreenHouse> users = await greenHouseLogic.GetAsync(parameters);
-            return Ok(users);
+            IEnumerable<GreenHouse> greenHouses = await greenHouseLogic.GetAsync(parameters);
+            return Ok(greenHouses);
         }
         catch (Exception e)
         {
@@ -46,6 +47,23 @@ public class  GreenHouseController : ControllerBase
             return StatusCode(500, e.Message);
         }
     }
+    
+    [HttpGet("{ownerId}")]
+    public async Task<ActionResult<IEnumerable<GreenHouse>>> GetByOwnerIdAsync(int ownerId)
+    { 
+        try
+        {
+            IEnumerable<GreenHouse> greenHouses = await greenHouseLogic.GetByOwnerIdAsync(ownerId);
+            return Ok(greenHouses);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500, e.Message);
+        }
+    }
+    
+    
     
     [HttpPatch("{greenHouseId}")]
     public async Task<ActionResult<UpdateGreenHouseDTO>> UpdateAsync(int greenHouseId,

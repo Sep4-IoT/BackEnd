@@ -125,7 +125,6 @@ C:/Users/duart/Documents/GitHub/proofOfConcept/BackEnd/BackEndAPI/bin/Debug/net7
 /Users/jakubkuka/Desktop/school/5semester-internship/BackEnd/BackEndAPI/obj/Debug/net7.0/ref/BackEndAPI.dll
 C:\Users\duart\Documents\GitHub\BackEnd\BackEndAPI\bin\Debug\net7.0\appsettings.Development.json
 C:\Users\duart\Documents\GitHub\BackEnd\BackEndAPI\bin\Debug\net7.0\appsettings.json
-C:\Users\duart\Documents\GitHub\BackEnd\BackEndAPI\bin\Debug\net7.0\data.json
 C:\Users\duart\Documents\GitHub\BackEnd\BackEndAPI\bin\Debug\net7.0\BackEndAPI.exe
 C:\Users\duart\Documents\GitHub\BackEnd\BackEndAPI\bin\Debug\net7.0\BackEndAPI.deps.json
 C:\Users\duart\Documents\GitHub\BackEnd\BackEndAPI\bin\Debug\net7.0\BackEndAPI.runtimeconfig.json
@@ -163,3 +162,4 @@ C:\Users\duart\Documents\GitHub\BackEnd\BackEndAPI\obj\Debug\net7.0\refint\BackE
 C:\Users\duart\Documents\GitHub\BackEnd\BackEndAPI\obj\Debug\net7.0\BackEndAPI.pdb
 C:\Users\duart\Documents\GitHub\BackEnd\BackEndAPI\obj\Debug\net7.0\BackEndAPI.genruntimeconfig.cache
 C:\Users\duart\Documents\GitHub\BackEnd\BackEndAPI\obj\Debug\net7.0\ref\BackEndAPI.dll
+C:\Users\duart\Documents\GitHub\BackEnd\BackEndAPI\bin\Debug\net7.0\data.json

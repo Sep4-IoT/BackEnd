@@ -19,10 +19,13 @@ builder.Services.AddSwaggerGen(c =>
 
 builder.Services.AddSingleton<List<GreenHouse>>();
 builder.Services.AddScoped<IGreenHouseLogic, GreenHouseLogic>();
-builder.Services.AddScoped<FileContext>();
 builder.Services.AddScoped<IGreenHouseDAO, GreenHouseFileDAO>();
 
+builder.Services.AddSingleton<List<User>>();
+builder.Services.AddScoped<IUserLogic, UserLogic>();
+builder.Services.AddScoped<IUserDAO, UserFileDAO>();
 
+builder.Services.AddScoped<FileContext>();
 var app = builder.Build();
 
 app.UseCors(x => x

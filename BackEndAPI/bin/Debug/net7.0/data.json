@@ -2,23 +2,23 @@
   "GreenHouses": [
     {
       "GreenHouseId": 1,
-      "GreenHouseName": "aaa",
-      "Description": "string",
+      "OwnerId": 1,
+      "GreenHouseName": "GreenHouse1",
+      "Description": "aaaaaaaaa",
       "Temperature": 0,
       "LightIntensity": 0,
       "Co2Levels": 0,
       "Humidity": 0,
       "IsWindowOpen": false
-    },
+    }
+  ],
+  "Users": [
     {
-      "GreenHouseId": 2,
-      "GreenHouseName": null,
-      "Description": null,
-      "Temperature": null,
-      "LightIntensity": null,
-      "Co2Levels": null,
-      "Humidity": null,
-      "IsWindowOpen": false
+      "UserId": 1,
+      "Username": "duartejorge",
+      "FirstName": "duarte",
+      "LastName": "jorge",
+      "Password": "password"
     }
   ]
 }

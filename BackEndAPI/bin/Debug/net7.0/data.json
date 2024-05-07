@@ -10,6 +10,17 @@
       "Co2Levels": 0,
       "Humidity": 0,
       "IsWindowOpen": false
+    },
+    {
+      "GreenHouseId": 2,
+      "OwnerId": 1,
+      "GreenHouseName": "string",
+      "Description": "string",
+      "Temperature": 0,
+      "LightIntensity": 0,
+      "Co2Levels": 0,
+      "Humidity": 0,
+      "IsWindowOpen": false
     }
   ],
   "Users": [

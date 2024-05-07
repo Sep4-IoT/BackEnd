@@ -2,8 +2,7 @@ using Application.DAOInterfaces;
 using Application.Logic;
 using Application.LogicInterfaces;
 using Domain.Model;
-using FileData;
-using FileData.DAOs;
+using EfcDataAccess;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,13 +18,14 @@ builder.Services.AddSwaggerGen(c =>
 
 builder.Services.AddSingleton<List<GreenHouse>>();
 builder.Services.AddScoped<IGreenHouseLogic, GreenHouseLogic>();
-builder.Services.AddScoped<IGreenHouseDAO, GreenHouseFileDAO>();
+builder.Services.AddScoped<IGreenHouseDAO, GreenHouseEfcDAO>();
 
 builder.Services.AddSingleton<List<User>>();
 builder.Services.AddScoped<IUserLogic, UserLogic>();
-builder.Services.AddScoped<IUserDAO, UserFileDAO>();
+builder.Services.AddScoped<IUserDAO, UserEfcDAO>();
 
-builder.Services.AddScoped<FileContext>();
+builder.Services.AddDbContext<GreenHouseContext>();
+
 var app = builder.Build();
 
 app.UseCors(x => x

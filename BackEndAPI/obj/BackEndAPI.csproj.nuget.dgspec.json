@@ -89,8 +89,8 @@
               "C:\\Users\\duart\\Documents\\GitHub\\BackEnd\\Domain\\Domain.csproj": {
                 "projectPath": "C:\\Users\\duart\\Documents\\GitHub\\BackEnd\\Domain\\Domain.csproj"
               },
-              "C:\\Users\\duart\\Documents\\GitHub\\BackEnd\\FileData\\FileData.csproj": {
-                "projectPath": "C:\\Users\\duart\\Documents\\GitHub\\BackEnd\\FileData\\FileData.csproj"
+              "C:\\Users\\duart\\Documents\\GitHub\\BackEnd\\EfcDataAccess\\EfcDataAccess.csproj": {
+                "projectPath": "C:\\Users\\duart\\Documents\\GitHub\\BackEnd\\EfcDataAccess\\EfcDataAccess.csproj"
               }
             }
           }
@@ -190,14 +190,14 @@
         }
       }
     },
-    "C:\\Users\\duart\\Documents\\GitHub\\BackEnd\\FileData\\FileData.csproj": {
+    "C:\\Users\\duart\\Documents\\GitHub\\BackEnd\\EfcDataAccess\\EfcDataAccess.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\duart\\Documents\\GitHub\\BackEnd\\FileData\\FileData.csproj",
-        "projectName": "FileData",
-        "projectPath": "C:\\Users\\duart\\Documents\\GitHub\\BackEnd\\FileData\\FileData.csproj",
+        "projectUniqueName": "C:\\Users\\duart\\Documents\\GitHub\\BackEnd\\EfcDataAccess\\EfcDataAccess.csproj",
+        "projectName": "EfcDataAccess",
+        "projectPath": "C:\\Users\\duart\\Documents\\GitHub\\BackEnd\\EfcDataAccess\\EfcDataAccess.csproj",
         "packagesPath": "C:\\Users\\duart\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\duart\\Documents\\GitHub\\BackEnd\\FileData\\obj\\",
+        "outputPath": "C:\\Users\\duart\\Documents\\GitHub\\BackEnd\\EfcDataAccess\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\duart\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -227,6 +227,22 @@
       "frameworks": {
         "net7.0": {
           "targetAlias": "net7.0",
+          "dependencies": {
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[7.0.18, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[7.0.18, )"
+            },
+            "Microsoft.EntityFrameworkCore.Sqlite": {
+              "target": "Package",
+              "version": "[7.0.18, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",

@@ -6,6 +6,8 @@ namespace IOTController;
 
 public class Controller
 {
+    private static byte[] data = null;
+    private static bool sendData = false;
     static async Task Main(string[] args)
     {
         await EstablishConnectionAsync();
@@ -25,7 +27,7 @@ public class Controller
             ReceiveDataAsync(client.GetStream()),
             SendDataAsync(client.GetStream())
         );
-
+            
         client.Close();
         listener.Stop();
     }
@@ -55,16 +57,16 @@ public class Controller
                 myList.Add(part);
             }
 
-            if (myList[0] == "WAR")
+            /*if (myList[0] == "WAR")
             {
                 IGreenHouseLogic().sendWarningMessage(myList[1]);
-            }
+            }*/
 
             if (myList[0] == "UPD")
             {
                 if (myList[2] == "SER")
                 {
-                    IGreenHouseLogic().updateWindow(myList[3]):
+                    IGreenHouseLogic().updateWindow(myList[3]);
                 }
             }
 
@@ -72,26 +74,24 @@ public class Controller
     }
 
 
-    static async Task ChangeWindowStatus(NetworkStream stream, int GreenHouseId, bool status)
+    static void ChangeWindowStatus(int GreenHouseId, bool status)
     {
-        string str;
-        if (status) {str = "180";} else {str="0";}
+        string str = status ? "180" : "0";
 
         string message = "ACK" + GreenHouseId + "SER" + str;
         
-        byte[] data = Encoding.ASCII.GetBytes(message);
-        await stream.WriteAsync(data, 0, data.Length);
-        
+        data = Encoding.ASCII.GetBytes(message);
+        sendData = true;
     }
     
     static async Task SendDataAsync(NetworkStream stream)
     {
         while (true)
         {
-            Console.Write("Enter message to send: ");
-            string message = Console.ReadLine();
-            byte[] data = Encoding.ASCII.GetBytes(message);
+            if(sendData){
             await stream.WriteAsync(data, 0, data.Length);
+            sendData = false;
+            }
         }
     }
     

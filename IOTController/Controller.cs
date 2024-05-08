@@ -1,4 +1,4 @@
-﻿using System.Net;
+using System.Net;
 using System.Net.Sockets;
 using System.Text;
 
@@ -42,10 +42,48 @@ public class Controller
                 break;
             }
             string data = Encoding.ASCII.GetString(buffer, 0, bytesRead);
-            Console.WriteLine("Received: " + data);
+            
+            // Split the string by commas
+            string[] parts = data.Split(',');
+
+            // Create a List to store the substrings
+            List<string> myList = new List<string>();
+
+            // Add each substring to the List
+            foreach (string part in parts)
+            {
+                myList.Add(part);
+            }
+
+            if (myList[0] == "WAR")
+            {
+                IGreenHouseLogic().sendWarningMessage(myList[1]);
+            }
+
+            if (myList[0] == "UPD")
+            {
+                if (myList[2] == "SER")
+                {
+                    IGreenHouseLogic().updateWindow(myList[3]):
+                }
+            }
+
         }
     }
 
+
+    static async Task ChangeWindowStatus(NetworkStream stream, int GreenHouseId, bool status)
+    {
+        string str;
+        if (status) {str = "180";} else {str="0";}
+
+        string message = "ACK" + GreenHouseId + "SER" + str;
+        
+        byte[] data = Encoding.ASCII.GetBytes(message);
+        await stream.WriteAsync(data, 0, data.Length);
+        
+    }
+    
     static async Task SendDataAsync(NetworkStream stream)
     {
         while (true)
@@ -56,4 +94,6 @@ public class Controller
             await stream.WriteAsync(data, 0, data.Length);
         }
     }
+    
+    
 }

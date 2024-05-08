@@ -6,3 +6,7 @@
 /Services
 /FileData
 /Domain
+/Application/obj
+/BackEndAPI/obj
+/Domain/obj
+/EfcDataAccess/obj

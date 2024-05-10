@@ -5,14 +5,16 @@ using System.ComponentModel.DataAnnotations;
 public class GreenHouse
 {
     [Key] public int GreenHouseId { get; set; }
-    public int OwnerId { get;  private set; }
-    public string? GreenHouseName { get;  set; }
+    
+    public int OwnerId { get; set; }
+    public User Owner { get; set; }
+    public string? GreenHouseName { get; set; }
     public string? Description { get; set; }
-    public double? Temperature { get;  set; }
-    public double? LightIntensity { get;  set; }
-    public double? Co2Levels { get;  set; }
-    public double? Humidity { get;  set; }
-    public bool? IsWindowOpen { get;   set; }
+    public double? Temperature { get; set; }
+    public double? LightIntensity { get; set; }
+    public double? Co2Levels { get; set; }
+    public double? Humidity { get; set; }
+    public bool? IsWindowOpen { get; set; }
 
 
     public GreenHouse(int ownerId, string? greenHouseName, string? description, double? temperature, double? lightIntensity,
@@ -27,8 +29,9 @@ public class GreenHouse
         Humidity = humidity;
         IsWindowOpen = isWindowOpen;
     }
-   
-   private GreenHouse() {}
+    
+    
+    public GreenHouse() {}
     
 
 }

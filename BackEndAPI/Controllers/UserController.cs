@@ -1,5 +1,5 @@
 using Application.LogicInterfaces;
-using Domain.DTOs.UserDtos;
+using Domain.DTOs;
 using Domain.Model;
 using Microsoft.AspNetCore.Mvc;
 

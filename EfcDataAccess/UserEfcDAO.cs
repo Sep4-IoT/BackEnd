@@ -1,5 +1,4 @@
 using Application.DAOInterfaces;
-using Domain.DTOs.UserDtos;
 using Domain.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;

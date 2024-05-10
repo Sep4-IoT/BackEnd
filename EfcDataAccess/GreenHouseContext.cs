@@ -16,6 +16,10 @@ public class GreenHouseContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<GreenHouse>().HasKey(g => g.GreenHouseId);
+        modelBuilder.Entity<GreenHouse>()
+            .HasOne(greenHouse => greenHouse.Owner) 
+            .WithMany()
+            .HasForeignKey(greenHouse => greenHouse.OwnerId);
         modelBuilder.Entity<User>().HasKey(u => u.UserId);
     }
 }

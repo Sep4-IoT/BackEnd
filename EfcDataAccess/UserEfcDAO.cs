@@ -1,4 +1,5 @@
 using Application.DAOInterfaces;
+using Domain.DTOs;
 using Domain.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -21,7 +22,7 @@ public class UserEfcDAO : IUserDAO
         return newUser.Entity;
     }
 
-    public async Task<User?> GetByUserNameAsync(string userName)
+    public async Task<User?> GetByUsernameAsync(string userName)
     {
         User? existing = await context.Users.FirstOrDefaultAsync(u =>
             u.Username.ToLower().Equals(userName.ToLower())

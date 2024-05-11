@@ -6,6 +6,11 @@ namespace IOTController;
 
 public class Controller
 {
+    private static byte[] data = null;
+    private static bool sendData = false;
+    private readonly IGreenHouseLogic greenHouseLogic;
+
+    
     static async Task Main(string[] args)
     {
         await EstablishConnectionAsync();
@@ -25,7 +30,7 @@ public class Controller
             ReceiveDataAsync(client.GetStream()),
             SendDataAsync(client.GetStream())
         );
-
+            
         client.Close();
         listener.Stop();
     }
@@ -42,18 +47,56 @@ public class Controller
                 break;
             }
             string data = Encoding.ASCII.GetString(buffer, 0, bytesRead);
-            Console.WriteLine("Received: " + data);
+            
+            // Split the string by commas
+            string[] parts = data.Split(',');
+
+            // Create a List to store the substrings
+            List<string> myList = new List<string>();
+
+            // Add each substring to the List
+            foreach (string part in parts)
+            {
+                myList.Add(part);
+            }
+
+            /*if (myList[0] == "WAR")
+            {
+                IGreenHouseLogic().sendWarningMessage(myList[1]);
+            }*/
+
+            if (myList[0] == "UPD")
+            {
+                if (myList[2] == "SER")
+                {
+                    IGreenHouseLogic().updateWindow(myList[3]);
+                }
+            }
+
         }
     }
 
+
+    static void ChangeWindowStatus(int GreenHouseId, bool status)
+    {
+        string str = status ? "180" : "0";
+
+        string message = "ACK" + GreenHouseId + "SER" + str;
+        
+        data = Encoding.ASCII.GetBytes(message);
+        sendData = true;
+    }
+    
     static async Task SendDataAsync(NetworkStream stream)
     {
         while (true)
         {
-            Console.Write("Enter message to send: ");
-            string message = Console.ReadLine();
-            byte[] data = Encoding.ASCII.GetBytes(message);
+            if(sendData){
             await stream.WriteAsync(data, 0, data.Length);
+            sendData = false;
+            }
         }
     }
+    
+    
 }

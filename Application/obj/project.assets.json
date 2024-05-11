@@ -11,6 +11,16 @@
         "runtime": {
           "bin/placeholder/Domain.dll": {}
         }
+      },
+      "TCPController/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v7.0",
+        "compile": {
+          "bin/placeholder/TCPController.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/TCPController.dll": {}
+        }
       }
     }
   },
@@ -19,11 +29,17 @@
       "type": "project",
       "path": "../Domain/Domain.csproj",
       "msbuildProject": "../Domain/Domain.csproj"
+    },
+    "TCPController/1.0.0": {
+      "type": "project",
+      "path": "../TCPController/TCPController.csproj",
+      "msbuildProject": "../TCPController/TCPController.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net7.0": [
-      "Domain >= 1.0.0"
+      "Domain >= 1.0.0",
+      "TCPController >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -53,6 +69,9 @@
           "projectReferences": {
             "C:\\Users\\dfold\\OneDrive\\Skrivebord\\Aqui\\BackEnd\\Domain\\Domain.csproj": {
               "projectPath": "C:\\Users\\dfold\\OneDrive\\Skrivebord\\Aqui\\BackEnd\\Domain\\Domain.csproj"
+            },
+            "C:\\Users\\dfold\\OneDrive\\Skrivebord\\Aqui\\BackEnd\\TCPController\\TCPController.csproj": {
+              "projectPath": "C:\\Users\\dfold\\OneDrive\\Skrivebord\\Aqui\\BackEnd\\TCPController\\TCPController.csproj"
             }
           }
         }

@@ -8,10 +8,12 @@ namespace Application.Logic;
 public class GreenHouseLogic : IGreenHouseLogic
 {
     private readonly IGreenHouseDAO greenHouseDao;
+    private IGreenHouseLogic _icontroller;
 
     public GreenHouseLogic(IGreenHouseDAO greenHouseDao)
     {
         this.greenHouseDao = greenHouseDao;
+        _icontroller = new GreenHouseLogic(greenHouseDao);
     }
     
     public Task<IEnumerable<GreenHouse>> GetAsync(SearchGreenHouseDTO searchParameters)
@@ -64,6 +66,9 @@ public class GreenHouseLogic : IGreenHouseLogic
             dto.Humidity,
             dto.IsWindowOpen);
         
+            //_icontroller.ChangeWindowStatus(greenHouseId, updated.IsWindowOpen.GetValueOrDefault());
+
+        
             await greenHouseDao.UpdateAsync(updated);
         
     }
@@ -79,7 +84,6 @@ public class GreenHouseLogic : IGreenHouseLogic
         if (userName.Length > 20)
             throw new Exception("GreenHouse must be less than 21 characters!");
     }
-    
     
     
     

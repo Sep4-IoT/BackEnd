@@ -28,6 +28,9 @@
             "projectReferences": {
               "C:\\Users\\dfold\\OneDrive\\Skrivebord\\Aqui\\BackEnd\\Domain\\Domain.csproj": {
                 "projectPath": "C:\\Users\\dfold\\OneDrive\\Skrivebord\\Aqui\\BackEnd\\Domain\\Domain.csproj"
+              },
+              "C:\\Users\\dfold\\OneDrive\\Skrivebord\\Aqui\\BackEnd\\TCPController\\TCPController.csproj": {
+                "projectPath": "C:\\Users\\dfold\\OneDrive\\Skrivebord\\Aqui\\BackEnd\\TCPController\\TCPController.csproj"
               }
             }
           }
@@ -140,6 +143,59 @@
                 "projectPath": "C:\\Users\\dfold\\OneDrive\\Skrivebord\\Aqui\\BackEnd\\Application\\Application.csproj"
               }
             }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net7.0": {
+          "targetAlias": "net7.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.408\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\dfold\\OneDrive\\Skrivebord\\Aqui\\BackEnd\\TCPController\\TCPController.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\dfold\\OneDrive\\Skrivebord\\Aqui\\BackEnd\\TCPController\\TCPController.csproj",
+        "projectName": "TCPController",
+        "projectPath": "C:\\Users\\dfold\\OneDrive\\Skrivebord\\Aqui\\BackEnd\\TCPController\\TCPController.csproj",
+        "packagesPath": "C:\\Users\\dfold\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\dfold\\OneDrive\\Skrivebord\\Aqui\\BackEnd\\TCPController\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\dfold\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net7.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net7.0": {
+            "targetAlias": "net7.0",
+            "projectReferences": {}
           }
         },
         "warningProperties": {

@@ -8,7 +8,8 @@
     ".NETCoreApp,Version=v7.0": {
       "Application/1.0.0": {
         "dependencies": {
-          "Domain": "1.0.0"
+          "Domain": "1.0.0",
+          "TCPController": "1.0.0"
         },
         "runtime": {
           "Application.dll": {}
@@ -17,6 +18,11 @@
       "Domain/1.0.0": {
         "runtime": {
           "Domain.dll": {}
+        }
+      },
+      "TCPController/1.0.0": {
+        "runtime": {
+          "TCPController.dll": {}
         }
       }
     }
@@ -28,6 +34,11 @@
       "sha512": ""
     },
     "Domain/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "TCPController/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

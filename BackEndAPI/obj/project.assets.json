@@ -112,7 +112,8 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v7.0",
         "dependencies": {
-          "Domain": "1.0.0"
+          "Domain": "1.0.0",
+          "TCPController": "1.0.0"
         },
         "compile": {
           "bin/placeholder/Application.dll": {}
@@ -144,17 +145,14 @@
           "bin/placeholder/FileData.dll": {}
         }
       },
-      "Services/1.0.0": {
+      "TCPController/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v7.0",
-        "dependencies": {
-          "Domain": "1.0.0"
-        },
         "compile": {
-          "bin/placeholder/Services.dll": {}
+          "bin/placeholder/TCPController.dll": {}
         },
         "runtime": {
-          "bin/placeholder/Services.dll": {}
+          "bin/placeholder/TCPController.dll": {}
         }
       }
     }
@@ -525,10 +523,10 @@
       "path": "../FileData/FileData.csproj",
       "msbuildProject": "../FileData/FileData.csproj"
     },
-    "Services/1.0.0": {
+    "TCPController/1.0.0": {
       "type": "project",
-      "path": "../Services/Services.csproj",
-      "msbuildProject": "../Services/Services.csproj"
+      "path": "../TCPController/TCPController.csproj",
+      "msbuildProject": "../TCPController/TCPController.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -537,7 +535,6 @@
       "Domain >= 1.0.0",
       "FileData >= 1.0.0",
       "Microsoft.AspNetCore.OpenApi >= 7.0.14",
-      "Services >= 1.0.0",
       "Swashbuckle.AspNetCore >= 6.5.0"
     ]
   },
@@ -574,9 +571,6 @@
             },
             "C:\\Users\\dfold\\OneDrive\\Skrivebord\\Aqui\\BackEnd\\FileData\\FileData.csproj": {
               "projectPath": "C:\\Users\\dfold\\OneDrive\\Skrivebord\\Aqui\\BackEnd\\FileData\\FileData.csproj"
-            },
-            "C:\\Users\\dfold\\OneDrive\\Skrivebord\\Aqui\\BackEnd\\Services\\Services.csproj": {
-              "projectPath": "C:\\Users\\dfold\\OneDrive\\Skrivebord\\Aqui\\BackEnd\\Services\\Services.csproj"
             }
           }
         }

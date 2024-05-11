@@ -1,0 +1,14 @@
+C:\Users\dfold\OneDrive\Skrivebord\Aqui\BackEnd\TCPController\bin\Debug\net7.0\TCPController.exe
+C:\Users\dfold\OneDrive\Skrivebord\Aqui\BackEnd\TCPController\bin\Debug\net7.0\TCPController.deps.json
+C:\Users\dfold\OneDrive\Skrivebord\Aqui\BackEnd\TCPController\bin\Debug\net7.0\TCPController.runtimeconfig.json
+C:\Users\dfold\OneDrive\Skrivebord\Aqui\BackEnd\TCPController\bin\Debug\net7.0\TCPController.dll
+C:\Users\dfold\OneDrive\Skrivebord\Aqui\BackEnd\TCPController\bin\Debug\net7.0\TCPController.pdb
+C:\Users\dfold\OneDrive\Skrivebord\Aqui\BackEnd\TCPController\obj\Debug\net7.0\TCPController.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\dfold\OneDrive\Skrivebord\Aqui\BackEnd\TCPController\obj\Debug\net7.0\TCPController.AssemblyInfoInputs.cache
+C:\Users\dfold\OneDrive\Skrivebord\Aqui\BackEnd\TCPController\obj\Debug\net7.0\TCPController.AssemblyInfo.cs
+C:\Users\dfold\OneDrive\Skrivebord\Aqui\BackEnd\TCPController\obj\Debug\net7.0\TCPController.csproj.CoreCompileInputs.cache
+C:\Users\dfold\OneDrive\Skrivebord\Aqui\BackEnd\TCPController\obj\Debug\net7.0\TCPController.dll
+C:\Users\dfold\OneDrive\Skrivebord\Aqui\BackEnd\TCPController\obj\Debug\net7.0\refint\TCPController.dll
+C:\Users\dfold\OneDrive\Skrivebord\Aqui\BackEnd\TCPController\obj\Debug\net7.0\TCPController.pdb
+C:\Users\dfold\OneDrive\Skrivebord\Aqui\BackEnd\TCPController\obj\Debug\net7.0\TCPController.genruntimeconfig.cache
+C:\Users\dfold\OneDrive\Skrivebord\Aqui\BackEnd\TCPController\obj\Debug\net7.0\ref\TCPController.dll

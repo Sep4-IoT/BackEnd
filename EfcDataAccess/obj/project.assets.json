@@ -556,7 +556,8 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v7.0",
         "dependencies": {
-          "Domain": "1.0.0"
+          "Domain": "1.0.0",
+          "IOTController": "1.0.0"
         },
         "compile": {
           "bin/placeholder/Application.dll": {}
@@ -573,6 +574,16 @@
         },
         "runtime": {
           "bin/placeholder/Domain.dll": {}
+        }
+      },
+      "IOTController/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v7.0",
+        "compile": {
+          "bin/placeholder/IOTController.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/IOTController.dll": {}
         }
       }
     }
@@ -1289,6 +1300,11 @@
       "type": "project",
       "path": "../Domain/Domain.csproj",
       "msbuildProject": "../Domain/Domain.csproj"
+    },
+    "IOTController/1.0.0": {
+      "type": "project",
+      "path": "../IOTController/IOTController.csproj",
+      "msbuildProject": "../IOTController/IOTController.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -1300,19 +1316,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\duart\\.nuget\\packages\\": {}
+    "C:\\Users\\dfold\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\duart\\Documents\\GitHub\\BackEnd\\EfcDataAccess\\EfcDataAccess.csproj",
+      "projectUniqueName": "C:\\Users\\dfold\\OneDrive\\Skrivebord\\Aqui\\BackEnd\\EfcDataAccess\\EfcDataAccess.csproj",
       "projectName": "EfcDataAccess",
-      "projectPath": "C:\\Users\\duart\\Documents\\GitHub\\BackEnd\\EfcDataAccess\\EfcDataAccess.csproj",
-      "packagesPath": "C:\\Users\\duart\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\duart\\Documents\\GitHub\\BackEnd\\EfcDataAccess\\obj\\",
+      "projectPath": "C:\\Users\\dfold\\OneDrive\\Skrivebord\\Aqui\\BackEnd\\EfcDataAccess\\EfcDataAccess.csproj",
+      "packagesPath": "C:\\Users\\dfold\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\dfold\\OneDrive\\Skrivebord\\Aqui\\BackEnd\\EfcDataAccess\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\duart\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\dfold\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net7.0"
@@ -1324,8 +1340,8 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "projectReferences": {
-            "C:\\Users\\duart\\Documents\\GitHub\\BackEnd\\Application\\Application.csproj": {
-              "projectPath": "C:\\Users\\duart\\Documents\\GitHub\\BackEnd\\Application\\Application.csproj"
+            "C:\\Users\\dfold\\OneDrive\\Skrivebord\\Aqui\\BackEnd\\Application\\Application.csproj": {
+              "projectPath": "C:\\Users\\dfold\\OneDrive\\Skrivebord\\Aqui\\BackEnd\\Application\\Application.csproj"
             }
           }
         }
@@ -1371,7 +1387,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.404\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.408\\RuntimeIdentifierGraph.json"
       }
     }
   }

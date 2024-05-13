@@ -88,6 +88,21 @@ public class  GreenHouseController : ControllerBase
             return StatusCode(500, e.Message);
         }
     }
+    
+    [HttpGet("{greenHouseId}")]
+    public async Task<ActionResult<IEnumerable<GreenHouse>>> GetByIdAsync(int greenHouseId)
+    { 
+        try
+        {
+            GreenHouse? greenHouse = await greenHouseLogic.GetByIdAsync(greenHouseId);
+            return Ok(greenHouse);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500, e.Message);
+        }
+    }
 
 
 

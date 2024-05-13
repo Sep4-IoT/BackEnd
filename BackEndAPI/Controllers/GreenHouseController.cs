@@ -47,7 +47,7 @@ public class  GreenHouseController : ControllerBase
         }
     }
     
-    [HttpGet("{ownerId}")]
+    [HttpGet("owner/{ownerId}")]
     public async Task<ActionResult<IEnumerable<GreenHouse>>> GetByOwnerIdAsync(int ownerId)
     { 
         try
@@ -89,7 +89,7 @@ public class  GreenHouseController : ControllerBase
         }
     }
     
-    [HttpGet("{greenHouseId}")]
+    [HttpGet("greenHouse/{greenHouseId}")]
     public async Task<ActionResult<IEnumerable<GreenHouse>>> GetByIdAsync(int greenHouseId)
     { 
         try

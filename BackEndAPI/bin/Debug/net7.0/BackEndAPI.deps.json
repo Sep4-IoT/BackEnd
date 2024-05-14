@@ -357,7 +357,8 @@
       },
       "Application/1.0.0": {
         "dependencies": {
-          "Domain": "1.0.0"
+          "Domain": "1.0.0",
+          "IOTController": "1.0.0"
         },
         "runtime": {
           "Application.dll": {}
@@ -376,6 +377,11 @@
         },
         "runtime": {
           "EfcDataAccess.dll": {}
+        }
+      },
+      "IOTController/1.0.0": {
+        "runtime": {
+          "IOTController.dll": {}
         }
       }
     }
@@ -614,6 +620,11 @@
       "sha512": ""
     },
     "EfcDataAccess/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "IOTController/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

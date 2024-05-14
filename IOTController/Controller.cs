@@ -110,7 +110,7 @@ namespace IOTController
             // Split and check the response format
             string[] parts = response.Split(',');
     
-            if (parts.Length < 5)  // Check if all expected parts are present
+            if (parts.Length < 4)  // Check if all expected parts are present
             {
                 Console.WriteLine("Received malformed response: " + response);
                 return new WindowStatusResult(null, "Received malformed response.");

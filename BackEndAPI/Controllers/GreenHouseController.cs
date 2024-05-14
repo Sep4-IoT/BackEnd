@@ -10,6 +10,7 @@ namespace BackEnd.Controllers;
 public class  GreenHouseController : ControllerBase
 {
     private readonly IGreenHouseLogic greenHouseLogic;
+    private readonly IArduinoLogic arduinoLogic;
 
     public GreenHouseController(IGreenHouseLogic greenHouseLogic)
     {
@@ -32,13 +33,13 @@ public class  GreenHouseController : ControllerBase
     }
     
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<GreenHouse>>> GetAsync([FromQuery] int? greenHouseId)
+    public async Task<ActionResult<GreenHouse>> GetAsync([FromQuery] int greenHouseId)
     { 
         try
         {
-            SearchGreenHouseDTO parameters = new(greenHouseId);
-            IEnumerable<GreenHouse> greenHouses = await greenHouseLogic.GetAsync(parameters);
-            return Ok(greenHouses);
+            GreenHouse greenHouse = await greenHouseLogic.GetByIdAsync(greenHouseId);
+            greenHouse.IsWindowOpen = await arduinoLogic.GetWindowStatus(greenHouseId);
+            return Ok(greenHouse);
         }
         catch (Exception e)
         {

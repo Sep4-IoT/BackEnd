@@ -35,5 +35,6 @@ namespace Application.Logic
             }
             return statusResult.IsWindowOpen ?? false; // Convert nullable bool to bool by assuming false if null
         }
+        
     }
 }

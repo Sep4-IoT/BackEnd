@@ -396,7 +396,8 @@
       },
       "Application/1.0.0": {
         "dependencies": {
-          "Domain": "1.0.0"
+          "Domain": "1.0.0",
+          "IOTController": "1.0.0"
         },
         "runtime": {
           "Application.dll": {}
@@ -405,6 +406,11 @@
       "Domain/1.0.0": {
         "runtime": {
           "Domain.dll": {}
+        }
+      },
+      "IOTController/1.0.0": {
+        "runtime": {
+          "IOTController.dll": {}
         }
       }
     }
@@ -617,6 +623,11 @@
       "sha512": ""
     },
     "Domain/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "IOTController/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

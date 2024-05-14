@@ -18,6 +18,7 @@ builder.Services.AddSwaggerGen(c =>
 
 builder.Services.AddSingleton<List<GreenHouse>>();
 builder.Services.AddScoped<IGreenHouseLogic, GreenHouseLogic>();
+builder.Services.AddScoped<IArduinoLogic, ArduinoLogic>();
 builder.Services.AddScoped<IGreenHouseDAO, GreenHouseEfcDAO>();
 
 builder.Services.AddSingleton<List<User>>();
@@ -25,6 +26,15 @@ builder.Services.AddScoped<IUserLogic, UserLogic>();
 builder.Services.AddScoped<IUserDAO, UserEfcDAO>();
 
 builder.Services.AddDbContext<GreenHouseContext>();
+
+// Configure Kestrel to use HTTPS
+builder.WebHost.ConfigureKestrel(serverOptions =>
+{
+    serverOptions.ListenAnyIP(5047, listenOptions =>
+    {
+        listenOptions.UseHttps("localhost.crt", "localhost.key");
+    });
+});
 
 var app = builder.Build();
 

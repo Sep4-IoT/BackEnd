@@ -41,20 +41,18 @@ namespace BackEnd.Controllers
             try
             {
                 GreenHouse greenHouse = await greenHouseLogic.GetByIdAsync(greenHouseId);
-
                 // Get the current status from the IOT server
-                string iotStatus = await FetchIOTStatusFromServerAsync(greenHouseId);
-                greenHouse.IsWindowOpen = iotStatus == "Open";
-                string iotTemperature = await FetchIOTTemperatureFromServerAsync(greenHouseId);
-                if (double.TryParse(iotTemperature, out double temperature))
-                {
-                    greenHouse.Temperature = temperature;
-                }
-                else
-                {
-                    Console.WriteLine("Error: Unable to parse temperature from server response.");
-                }
-                
+                // string iotStatus = await FetchIOTStatusFromServerAsync(greenHouseId);
+                // greenHouse.IsWindowOpen = iotStatus == "Open";
+                // string iotTemperature = await FetchIOTTemperatureFromServerAsync(greenHouseId);
+                // if (double.TryParse(iotTemperature, out double temperature))
+                // {
+                //     greenHouse.Temperature = temperature;
+                // }
+                // else
+                // {
+                //     Console.WriteLine("Error: Unable to parse temperature from server response.");
+                // }
                 return Ok(greenHouse);
             }
             catch (Exception e)

@@ -36,10 +36,28 @@ namespace IOTController
             while (true)
             {
                 TcpClient client = await listener.AcceptTcpClientAsync();
+                Console.WriteLine("Client connected.");
+                _ = HandleClientAsync(client); // Handle the client connection without blocking the acceptance loop
+            }
+        }
+
+        private async Task HandleClientAsync(TcpClient client)
+        {
+            try
+            {
                 if (ClientConnected != null)
                 {
                     await ClientConnected(client);
                 }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error handling client: {ex.Message}");
+            }
+            finally
+            {
+                client.Close();
+                Console.WriteLine("Client disconnected.");
             }
         }
     }

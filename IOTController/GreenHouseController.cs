@@ -51,5 +51,20 @@ namespace IOTController.Controllers
 
             return Ok(statusDescription);
         }
+        
+        [HttpGet("getTemperature")]
+        public async Task<IActionResult> GetTemperature(int GreenHouseId)
+        {
+            var temperatureResult = await _greenhouseService.GetTemperature(GreenHouseId);
+            if (temperatureResult.ErrorMessage != null)
+            {
+                return BadRequest(temperatureResult.ErrorMessage);
+            }
+
+            string temperatureDescription = temperatureResult.Temperature.HasValue ? temperatureResult.Temperature.Value.ToString() : "N/A";
+
+
+            return Ok(temperatureDescription);
+        }
     }
 }

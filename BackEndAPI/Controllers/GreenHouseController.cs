@@ -17,7 +17,7 @@ namespace BackEnd.Controllers
         public GreenHouseController(IGreenHouseLogic greenHouseLogic)
         {
             this.greenHouseLogic = greenHouseLogic;
-            this.httpClient = new HttpClient { BaseAddress = new Uri("http://localhost:6000/") };
+            httpClient = new HttpClient { BaseAddress = new Uri("http://localhost:6000/") };
         }
 
         [HttpPost]
@@ -45,7 +45,16 @@ namespace BackEnd.Controllers
                 // Get the current status from the IOT server
                 string iotStatus = await FetchIOTStatusFromServerAsync(greenHouseId);
                 greenHouse.IsWindowOpen = iotStatus == "Open";
-
+                string iotTemperature = await FetchIOTTemperatureFromServerAsync(greenHouseId);
+                if (double.TryParse(iotTemperature, out double temperature))
+                {
+                    greenHouse.Temperature = temperature;
+                }
+                else
+                {
+                    Console.WriteLine("Error: Unable to parse temperature from server response.");
+                }
+                
                 return Ok(greenHouse);
             }
             catch (Exception e)
@@ -106,25 +115,19 @@ namespace BackEnd.Controllers
                 return StatusCode(500, e.Message);
             }
         }
-
-        [HttpGet("IOT/{id}/getStatus")]
-        public async Task<IActionResult> GetIOTStatusAsync(int id)
-        {
-            try
-            {
-                string status = await FetchIOTStatusFromServerAsync(id);
-                return Ok(status);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                return StatusCode(500, e.Message);
-            }
-        }
-
+        
+        
         private async Task<string> FetchIOTStatusFromServerAsync(int greenHouseId)
         {
             var response = await httpClient.GetAsync($"GreenHouse/IOT/{greenHouseId}/getStatus?clientId=1");
+            response.EnsureSuccessStatusCode();
+            string status = await response.Content.ReadAsStringAsync();
+            return status;
+        }
+        
+        private async Task<string> FetchIOTTemperatureFromServerAsync(int greenHouseId)
+        {
+            var response = await httpClient.GetAsync($"GreenHouse/IOT/{greenHouseId}/getTemperature?clientId=1");
             response.EnsureSuccessStatusCode();
             string status = await response.Content.ReadAsStringAsync();
             return status;

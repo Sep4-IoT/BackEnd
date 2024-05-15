@@ -79,5 +79,41 @@ namespace IOTController
             string message = $"REQ,{GreenHouseId},SET,SER,{angle}";
             await clientHandler.SendMessageAsync(message);
         }
+        
+        public class TemperatureResult
+        {
+            public double? Temperature { get; set; }
+            public string ErrorMessage { get; set; }
+
+            public TemperatureResult(double? temperature, string errorMessage = null)
+            {
+                Temperature = temperature;
+                ErrorMessage = errorMessage;
+            }
+        }
+        
+        public async Task<TemperatureResult> GetTemperature(int GreenHouseId)
+        {
+            string message = $"REQ,{GreenHouseId},GET,TEM";
+            await clientHandler.SendMessageAsync(message);
+
+            // Wait to receive a response and interpret it
+            string response = await clientHandler.ReceiveMessageAsync();
+
+            // Log the received response for debugging purposes
+            Console.WriteLine("Received: " + response);
+
+            // Split and check the response format
+            string[] parts = response.Split(',');
+
+            if (parts.Length < 4)  // Check if all expected parts are present
+            {
+                Console.WriteLine("Received malformed response: " + response);
+                return new TemperatureResult(null, "Received malformed response.");
+            }
+
+            Console.WriteLine("Received unexpected status: " + parts[4]);
+            return new TemperatureResult(null, $"Invalid status value received: {parts[4]}.");
+        }
     }
 }

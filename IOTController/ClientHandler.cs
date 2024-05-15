@@ -14,8 +14,8 @@ namespace IOTController
         public ClientHandler(TcpClient client)
         {
             this.client = client;
-            this.stream = client.GetStream();
-            this.messageBuilder = new StringBuilder();
+            stream = client.GetStream();
+            messageBuilder = new StringBuilder();
         }
 
         public async Task<string> ReceiveMessageAsync()

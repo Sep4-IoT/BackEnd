@@ -24,6 +24,7 @@ builder.Services.AddSingleton<List<User>>();
 builder.Services.AddScoped<IUserLogic, UserLogic>();
 builder.Services.AddScoped<IUserDAO, UserEfcDAO>();
 
+
 builder.Services.AddDbContext<GreenHouseContext>();
 
 var app = builder.Build();
@@ -48,4 +49,4 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
-app.Run("http://0.0.0.0:5047");
+app.Run("http://localhost:5047");

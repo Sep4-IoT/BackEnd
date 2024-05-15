@@ -11,16 +11,18 @@ namespace IOTController
             this.clientHandler = clientHandler;
         }
 
-        public async Task OpenWindow(int GreenHouseId)
+        public async Task<string> OpenWindow(int GreenHouseId)
         {
             string message = $"REQ,{GreenHouseId},SET,SER,180";
             await clientHandler.SendMessageAsync(message);
+            return await clientHandler.ReceiveMessageAsync();
         }
 
-        public async Task CloseWindow(int GreenHouseId)
+        public async Task<string> CloseWindow(int GreenHouseId)
         {
             string message = $"REQ,{GreenHouseId},SET,SER,0";
             await clientHandler.SendMessageAsync(message);
+            return await clientHandler.ReceiveMessageAsync();
         }
 
         public class WindowStatusResult

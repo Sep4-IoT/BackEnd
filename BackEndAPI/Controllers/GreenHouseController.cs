@@ -3,7 +3,6 @@ using Domain.DTOs;
 using Domain.Model;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Http;
-using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace BackEnd.Controllers
@@ -108,7 +107,7 @@ namespace BackEnd.Controllers
             }
         }
 
-        [HttpGet("IOT/{id}/status")]
+        [HttpGet("IOT/{id}/getStatus")]
         public async Task<IActionResult> GetIOTStatusAsync(int id)
         {
             try
@@ -125,7 +124,7 @@ namespace BackEnd.Controllers
 
         private async Task<string> FetchIOTStatusFromServerAsync(int greenHouseId)
         {
-            var response = await httpClient.GetAsync($"GreenHouse/IOT/{greenHouseId}/status?clientId=1");
+            var response = await httpClient.GetAsync($"GreenHouse/IOT/{greenHouseId}/getStatus?clientId=1");
             response.EnsureSuccessStatusCode();
             string status = await response.Content.ReadAsStringAsync();
             return status;

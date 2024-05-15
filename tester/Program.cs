@@ -1,10 +1,11 @@
 ﻿using Application.Logic;
+using IOTController;
 
 public class Program
 {
     public static async Task Main()
     {
-        ArduinoLogic arduinoLogic = new ArduinoLogic();
-        arduinoLogic.OpenWindow(2);
+        Controller controller = Controller.Instance;
+        controller.getClient();
     }
 }

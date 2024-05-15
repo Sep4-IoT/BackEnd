@@ -1,3 +1,4 @@
+
 using Application.DAOInterfaces;
 using Application.Logic;
 using Application.LogicInterfaces;
@@ -14,7 +15,6 @@ builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Your API", Version = "v1" });
 });
-
 
 builder.Services.AddSingleton<List<GreenHouse>>();
 builder.Services.AddScoped<IGreenHouseLogic, GreenHouseLogic>();
@@ -47,7 +47,5 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseAuthorization();
-
 app.MapControllers();
-
-app.Run();
+app.Run("http://0.0.0.0:5047");

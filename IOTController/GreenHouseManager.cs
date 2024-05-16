@@ -76,9 +76,9 @@ namespace IOTController;
             return new WindowStatusResult(null, $"Invalid status value received: {parts[4]}.");
         }
 
-        public async Task SetWindowAngle(int GreenHouseId, int angle)
+        public async Task SetWindowAngle(int greenHouseId, int angle)
         {
-            string message = $"REQ,{GreenHouseId},SET,SER,{angle}";
+            string message = $"REQ,{greenHouseId},SET,SER,{angle}";
             await clientHandler.SendMessageAsync(message);
         }
         

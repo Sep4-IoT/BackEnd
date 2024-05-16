@@ -23,15 +23,12 @@ namespace IOTController
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            
-            services.AddSingleton<TcpClient>();
             services.AddSingleton<ClientHandler>();
-            services.AddSingleton<GreenHouseManager>(); 
+            services.AddSingleton<GreenHouseManager>();
             services.AddSingleton<GreenhouseService>();
-            services.AddSingleton<IGreenHouseLogic, GreenHouseLogic>();
-            services.AddSingleton<IGreenHouseDAO, GreenHouseEfcDAO>();
-            services.AddDbContext<GreenHouseContext>();
-            services.AddSingleton<IUserDAO, UserEfcDAO>();
+            services.AddScoped<IGreenHouseLogic, GreenHouseLogic>();
+
+
         }
 
 

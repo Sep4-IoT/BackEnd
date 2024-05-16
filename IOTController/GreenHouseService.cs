@@ -8,7 +8,6 @@ public class GreenhouseService
         private GreenHouseManager _greenhouseManager;
         private readonly IGreenHouseLogic greenHouseLogic;
         
-
         public void Initialize(ClientHandler newClientHandler)
         {
             if (_greenhouseManager == null)
@@ -16,9 +15,7 @@ public class GreenhouseService
                 _greenhouseManager = new GreenHouseManager(newClientHandler, greenHouseLogic);
             }
         }
-
-
-
+        
         public async Task<string> OpenWindow(int GreenHouseId)
         {
             if (_greenhouseManager == null)

@@ -1,3 +1,8 @@
+using System.Net.Sockets;
+using Application.DAOInterfaces;
+using Application.Logic;
+using Application.LogicInterfaces;
+using EfcDataAccess;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -18,8 +23,17 @@ namespace IOTController
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            
+            services.AddSingleton<TcpClient>();
+            services.AddSingleton<ClientHandler>();
+            services.AddSingleton<GreenHouseManager>(); 
             services.AddSingleton<GreenhouseService>();
+            services.AddSingleton<IGreenHouseLogic, GreenHouseLogic>();
+            services.AddSingleton<IGreenHouseDAO, GreenHouseEfcDAO>();
+            services.AddDbContext<GreenHouseContext>();
+            services.AddSingleton<IUserDAO, UserEfcDAO>();
         }
+
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {

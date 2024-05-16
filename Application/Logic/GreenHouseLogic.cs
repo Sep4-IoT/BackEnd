@@ -73,7 +73,12 @@ public class GreenHouseLogic : IGreenHouseLogic
         return greenHouseDao.GetByOwnerIdAsync(ownerId);
     }
 
-
+    public async Task UpdateTemperature(int greenhouseId, double temperature)
+    {
+        Console.WriteLine(greenhouseId + " " + temperature);
+        await greenHouseDao.UpdateTemperature(greenhouseId, temperature);
+    }
+    
     private static void ValidateData(GreenHouseCreationDTO greenHouseCreation)
     {
         string greenHouseName = greenHouseCreation.GreenHouseName;

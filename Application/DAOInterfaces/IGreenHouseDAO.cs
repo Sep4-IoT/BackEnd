@@ -11,5 +11,6 @@ public interface IGreenHouseDAO
     Task<UpdateGreenHouseDTO> UpdateAsync(UpdateGreenHouseDTO updateGreenHouseDto);
     Task<GreenHouse> GetByIdAsync(int id);
     Task<IEnumerable<GreenHouse>> GetByOwnerIdAsync(int ownerId);
+    Task UpdateTemperature(int greenhouseId, double temperature);
 
 }

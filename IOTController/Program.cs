@@ -3,6 +3,8 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using Application.Logic;
+using Application.LogicInterfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,6 +14,8 @@ namespace IOTController
 {
     public class Program
     {
+
+        private static readonly IGreenHouseLogic greenHouseLogic;
         public static async Task Main(string[] args)
         {
             // Start the ASP.NET Core host
@@ -24,7 +28,7 @@ namespace IOTController
             {
                 ClientHandler clientHandler = new ClientHandler(client);
                 greenhouseService.Initialize(clientHandler);
-                GreenhouseManager greenhouseManager = new GreenhouseManager(clientHandler);
+                GreenHouseManager greenhouseManager = new GreenHouseManager(clientHandler,greenHouseLogic);
 
                 Console.WriteLine("Client connected.");
                 await ProcessCommandsAsync(greenhouseManager);
@@ -44,7 +48,7 @@ namespace IOTController
                 });
 
 
-        private static async Task ProcessCommandsAsync(GreenhouseManager greenhouseManager)
+        private static async Task ProcessCommandsAsync(GreenHouseManager greenhouseManager)
         {
             Console.WriteLine("Server is running. Type 'open', 'close', 'status', or 'set [id] [angle]' followed by the greenhouse ID and optionally an angle to control:");
 
@@ -74,6 +78,9 @@ namespace IOTController
                         break;
                     case "close":
                         await greenhouseManager.CloseWindow(id);
+                        break;
+                    case "temperature":
+                        await greenhouseManager.GetTemperature(id);
                         break;
                     case "status":
                         var statusResult = await greenhouseManager.GetWindowStatus(id);

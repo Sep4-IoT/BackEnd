@@ -5,8 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace BackEnd.Controllers
-{
+namespace BackEnd.Controllers;
+
     [ApiController]
     [Route("[controller]")]
     public class GreenHouseController : ControllerBase
@@ -143,4 +143,4 @@ namespace BackEnd.Controllers
             response.EnsureSuccessStatusCode();
         }
     }
-}
+

@@ -1,14 +1,16 @@
-using System.Threading.Tasks;
+using Application.LogicInterfaces;
 
-namespace IOTController
-{
-    public class GreenhouseManager
+namespace IOTController;
+
+    public class GreenHouseManager
     {
-        private ClientHandler clientHandler;
+        private readonly ClientHandler clientHandler;
+        private readonly IGreenHouseLogic greenHouseLogic;
 
-        public GreenhouseManager(ClientHandler clientHandler)
+        public GreenHouseManager(ClientHandler clientHandler, IGreenHouseLogic greenHouseLogic)
         {
             this.clientHandler = clientHandler;
+            this.greenHouseLogic = greenHouseLogic;
         }
 
         public async Task<string> OpenWindow(int GreenHouseId)
@@ -97,10 +99,8 @@ namespace IOTController
             string message = $"REQ,{GreenHouseId},GET,TEM";
             await clientHandler.SendMessageAsync(message);
 
-            // Wait to receive a response and interpret it
             string response = await clientHandler.ReceiveMessageAsync();
 
-            // Log the received response for debugging purposes
             Console.WriteLine("Received: " + response);
 
             // Split and check the response format
@@ -111,9 +111,29 @@ namespace IOTController
                 Console.WriteLine("Received malformed response: " + response);
                 return new TemperatureResult(null, "Received malformed response.");
             }
-
-            Console.WriteLine("Received unexpected status: " + parts[4]);
-            return new TemperatureResult(null, $"Invalid status value received: {parts[4]}.");
+            
+            if (double.TryParse(parts[4], out double temperature))
+            {
+                Console.WriteLine(temperature);
+                try
+                {
+                    await greenHouseLogic.UpdateTemperature(GreenHouseId, temperature);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error updating temperature: " + ex.Message);
+                    return new TemperatureResult(null, "Error updating temperature: " + ex.Message);
+                }
+                return new TemperatureResult(temperature);
+            }
+            else
+            {
+               Console.WriteLine("Received unexpected status: " + parts[4]);
+               return new TemperatureResult(null, $"Invalid status value received: {parts[4]}."); 
+            }
+            
         }
-    }
+
+
 }
+

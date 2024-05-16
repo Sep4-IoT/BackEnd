@@ -1,17 +1,23 @@
-using System.Threading.Tasks;
+using Application.LogicInterfaces;
 
-namespace IOTController
+namespace IOTController;
+
+public class GreenhouseService
 {
-    public class GreenhouseService
-    {
-        private ClientHandler _clientHandler;
-        private GreenhouseManager _greenhouseManager;
+        private readonly ClientHandler clientHandler;
+        private GreenHouseManager _greenhouseManager;
+        private readonly IGreenHouseLogic greenHouseLogic;
+        
 
-        public void Initialize(ClientHandler clientHandler)
+        public void Initialize(ClientHandler newClientHandler)
         {
-            _clientHandler = clientHandler;
-            _greenhouseManager = new GreenhouseManager(clientHandler);
+            if (_greenhouseManager == null)
+            {
+                _greenhouseManager = new GreenHouseManager(newClientHandler, greenHouseLogic);
+            }
         }
+
+
 
         public async Task<string> OpenWindow(int GreenHouseId)
         {
@@ -29,7 +35,7 @@ namespace IOTController
             return await _greenhouseManager.CloseWindow(GreenHouseId);
         }
 
-        public async Task<GreenhouseManager.WindowStatusResult> GetWindowStatus(int GreenHouseId)
+        public async Task<GreenHouseManager.WindowStatusResult> GetWindowStatus(int GreenHouseId)
         {
             if (_greenhouseManager == null)
                 throw new InvalidOperationException("GreenhouseManager is not initialized.");
@@ -37,7 +43,7 @@ namespace IOTController
             return await _greenhouseManager.GetWindowStatus(GreenHouseId);
         }
         
-        public async Task<GreenhouseManager.TemperatureResult> GetTemperature(int GreenHouseId)
+        public async Task<GreenHouseManager.TemperatureResult> GetTemperature(int GreenHouseId)
         {
             if (_greenhouseManager == null)
                 throw new InvalidOperationException("GreenhouseManager is not initialized.");
@@ -46,5 +52,4 @@ namespace IOTController
         }
         
         
-    }
 }

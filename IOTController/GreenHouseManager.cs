@@ -1,7 +1,9 @@
 using Application.LogicInterfaces;
+using System;
+using System.Threading.Tasks;
 
-namespace IOTController;
-
+namespace IOTController
+{
     public class GreenHouseManager
     {
         private readonly ClientHandler clientHandler;
@@ -44,31 +46,25 @@ namespace IOTController;
             string message = $"REQ,{GreenHouseId},GET,SER";
             await clientHandler.SendMessageAsync(message);
 
-            // Wait to receive a response and interpret it
             string response = await clientHandler.ReceiveMessageAsync();
-
-            // Log the received response for debugging purposes
             Console.WriteLine("Received: " + response);
 
-            // Split and check the response format
             string[] parts = response.Split(',');
-
-            if (parts.Length < 4)  // Check if all expected parts are present
+            if (parts.Length < 4)
             {
                 Console.WriteLine("Received malformed response: " + response);
                 return new WindowStatusResult(null, "Received malformed response.");
             }
 
-            // Specific position checks for robustness
             if (parts[0] == "ACK" && parts[1] == GreenHouseId.ToString() && parts[2] == "GET" && parts[3] == "SER")
             {
-                if (parts[4] == "180") // Assuming "180" means open
+                if (parts[4] == "180")
                 {
-                    return new WindowStatusResult(true); // Window is open
+                    return new WindowStatusResult(true);
                 }
-                if (parts[4] == "0") // Assuming "0" means closed
+                if (parts[4] == "0")
                 {
-                    return new WindowStatusResult(false); // Window is closed
+                    return new WindowStatusResult(false);
                 }
             }
 
@@ -81,7 +77,7 @@ namespace IOTController;
             string message = $"REQ,{greenHouseId},SET,SER,{angle}";
             await clientHandler.SendMessageAsync(message);
         }
-        
+
         public class TemperatureResult
         {
             public double? Temperature { get; set; }
@@ -93,28 +89,24 @@ namespace IOTController;
                 ErrorMessage = errorMessage;
             }
         }
-        
+
         public async Task<TemperatureResult> GetTemperature(int GreenHouseId)
         {
             string message = $"REQ,{GreenHouseId},GET,TEM";
             await clientHandler.SendMessageAsync(message);
 
             string response = await clientHandler.ReceiveMessageAsync();
-
             Console.WriteLine("Received: " + response);
 
-            // Split and check the response format
             string[] parts = response.Split(',');
-
-            if (parts.Length < 4)  // Check if all expected parts are present
+            if (parts.Length < 4)
             {
                 Console.WriteLine("Received malformed response: " + response);
                 return new TemperatureResult(null, "Received malformed response.");
             }
-            
+
             if (double.TryParse(parts[4], out double temperature))
             {
-                Console.WriteLine(temperature);
                 try
                 {
                     await greenHouseLogic.UpdateTemperature(GreenHouseId, temperature);
@@ -128,12 +120,9 @@ namespace IOTController;
             }
             else
             {
-               Console.WriteLine("Received unexpected status: " + parts[4]);
-               return new TemperatureResult(null, $"Invalid status value received: {parts[4]}."); 
+                Console.WriteLine("Received unexpected status: " + parts[4]);
+                return new TemperatureResult(null, $"Invalid status value received: {parts[4]}.");
             }
-            
         }
-
-
+    }
 }
-

@@ -1,34 +1,28 @@
-﻿using System;
-using System.Net;
-using System.Net.Sockets;
-using System.Text;
-using System.Threading.Tasks;
-using Application.Logic;
-using Application.LogicInterfaces;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
+using System.Net.Sockets;
+using System.Threading.Tasks;
+using Application.LogicInterfaces;
 
 namespace IOTController
 {
     public class Program
     {
-
-        private static readonly IGreenHouseLogic greenHouseLogic;
         public static async Task Main(string[] args)
         {
-            // Start the ASP.NET Core host
             var host = CreateHostBuilder(args).Build();
             var greenhouseService = host.Services.GetRequiredService<GreenhouseService>();
+            var greenhouseLogic = host.Services.GetRequiredService<IGreenHouseLogic>();
 
             // Start the TCP server
-            Server server = new Server();
+            var server = new Server();
             server.ClientConnected += async (TcpClient client) =>
             {
-                ClientHandler clientHandler = new ClientHandler(client);
+                var clientHandler = new ClientHandler(client);
                 greenhouseService.Initialize(clientHandler);
-                GreenHouseManager greenhouseManager = new GreenHouseManager(clientHandler,greenHouseLogic);
+                var greenhouseManager = new GreenHouseManager(clientHandler, greenhouseLogic);
 
                 Console.WriteLine("Client connected.");
                 await ProcessCommandsAsync(greenhouseManager);
@@ -47,25 +41,23 @@ namespace IOTController
                     webBuilder.UseUrls("http://localhost:6000");
                 });
 
-
         private static async Task ProcessCommandsAsync(GreenHouseManager greenhouseManager)
         {
             Console.WriteLine("Server is running. Type 'open', 'close', 'status', or 'set [id] [angle]' followed by the greenhouse ID and optionally an angle to control:");
 
             while (true)
             {
-                string input = Console.ReadLine();
+                var input = Console.ReadLine();
                 if (string.IsNullOrEmpty(input)) continue;
 
-                string[] parts = input.Split();
+                var parts = input.Split();
                 if (parts.Length < 2)
                 {
                     Console.WriteLine("Invalid command. Please use the format 'open [id]', 'close [id]', 'status [id]', or 'set [id] [angle]'.");
                     continue;
                 }
 
-                int id;
-                if (!int.TryParse(parts[1], out id))
+                if (!int.TryParse(parts[1], out var id))
                 {
                     Console.WriteLine("Invalid greenhouse ID. Please enter a valid number.");
                     continue;
@@ -90,7 +82,7 @@ namespace IOTController
                         }
                         else
                         {
-                            string statusDescription = statusResult.IsWindowOpen.HasValue
+                            var statusDescription = statusResult.IsWindowOpen.HasValue
                                 ? (statusResult.IsWindowOpen.Value ? "Open" : "Closed")
                                 : "Status not determined";
                             Console.WriteLine($"Window status for Greenhouse {id}: {statusDescription}");
@@ -102,7 +94,7 @@ namespace IOTController
                             Console.WriteLine("Invalid command. Use the format 'set [id] [angle]'.");
                             continue;
                         }
-                        if (!int.TryParse(parts[2], out int angle))
+                        if (!int.TryParse(parts[2], out var angle))
                         {
                             Console.WriteLine("Invalid angle. Please enter a valid number between 0 and 180.");
                             continue;

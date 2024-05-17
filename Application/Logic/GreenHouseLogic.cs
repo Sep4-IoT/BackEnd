@@ -75,7 +75,6 @@ public class GreenHouseLogic : IGreenHouseLogic
 
     public async Task UpdateTemperature(int greenhouseId, double temperature)
     {
-        Console.WriteLine(greenhouseId + " " + temperature);
         await greenHouseDao.UpdateTemperature(greenhouseId, temperature);
     }
     

@@ -1,52 +1,57 @@
 using Application.LogicInterfaces;
 
-namespace IOTController;
-
-public class GreenhouseService
+namespace IOTController
 {
-        private readonly ClientHandler clientHandler;
-        private GreenHouseManager _greenhouseManager;
+    public class GreenhouseService
+    {
+        private ClientHandler clientHandler;
+        private GreenHouseManager greenhouseManager;
         private readonly IGreenHouseLogic greenHouseLogic;
-        
+
+        public GreenhouseService(IGreenHouseLogic greenHouseLogic)
+        {
+            this.greenHouseLogic = greenHouseLogic;
+        }
+
         public void Initialize(ClientHandler newClientHandler)
         {
-            if (_greenhouseManager == null)
+            clientHandler = newClientHandler;
+            if (greenhouseManager == null)
             {
-                _greenhouseManager = new GreenHouseManager(newClientHandler, greenHouseLogic);
+                greenhouseManager = new GreenHouseManager(clientHandler, greenHouseLogic);
             }
         }
-        
+
         public async Task<string> OpenWindow(int GreenHouseId)
         {
-            if (_greenhouseManager == null)
+            if (greenhouseManager == null)
                 throw new InvalidOperationException("GreenhouseManager is not initialized.");
 
-            return await _greenhouseManager.OpenWindow(GreenHouseId);
+            return await greenhouseManager.OpenWindow(GreenHouseId);
         }
 
         public async Task<string> CloseWindow(int GreenHouseId)
         {
-            if (_greenhouseManager == null)
+            if (greenhouseManager == null)
                 throw new InvalidOperationException("GreenhouseManager is not initialized.");
 
-            return await _greenhouseManager.CloseWindow(GreenHouseId);
+            return await greenhouseManager.CloseWindow(GreenHouseId);
         }
 
         public async Task<GreenHouseManager.WindowStatusResult> GetWindowStatus(int GreenHouseId)
         {
-            if (_greenhouseManager == null)
+            if (greenhouseManager == null)
                 throw new InvalidOperationException("GreenhouseManager is not initialized.");
 
-            return await _greenhouseManager.GetWindowStatus(GreenHouseId);
+            return await greenhouseManager.GetWindowStatus(GreenHouseId);
         }
-        
+
         public async Task<GreenHouseManager.TemperatureResult> GetTemperature(int GreenHouseId)
         {
-            if (_greenhouseManager == null)
+            if (greenhouseManager == null)
                 throw new InvalidOperationException("GreenhouseManager is not initialized.");
 
-            return await _greenhouseManager.GetTemperature(GreenHouseId);
+            return await greenhouseManager.GetTemperature(GreenHouseId);
         }
-        
-        
+    }
 }

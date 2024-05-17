@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EfcDataAccess.Migrations
 {
     [DbContext(typeof(GreenHouseContext))]
-    [Migration("20240510090126_InitialCreate")]
+    [Migration("20240517064618_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />

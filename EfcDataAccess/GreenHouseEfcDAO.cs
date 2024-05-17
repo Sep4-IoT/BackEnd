@@ -62,15 +62,31 @@ public class GreenHouseEfcDAO : IGreenHouseDAO
 
     public async Task UpdateTemperature(int greenhouseId, double temperature)
     {
-        GreenHouse? existing = context.GreenHouses.FirstOrDefault(g => g.GreenHouseId == greenhouseId);
-        if (existing == null)
-        {
-            throw new Exception($"GreenHouse with id {greenhouseId} does not exist!");
-        }
+        Console.WriteLine($"Updating temperature for GreenHouse ID {greenhouseId} to {temperature}");
 
-        existing.Temperature = temperature;
-        await Task.Run(() => context.SaveChangesAsync());
+        try
+        {
+            using (var context = new GreenHouseContextFactory().CreateDbContext(null))
+            {
+                var existing = await context.GreenHouses
+                    .FirstOrDefaultAsync(g => g.GreenHouseId == greenhouseId);
+
+                if (existing == null)
+                {
+                    throw new Exception($"GreenHouse with ID {greenhouseId} does not exist!");
+                }
+
+                existing.Temperature = temperature;
+                await context.SaveChangesAsync();
+                Console.WriteLine("Temperature updated successfully.");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error updating temperature: {ex.Message}");
+        }
     }
+
     
 
     public async Task<GreenHouse> GetByIdAsync(int id)

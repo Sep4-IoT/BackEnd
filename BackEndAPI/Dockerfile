@@ -8,20 +8,16 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
 
-# Copy the DBAPI and Domain project files
+# Copy the project files and restore dependencies
 COPY ["BackEndAPI/BackEndAPI.csproj", "BackEndAPI/"]
 COPY ["Domain/Domain.csproj", "Domain/"]
 
-# Restore dependencies for both projects
 RUN dotnet restore "BackEndAPI/BackEndAPI.csproj"
 
-# Copy the remaining source code
+# Copy the remaining source code and build the project
 COPY . .
 
-# Set the working directory to the DBAPI project
-WORKDIR "/src/DBAPI"
-
-# Build the DBAPI project
+WORKDIR "/src/BackEndAPI"
 RUN dotnet build "BackEndAPI.csproj" -c Release -o /app/build
 
 # Publish the application
@@ -32,4 +28,4 @@ RUN dotnet publish "BackEndAPI.csproj" -c Release -o /app/publish /p:UseAppHost=
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "DBAPI.dll"]
+ENTRYPOINT ["dotnet", "BackEndAPI.dll"]

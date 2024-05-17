@@ -1,4 +1,3 @@
-
 using Domain.Model;
 using Microsoft.OpenApi.Models;
 
@@ -10,6 +9,12 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Your API", Version = "v1" });
+});
+
+// Register HttpClient service
+builder.Services.AddHttpClient("DBAPI", client =>
+{
+    client.BaseAddress = new Uri(builder.Configuration["DBAPIBaseUrl"]);
 });
 
 builder.Services.AddSingleton<List<GreenHouse>>();

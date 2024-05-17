@@ -27,8 +27,7 @@ namespace IOTController
             // Register Database
             services.AddDbContext<GreenHouseContext>(options =>
                 options.UseSqlite(Configuration.GetConnectionString("GreenHouseDatabase")));
-           
-
+    
             // Register DAO services
             services.AddTransient<IGreenHouseDAO, GreenHouseEfcDAO>();
             services.AddTransient<IUserDAO, UserEfcDAO>();

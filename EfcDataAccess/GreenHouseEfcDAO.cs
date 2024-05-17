@@ -1,3 +1,7 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Application.DAOInterfaces;
 using Application.LogicInterfaces;
 using Domain.DTOs;
@@ -66,26 +70,24 @@ public class GreenHouseEfcDAO : IGreenHouseDAO
 
         try
         {
-            using (var context = new GreenHouseContextFactory().CreateDbContext(null))
+            var existing = await context.GreenHouses
+                .FirstOrDefaultAsync(g => g.GreenHouseId == greenhouseId);
+
+            if (existing == null)
             {
-                var existing = await context.GreenHouses
-                    .FirstOrDefaultAsync(g => g.GreenHouseId == greenhouseId);
-
-                if (existing == null)
-                {
-                    throw new Exception($"GreenHouse with ID {greenhouseId} does not exist!");
-                }
-
-                existing.Temperature = temperature;
-                await context.SaveChangesAsync();
-                Console.WriteLine("Temperature updated successfully.");
+                throw new Exception($"GreenHouse with ID {greenhouseId} does not exist!");
             }
+
+            existing.Temperature = temperature;
+            await context.SaveChangesAsync();
+            Console.WriteLine("Temperature updated successfully.");
         }
         catch (Exception ex)
         {
             Console.WriteLine($"Error updating temperature: {ex.Message}");
         }
     }
+
 
     
 

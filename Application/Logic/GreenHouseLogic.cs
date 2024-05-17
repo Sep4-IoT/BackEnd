@@ -41,7 +41,6 @@ public class GreenHouseLogic : IGreenHouseLogic
 
     public async Task<GreenHouse> GetByIdAsync(int greenHouseId)
     {
-        
         GreenHouse? greenHouse = await greenHouseDao.GetByIdAsync(greenHouseId);
         if (greenHouse == null)
         {
@@ -50,6 +49,7 @@ public class GreenHouseLogic : IGreenHouseLogic
 
         return greenHouse;
     }
+
 
 
     public async Task<UpdateGreenHouseDTO> UpdateAsync(UpdateGreenHouseDTO updatedData)

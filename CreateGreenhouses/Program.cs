@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using EfcDataAccess;
 using Domain.Model;
 
@@ -45,8 +46,16 @@ public class Program
             // Output the assigned IDs for debugging
             Console.WriteLine($"Greenhouse 1 ID: {greenHouse1.GreenHouseId}");
             Console.WriteLine($"Greenhouse 2 ID: {greenHouse2.GreenHouseId}");
+
+            // Query and print all GreenHouses in the database
+            var greenHouses = context.GreenHouses.ToList();
+            Console.WriteLine("Greenhouses in the database:");
+            foreach (var gh in greenHouses)
+            {
+                Console.WriteLine($"ID: {gh.GreenHouseId}, Name: {gh.GreenHouseName}, Description: {gh.Description}, Temperature: {gh.Temperature}, Light Intensity: {gh.LightIntensity}, CO2 Levels: {gh.Co2Levels}, Humidity: {gh.Humidity}, Is Window Open: {gh.IsWindowOpen}");
+            }
         }
 
-        Console.WriteLine("Greenhouses have been added to the database.");
+        Console.WriteLine("Greenhouses have been added to the database and printed.");
     }
 }

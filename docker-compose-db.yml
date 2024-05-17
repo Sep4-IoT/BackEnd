@@ -1,0 +1,26 @@
+version: '3.4'
+
+services:
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    networks:
+      - greenhouse-network
+
+  dbapi:
+    build:
+      context: .
+      dockerfile: DBAPI/Dockerfile
+    container_name: dbapi
+    ports:
+      - "5000:80"
+    networks:
+      - greenhouse-network
+    depends_on:
+      - mongo
+
+networks:
+  greenhouse-network:
+    driver: bridge

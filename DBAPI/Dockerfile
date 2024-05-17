@@ -9,11 +9,11 @@ FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
 
 # Copy the DBAPI and Domain project files
-COPY ["BackEndAPI/BackEndAPI.csproj", "BackEndAPI/"]
+COPY ["DBAPI/DBAPI.csproj", "DBAPI/"]
 COPY ["Domain/Domain.csproj", "Domain/"]
 
 # Restore dependencies for both projects
-RUN dotnet restore "BackEndAPI/BackEndAPI.csproj"
+RUN dotnet restore "DBAPI/DBAPI.csproj"
 
 # Copy the remaining source code
 COPY . .
@@ -22,11 +22,11 @@ COPY . .
 WORKDIR "/src/DBAPI"
 
 # Build the DBAPI project
-RUN dotnet build "BackEndAPI.csproj" -c Release -o /app/build
+RUN dotnet build "DBAPI.csproj" -c Release -o /app/build
 
 # Publish the application
 FROM build AS publish
-RUN dotnet publish "BackEndAPI.csproj" -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "DBAPI.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 # Use the official ASP.NET Core runtime image to run the application
 FROM base AS final

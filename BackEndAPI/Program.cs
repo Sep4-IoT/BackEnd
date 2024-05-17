@@ -1,9 +1,5 @@
 
-using Application.DAOInterfaces;
-using Application.Logic;
-using Application.LogicInterfaces;
 using Domain.Model;
-using EfcDataAccess;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,10 +13,6 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 builder.Services.AddSingleton<List<GreenHouse>>();
-builder.Services.AddScoped<IGreenHouseLogic, GreenHouseLogic>();
-builder.Services.AddScoped<IGreenHouseDAO, GreenHouseEfcDAO>();
-
-builder.Services.AddDbContext<GreenHouseContext>();
 
 var app = builder.Build();
 

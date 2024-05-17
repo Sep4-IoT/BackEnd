@@ -1,110 +1,39 @@
-using Application.LogicInterfaces;
-using Domain.DTOs;
+
 using Domain.Model;
 using Microsoft.AspNetCore.Mvc;
-using System.Net.Http;
-using System.Threading.Tasks;
 
-namespace BackEnd.Controllers
+namespace BackEnd.Controllers;
+
+[ApiController]
+[Route("[controller]")]
+public class GreenHouseController : ControllerBase
 {
-    [ApiController]
-    [Route("[controller]")]
-    public class GreenHouseController : ControllerBase
+    private readonly HttpClient _httpClient;
+    private readonly IConfiguration _configuration;
+
+    public GreenHouseController(HttpClient httpClient, IConfiguration configuration)
     {
-        private readonly IGreenHouseLogic greenHouseLogic;
-        private readonly HttpClient httpClient;
-
-        public GreenHouseController(IGreenHouseLogic greenHouseLogic)
+        _httpClient = httpClient;
+        _configuration = configuration;
+    }
+    
+    [HttpGet("{greenHouseId}")]
+    public async Task<ActionResult<GreenHouse>> GetByIdAsync(int greenHouseId)
+    { 
+        try
         {
-            this.greenHouseLogic = greenHouseLogic;
-            this.httpClient = new HttpClient { BaseAddress = new Uri("http://localhost:6000/") };
-        }
+            var requestUri = $"{_configuration["http://localhost:5000"]}/api/GreenHouse/{greenHouseId}";
+            var response = await _httpClient.GetAsync(requestUri);
 
-        [HttpPost]
-        public async Task<ActionResult<GreenHouse>> CreateAsync([FromBody] GreenHouseCreationDTO dto)
-        {
-            try
-            {
-                GreenHouse greenHouse = await greenHouseLogic.CreateAsync(dto);
-                return Created($"/GreenHouse/{greenHouse.GreenHouseName}", greenHouse);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                return StatusCode(500, e.Message);
-            }
-        }
-
-        [HttpGet("{greenHouseId}")]
-        public async Task<ActionResult<GreenHouse>> GetAsync(int greenHouseId)
-        {
-            try
-            {
-                GreenHouse greenHouse = await greenHouseLogic.GetByIdAsync(greenHouseId);
-
-                // Get the current status from the IOT server
-                /*string iotStatus = await FetchIOTStatusFromServerAsync(greenHouseId);
-                greenHouse.IsWindowOpen = iotStatus == "Open";*/
-
-                return Ok(greenHouse);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                return StatusCode(500, e.Message);
-            }
-        }
-
-     [HttpPatch("{greenHouseId}")]
-        public async Task<IActionResult> UpdateAsync(int greenHouseId, string? greenHouseName, string? description, bool? isWindowOpen)
-        {
-            try
-            {
-                UpdateGreenHouseDTO updated = new UpdateGreenHouseDTO(greenHouseId, greenHouseName, description, isWindowOpen);
-                await greenHouseLogic.UpdateAsync(updated);
-                return Ok();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                return StatusCode(500, e.Message);
-            }
-        }
-
-
-        [HttpGet("IOT/{id}/getStatus")]
-        public async Task<IActionResult> GetIOTStatusAsync(int id)
-        {
-            try
-            {
-                string status = await FetchIOTStatusFromServerAsync(id);
-                return Ok(status);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                return StatusCode(500, e.Message);
-            }
-        }
-
-        private async Task<string> FetchIOTStatusFromServerAsync(int greenHouseId)
-        {
-            var response = await httpClient.GetAsync($"GreenHouse/IOT/{greenHouseId}/getStatus?clientId=1");
             response.EnsureSuccessStatusCode();
-            string status = await response.Content.ReadAsStringAsync();
-            return status;
-        }
+            var greenHouse = await response.Content.ReadFromJsonAsync<GreenHouse>();
 
-        private async Task OpenWindowAsync(int greenHouseId)
-        {
-            var response = await httpClient.PostAsync($"GreenHouse/IOT/{greenHouseId}/openWindow?clientId=1", null);
-            response.EnsureSuccessStatusCode();
+            return Ok(greenHouse);
         }
-
-        private async Task CloseWindowAsync(int greenHouseId)
+        catch (Exception e)
         {
-            var response = await httpClient.PostAsync($"GreenHouse/IOT/{greenHouseId}/closeWindow?clientId=1", null);
-            response.EnsureSuccessStatusCode();
+            Console.WriteLine(e);
+            return StatusCode(500, e.Message);
         }
     }
 }

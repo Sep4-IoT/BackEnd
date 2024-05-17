@@ -33,6 +33,19 @@ services:
     depends_on:
       - dbapi
 
+  iotcontroller:
+    build:
+      context: .
+      dockerfile: IOTController/Dockerfile
+    container_name: iotcontroller
+    ports:
+      - "50000:50000"
+      - "6000:6000"
+    networks:
+      - greenhouse-network
+    depends_on:
+      - mongo
+
 networks:
   greenhouse-network:
     driver: bridge

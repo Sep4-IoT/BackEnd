@@ -1,6 +1,7 @@
 using Domain.Model;
 using WebAPI.Data;
 using WebAPI.Repositories;
+using WebAPI.Services;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using Newtonsoft.Json.Linq;
@@ -10,13 +11,21 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // Configure MongoDB context and repository
 builder.Services.AddSingleton<GreenHouseContext>();
 builder.Services.AddSingleton<GreenHouseRepository>();
+
+// Add HttpClient for IOTController
+builder.Services.AddHttpClient("IOTController", client =>
+{
+    client.BaseAddress = new Uri("http://iotcontroller:6000");
+});
+
+// Register Background Service
+builder.Services.AddHostedService<WindowStatusService>();
 
 var app = builder.Build();
 

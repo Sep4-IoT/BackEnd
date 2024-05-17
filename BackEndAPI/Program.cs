@@ -27,18 +27,24 @@ app.UseCors(x => x
     .SetIsOriginAllowed(origin => true) // allow any origin
     .AllowCredentials());
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    app.UseDeveloperExceptionPage();
+
     // Enable Swagger UI
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "Your API v1");
+        c.RoutePrefix = string.Empty; // To serve the Swagger UI at the app's root
     });
+}
+else
+{
+    app.UseExceptionHandler("/Home/Error");
 }
 
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
-app.Run("http://*:5047");
+app.Run();

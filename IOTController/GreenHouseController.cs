@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 namespace IOTController.Controllers
 {
     [ApiController]
-    [Route("GreenHouse/IOT/{GreenHouseId}")]
+    [Route("IOT/{GreenHouseId}")]
     public class GreenhouseController : ControllerBase
     {
         private readonly GreenhouseService _greenhouseService;

@@ -8,12 +8,9 @@ namespace Application.Logic;
 public class GreenHouseLogic : IGreenHouseLogic
 {
     private readonly IGreenHouseDAO greenHouseDao;
-    private readonly IUserDAO userDao;
-
-    public GreenHouseLogic(IGreenHouseDAO greenHouseDao, IUserDAO userDao)
+    public GreenHouseLogic(IGreenHouseDAO greenHouseDao)
     {
         this.greenHouseDao = greenHouseDao;
-        this.userDao = userDao;
     }
     
     public Task<IEnumerable<GreenHouse>> GetAsync(SearchGreenHouseDTO searchParameters)
@@ -23,19 +20,12 @@ public class GreenHouseLogic : IGreenHouseLogic
 
     public async Task<GreenHouse> CreateAsync(GreenHouseCreationDTO dto)
     {
-        User? user = await userDao.GetByIdAsync(dto.OwnerId);
-        if (user == null)
-        {
-            throw new Exception($"User with id {dto.OwnerId} was not found.");
-        }
-        
         GreenHouse? existing = await greenHouseDao.GetByNameAsync(dto.GreenHouseName);
         if (existing != null)
             throw new Exception("GreenHouse Name already exists!");
 
         ValidateData(dto);
         GreenHouse toCreate = new GreenHouse(
-            dto.OwnerId,
             dto.GreenHouseName,
             dto.Description,
             dto.Temperature,
@@ -66,11 +56,6 @@ public class GreenHouseLogic : IGreenHouseLogic
     {
         UpdateGreenHouseDTO greenHouseDto = await greenHouseDao.UpdateAsync(updatedData);
         return greenHouseDto;
-    }
-
-    public Task<IEnumerable<GreenHouse>> GetByOwnerIdAsync(int ownerId)
-    {
-        return greenHouseDao.GetByOwnerIdAsync(ownerId);
     }
 
 

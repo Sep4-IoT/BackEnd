@@ -67,7 +67,7 @@ public class GreenHouseEfcDAO : IGreenHouseDAO
         return greenHouse;
     }
 
-    public async Task<IEnumerable<GreenHouse>> GetByOwnerIdAsync(int ownerId)
+    /*public async Task<IEnumerable<GreenHouse>> GetByOwnerIdAsync(int ownerId)
     {
         IQueryable<GreenHouse> usersQuery = context.GreenHouses.AsQueryable();
         if (ownerId != null)
@@ -77,5 +77,5 @@ public class GreenHouseEfcDAO : IGreenHouseDAO
 
         IEnumerable<GreenHouse> result = await usersQuery.ToListAsync();
         return result;
-    }
+    }*/
 }

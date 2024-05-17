@@ -20,10 +20,6 @@ builder.Services.AddSingleton<List<GreenHouse>>();
 builder.Services.AddScoped<IGreenHouseLogic, GreenHouseLogic>();
 builder.Services.AddScoped<IGreenHouseDAO, GreenHouseEfcDAO>();
 
-builder.Services.AddSingleton<List<User>>();
-builder.Services.AddScoped<IUserLogic, UserLogic>();
-builder.Services.AddScoped<IUserDAO, UserEfcDAO>();
-
 builder.Services.AddDbContext<GreenHouseContext>();
 
 var app = builder.Build();

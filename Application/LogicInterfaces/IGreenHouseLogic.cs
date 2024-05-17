@@ -9,6 +9,4 @@ public interface IGreenHouseLogic
     Task<GreenHouse> CreateAsync(GreenHouseCreationDTO greenHouseCreation);
     Task<GreenHouse> GetByIdAsync(int id);
     Task<UpdateGreenHouseDTO> UpdateAsync(UpdateGreenHouseDTO updateGreenHouse);
-    Task<IEnumerable<GreenHouse>> GetByOwnerIdAsync(int ownerId);
-
 }

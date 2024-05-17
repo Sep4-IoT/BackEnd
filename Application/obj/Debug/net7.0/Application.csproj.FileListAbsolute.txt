@@ -58,16 +58,11 @@ C:\Users\duart\Documents\GitHub\BackEnd\Application\obj\Debug\net7.0\Application
 C:\Users\duart\Documents\GitHub\BackEnd\Application\obj\Debug\net7.0\refint\Application.dll
 C:\Users\duart\Documents\GitHub\BackEnd\Application\obj\Debug\net7.0\Application.pdb
 C:\Users\duart\Documents\GitHub\BackEnd\Application\obj\Debug\net7.0\ref\Application.dll
-C:\Users\dfold\OneDrive\Skrivebord\Aqui\BackEnd\Application\bin\Debug\net7.0\IOTController.deps.json
-C:\Users\dfold\OneDrive\Skrivebord\Aqui\BackEnd\Application\bin\Debug\net7.0\IOTController.runtimeconfig.json
-C:\Users\dfold\OneDrive\Skrivebord\Aqui\BackEnd\Application\bin\Debug\net7.0\IOTController.exe
 C:\Users\dfold\OneDrive\Skrivebord\Aqui\BackEnd\Application\bin\Debug\net7.0\Application.deps.json
 C:\Users\dfold\OneDrive\Skrivebord\Aqui\BackEnd\Application\bin\Debug\net7.0\Application.dll
 C:\Users\dfold\OneDrive\Skrivebord\Aqui\BackEnd\Application\bin\Debug\net7.0\Application.pdb
 C:\Users\dfold\OneDrive\Skrivebord\Aqui\BackEnd\Application\bin\Debug\net7.0\Domain.dll
-C:\Users\dfold\OneDrive\Skrivebord\Aqui\BackEnd\Application\bin\Debug\net7.0\IOTController.dll
 C:\Users\dfold\OneDrive\Skrivebord\Aqui\BackEnd\Application\bin\Debug\net7.0\Domain.pdb
-C:\Users\dfold\OneDrive\Skrivebord\Aqui\BackEnd\Application\bin\Debug\net7.0\IOTController.pdb
 C:\Users\dfold\OneDrive\Skrivebord\Aqui\BackEnd\Application\obj\Debug\net7.0\Application.csproj.AssemblyReference.cache
 C:\Users\dfold\OneDrive\Skrivebord\Aqui\BackEnd\Application\obj\Debug\net7.0\Application.GeneratedMSBuildEditorConfig.editorconfig
 C:\Users\dfold\OneDrive\Skrivebord\Aqui\BackEnd\Application\obj\Debug\net7.0\Application.AssemblyInfoInputs.cache

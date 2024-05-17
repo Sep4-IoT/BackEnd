@@ -21,6 +21,18 @@ services:
     depends_on:
       - mongo
 
+  backendapi:
+    build:
+      context: .
+      dockerfile: BackEndAPI/Dockerfile
+    container_name: backendapi
+    ports:
+      - "5047:80"
+    networks:
+      - greenhouse-network
+    depends_on:
+      - dbapi
+
 networks:
   greenhouse-network:
     driver: bridge

@@ -41,4 +41,4 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
-app.Run("http://0.0.0.0:5047");
+app.Run("http://*:5047");

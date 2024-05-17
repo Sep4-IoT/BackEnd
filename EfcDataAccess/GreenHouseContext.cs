@@ -11,7 +11,7 @@ namespace EfcDataAccess
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
-            string dbPath = Path.Combine(baseDirectory, "C:\\Users\\dfold\\OneDrive\\Skrivebord\\Aqui\\BackEnd\\EfcDataAccess\\GreenHouseDatabase.db");
+            string dbPath = Path.Combine(baseDirectory, "/root/Backend/EfcDataAccess/GreenHouseDatabase.db");
             optionsBuilder.UseSqlite($"Data Source={dbPath}");
         }
 

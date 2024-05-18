@@ -19,17 +19,26 @@ namespace IOTController
 
             // Start the TCP server
             Server server = new Server();
-            server.ClientConnected += async (TcpClient client) =>
+            server.ClientConnected += async (clientHandler) =>
             {
-                ClientHandler clientHandler = new ClientHandler(client);
+                if (greenhouseService.IsInitialized)
+                {
+                    Console.WriteLine("Reinitializing GreenhouseService with new ClientHandler.");
+                }
                 greenhouseService.Initialize(clientHandler);
-                GreenhouseManager greenhouseManager = new GreenhouseManager(clientHandler);
 
                 Console.WriteLine("Client connected.");
-                await ProcessCommandsAsync(greenhouseManager);
+                await ProcessCommandsAsync(greenhouseService);
             };
 
             _ = server.StartAsync();
+
+            // Check if there is a last known client handler and initialize with it
+            var lastClientHandler = server.GetLastClientHandler();
+            if (lastClientHandler != null)
+            {
+                greenhouseService.Initialize(lastClientHandler);
+            }
 
             await host.RunAsync();
         }
@@ -42,8 +51,7 @@ namespace IOTController
                     webBuilder.UseUrls("http://*:6000");  // Allow access from all IP addresses
                 });
 
-
-        private static async Task ProcessCommandsAsync(GreenhouseManager greenhouseManager)
+        private static async Task ProcessCommandsAsync(GreenhouseService greenhouseService)
         {
             Console.WriteLine("Server is running. Type 'open', 'close', 'status', or 'set [id] [angle]' followed by the greenhouse ID and optionally an angle to control:");
 
@@ -69,13 +77,13 @@ namespace IOTController
                 switch (parts[0].ToLower())
                 {
                     case "open":
-                        await greenhouseManager.OpenWindow(id);
+                        await greenhouseService.OpenWindow(id);
                         break;
                     case "close":
-                        await greenhouseManager.CloseWindow(id);
+                        await greenhouseService.CloseWindow(id);
                         break;
                     case "status":
-                        var statusResult = await greenhouseManager.GetWindowStatus(id);
+                        var statusResult = await greenhouseService.GetWindowStatus(id);
                         if (statusResult.ErrorMessage != null)
                         {
                             Console.WriteLine($"Error retrieving window status for Greenhouse {id}: {statusResult.ErrorMessage}");
@@ -99,7 +107,7 @@ namespace IOTController
                             Console.WriteLine("Invalid angle. Please enter a valid number between 0 and 180.");
                             continue;
                         }
-                        await greenhouseManager.SetWindowAngle(id, angle);
+                        await greenhouseService.SetWindowAngle(id, angle);
                         break;
                     default:
                         Console.WriteLine("Unknown command. Use 'open', 'close', 'status', or 'set'.");

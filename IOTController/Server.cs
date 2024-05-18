@@ -9,8 +9,9 @@ namespace IOTController
     {
         private readonly int port = 50000;
         private TcpListener listener;
+        private ClientHandler lastClientHandler;
 
-        public event Func<TcpClient, Task> ClientConnected;
+        public event Func<ClientHandler, Task> ClientConnected;
 
         public Server()
         {
@@ -37,17 +38,18 @@ namespace IOTController
             {
                 TcpClient client = await listener.AcceptTcpClientAsync();
                 Console.WriteLine("Client connected.");
-                _ = HandleClientAsync(client); // Handle the client connection without blocking the acceptance loop
+                lastClientHandler = new ClientHandler(client); // Save the last client handler
+                _ = HandleClientAsync(lastClientHandler); // Handle the client connection without blocking the acceptance loop
             }
         }
 
-        private async Task HandleClientAsync(TcpClient client)
+        private async Task HandleClientAsync(ClientHandler clientHandler)
         {
             try
             {
                 if (ClientConnected != null)
                 {
-                    await ClientConnected(client);
+                    await ClientConnected(clientHandler);
                 }
             }
             catch (Exception ex)
@@ -56,9 +58,14 @@ namespace IOTController
             }
             finally
             {
-                client.Close();
+                clientHandler.Dispose();
                 Console.WriteLine("Client disconnected.");
             }
+        }
+
+        public ClientHandler GetLastClientHandler()
+        {
+            return lastClientHandler;
         }
     }
 }

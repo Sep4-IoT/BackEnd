@@ -1,26 +1,29 @@
+using System;
+using System.Net.Sockets;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace IOTController
 {
     public class GreenhouseManager
     {
-        private ClientHandler clientHandler;
+        private readonly ClientHandler clientHandler;
 
         public GreenhouseManager(ClientHandler clientHandler)
         {
-            this.clientHandler = clientHandler;
+            this.clientHandler = clientHandler ?? throw new ArgumentNullException(nameof(clientHandler));
         }
 
         public async Task<string> OpenWindow(int GreenHouseId)
         {
-            string message = $"REQ,{GreenHouseId},SET,SER,180";
+            string message = $"REQ,{GreenHouseId},SET,SER";
             await clientHandler.SendMessageAsync(message);
             return await clientHandler.ReceiveMessageAsync();
         }
 
         public async Task<string> CloseWindow(int GreenHouseId)
         {
-            string message = $"REQ,{GreenHouseId},SET,SER,0";
+            string message = $"REQ,{GreenHouseId},SET,SER";
             await clientHandler.SendMessageAsync(message);
             return await clientHandler.ReceiveMessageAsync();
         }

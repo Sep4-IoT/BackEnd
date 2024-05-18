@@ -21,7 +21,7 @@ builder.Services.AddSingleton<GreenHouseRepository>();
 // Add HttpClient for IOTController
 builder.Services.AddHttpClient("IOTController", client =>
 {
-    client.BaseAddress = new Uri("http://iotcontroller:6000");
+    client.BaseAddress = new Uri(builder.Configuration["IOTControllerBaseUrl"]);
 });
 
 // Register Background Service

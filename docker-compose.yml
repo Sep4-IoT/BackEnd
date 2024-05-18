@@ -43,8 +43,6 @@ services:
       - "6000:6000"
     networks:
       - greenhouse-network
-    depends_on:
-      - mongo
 
 networks:
   greenhouse-network:

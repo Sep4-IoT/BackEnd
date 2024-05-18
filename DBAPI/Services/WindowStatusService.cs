@@ -42,7 +42,19 @@ namespace WebAPI.Services
 
                             await greenHouseRepository.UpdateFieldAsync("1", "IsWindowOpen", isWindowOpen);
                         }
+                        else if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                        {
+                            _logger.LogWarning("IOTController returned 404 for IOT/1/getStatus: No client connected.");
+                        }
+                        else
+                        {
+                            _logger.LogError($"Unexpected status code {response.StatusCode} returned from IOTController.");
+                        }
                     }
+                }
+                catch (HttpRequestException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
+                {
+                    _logger.LogWarning("IOTController returned 404 for IOT/1/getStatus: No client connected.");
                 }
                 catch (Exception ex)
                 {

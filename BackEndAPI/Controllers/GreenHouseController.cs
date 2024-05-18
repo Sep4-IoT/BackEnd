@@ -2,6 +2,7 @@ using Domain.Model;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Http;
 using System.Net.Http.Json;
+using Domain.DTOs;
 using Microsoft.Extensions.Configuration;
 
 namespace BackEnd.Controllers;
@@ -42,44 +43,22 @@ public class GreenHouseController : ControllerBase
     }
     
     [HttpPatch("{greenHouseId}")]
-    public async Task<ActionResult> UpdateAsync(int greenHouseId,
-        string? greenHouseName, string? description, bool? isWindowOpen)
+    public ActionResult UpdateAsync(int greenHouseId, [FromBody] GreenHouseUpdateDTO updateDto)
     {
         try
         {
-            // Fetch the current window status from DBAPI
-            var getRequestUri = $"/api/GreenHouse/{greenHouseId}";
-            var getResponse = await _dbApiClient.GetAsync(getRequestUri);
-            getResponse.EnsureSuccessStatusCode();
-            var greenHouse = await getResponse.Content.ReadFromJsonAsync<GreenHouse>();
-
-            if (greenHouse == null)
+            // Check if isWindowOpen is provided and update the window status accordingly
+            if (updateDto.IsWindowOpen.HasValue)
             {
-                return NotFound("Greenhouse not found");
-            }
-
-            // Determine the current status and desired status
-            var currentStatus = greenHouse.IsWindowOpen.HasValue && greenHouse.IsWindowOpen.Value;
-            if (isWindowOpen.HasValue && isWindowOpen.Value != currentStatus)
-            {
-                var actionUri = isWindowOpen.Value
+                var actionUri = updateDto.IsWindowOpen.Value
                     ? $"/IOT/{greenHouseId}/openWindow"
                     : $"/IOT/{greenHouseId}/closeWindow";
 
-                try
-                {
-                    // Send the request to IOTController
-                    var postResponse = await _iotControllerClient.PostAsync(actionUri, null);
-                    postResponse.EnsureSuccessStatusCode();
-                }
-                catch (HttpRequestException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
-                {
-                    // Handle 404 error from IOTController (client not connected)
-                    Console.WriteLine($"IOTController returned 404 for {actionUri}: {ex.Message}");
-                    // Optionally, log the 404 error or take other actions
-                }
+                // Fire and forget the PATCH request
+                _ = _iotControllerClient.PatchAsync(actionUri, null);
             }
 
+            // Return 200 OK immediately
             return Ok();
         }
         catch (Exception e)

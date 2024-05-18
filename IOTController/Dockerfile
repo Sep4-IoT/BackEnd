@@ -10,7 +10,6 @@ WORKDIR /src
 
 # Copy the project files and restore dependencies
 COPY ["IOTController/IOTController.csproj", "IOTController/"]
-
 RUN dotnet restore "IOTController/IOTController.csproj"
 
 # Copy the remaining source code and build the project

@@ -14,26 +14,18 @@ namespace IOTController.Controllers
             _greenhouseService = greenhouseService;
         }
 
-        [HttpPost("openWindow")]
+        [HttpPatch("openWindow")]
         public async Task<IActionResult> OpenWindow(int GreenHouseId)
         {
-            var response = await _greenhouseService.OpenWindow(GreenHouseId);
-            if (response.StartsWith("ACK"))
-            {
-                return Ok(response);
-            }
-            return StatusCode(500, response);
+            await _greenhouseService.OpenWindow(GreenHouseId);
+            return Ok();
         }
 
-        [HttpPost("closeWindow")]
+        [HttpPatch("closeWindow")]
         public async Task<IActionResult> CloseWindow(int GreenHouseId)
         {
-            var response = await _greenhouseService.CloseWindow(GreenHouseId);
-            if (response.StartsWith("ACK"))
-            {
-                return Ok(response);
-            }
-            return StatusCode(500, response);
+            await _greenhouseService.CloseWindow(GreenHouseId);
+            return Ok();
         }
 
         [HttpGet("getStatus")]

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Concurrent;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
@@ -10,12 +11,14 @@ namespace IOTController
         private readonly int port = 50000;
         private TcpListener listener;
         private ClientHandler lastClientHandler;
+        private ConcurrentDictionary<int, ClientHandler> clientVehicles;
 
         public event Func<ClientHandler, Task> ClientConnected;
 
         public Server()
         {
             listener = new TcpListener(IPAddress.Any, port);
+            clientVehicles = new ConcurrentDictionary<int, ClientHandler>();
         }
 
         public async Task StartAsync()
@@ -39,6 +42,13 @@ namespace IOTController
                 TcpClient client = await listener.AcceptTcpClientAsync();
                 Console.WriteLine("Client connected.");
                 lastClientHandler = new ClientHandler(client); // Save the last client handler
+
+                // Assign vehicles to the new client handler
+                foreach (var vehicle in clientVehicles.Keys)
+                {
+                    await lastClientHandler.SendMessageAsync($"VEHICLE,{vehicle}");
+                }
+
                 _ = HandleClientAsync(lastClientHandler); // Handle the client connection without blocking the acceptance loop
             }
         }
@@ -66,6 +76,21 @@ namespace IOTController
         public ClientHandler GetLastClientHandler()
         {
             return lastClientHandler;
+        }
+
+        public void AddVehicle(int vehicleId, ClientHandler clientHandler)
+        {
+            clientVehicles[vehicleId] = clientHandler;
+        }
+
+        public void RemoveVehicle(int vehicleId)
+        {
+            clientVehicles.TryRemove(vehicleId, out _);
+        }
+
+        public ConcurrentDictionary<int, ClientHandler> GetClientVehicles()
+        {
+            return clientVehicles;
         }
     }
 }

@@ -5,7 +5,7 @@ namespace Domain.Model
     public class GreenHouse
     {
         [BsonId]
-        public string Id { get; set; }
+        public string GreenHouseId { get; set; }
 
         public string? GreenHouseName { get; set; }
 
@@ -21,15 +21,15 @@ namespace Domain.Model
 
         public bool? IsWindowOpen { get; set; }
 
-        public GreenHouse(string? greenHouseName, string? description, double? temperature, double? lightIntensity,
-            double? co2Levels, double? humidity, bool? isWindowOpen)
+        public GreenHouse(string? GreenHouseName, string? Description, double? Temperature, double? LightIntensity,
+            double? Co2Levels, double? Humidity, bool? isWindowOpen)
         {
-            GreenHouseName = greenHouseName;
-            Description = description;
-            Temperature = temperature;
-            LightIntensity = lightIntensity;
-            Co2Levels = co2Levels;
-            Humidity = humidity;
+            this.GreenHouseName = GreenHouseName;
+            this.Description = Description;
+            this.Temperature = Temperature;
+            this.LightIntensity = LightIntensity;
+            this.Co2Levels = Co2Levels;
+            this.Humidity = Humidity;
             IsWindowOpen = isWindowOpen;
         }
 

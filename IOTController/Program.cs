@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Net;
-using System.Net.Sockets;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -13,14 +10,13 @@ namespace IOTController
     {
         public static async Task Main(string[] args)
         {
-            // Start the ASP.NET Core host
             var host = CreateHostBuilder(args).Build();
-            var greenhouseService = host.Services.GetRequiredService<GreenhouseService>();
+            var server = new Server();
+            var greenhouseService = new GreenhouseService(server);
 
-            // Start the TCP server
-            Server server = new Server();
             server.ClientConnected += async (clientHandler) =>
             {
+                Console.WriteLine("New client handler received.");
                 if (greenhouseService.IsInitialized)
                 {
                     Console.WriteLine("Reinitializing GreenhouseService with new ClientHandler.");
@@ -33,7 +29,6 @@ namespace IOTController
 
             _ = server.StartAsync();
 
-            // Check if there is a last known client handler and initialize with it
             var lastClientHandler = server.GetLastClientHandler();
             if (lastClientHandler != null)
             {
@@ -48,7 +43,7 @@ namespace IOTController
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
-                    webBuilder.UseUrls("http://*:6000");  // Allow access from all IP addresses
+                    webBuilder.UseUrls("http://*:6000");
                 });
 
         private static async Task ProcessCommandsAsync(GreenhouseService greenhouseService)
@@ -67,8 +62,7 @@ namespace IOTController
                     continue;
                 }
 
-                int id;
-                if (!int.TryParse(parts[1], out id))
+                if (!int.TryParse(parts[1], out int id))
                 {
                     Console.WriteLine("Invalid greenhouse ID. Please enter a valid number.");
                     continue;

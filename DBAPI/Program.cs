@@ -45,11 +45,11 @@ async Task SeedDatabaseAsync(IServiceProvider services, ILogger logger)
         {
             new GreenHouse("GreenHouse1", "First Green House", 25.0, 300.0, 400.0, 60.0, false)
             {
-                Id = "1"
+                GreenHouseId = "1"
             },
             new GreenHouse("GreenHouse2", "Second Green House", 26.0, 320.0, 420.0, 65.0, true)
             {
-                Id = "10"
+                GreenHouseId = "10"
             }
         };
 

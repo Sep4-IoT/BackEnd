@@ -20,7 +20,7 @@ namespace WebAPI.Repositories
 
         public async Task<GreenHouse> GetByIdAsync(string id)
         {
-            return await _context.GreenHouses.Find(g => g.Id == id).FirstOrDefaultAsync();
+            return await _context.GreenHouses.Find(g => g.GreenHouseId == id).FirstOrDefaultAsync();
         }
 
         public async Task AddAsync(GreenHouse greenHouse)
@@ -30,18 +30,18 @@ namespace WebAPI.Repositories
 
         public async Task UpdateAsync(GreenHouse greenHouse)
         {
-            await _context.GreenHouses.ReplaceOneAsync(g => g.Id == greenHouse.Id, greenHouse);
+            await _context.GreenHouses.ReplaceOneAsync(g => g.GreenHouseId == greenHouse.GreenHouseId, greenHouse);
         }
 
         public async Task UpdateFieldAsync(string id, string field, object value)
         {
             var update = Builders<GreenHouse>.Update.Set(field, value);
-            await _context.GreenHouses.UpdateOneAsync(g => g.Id == id, update);
+            await _context.GreenHouses.UpdateOneAsync(g => g.GreenHouseId == id, update);
         }
 
         public async Task DeleteAsync(string id)
         {
-            await _context.GreenHouses.DeleteOneAsync(g => g.Id == id);
+            await _context.GreenHouses.DeleteOneAsync(g => g.GreenHouseId == id);
         }
     }
 }

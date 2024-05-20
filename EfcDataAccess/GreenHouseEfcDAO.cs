@@ -66,28 +66,53 @@ public class GreenHouseEfcDAO : IGreenHouseDAO
 
     public async Task UpdateTemperature(GreenHouse greenHouse)
     {
-        Console.WriteLine($"Updating temperature for GreenHouse ID {greenHouse.GreenHouseId} to {greenHouse.Temperature}");
-        context.GreenHouses.Update(greenHouse);
-        await context.SaveChangesAsync();
+        try
+        {
+            Console.WriteLine($"Updating temperature for GreenHouse ID {greenHouse.GreenHouseId} to {greenHouse.Temperature}");
+            context.GreenHouses.Update(greenHouse);
+            await context.SaveChangesAsync();
+            Console.WriteLine("Temperature updated successfully.");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error updating temperature: {ex.Message}");
+            Console.WriteLine($"Stack Trace: {ex.StackTrace}");
+            throw;
+        }
     }
     
-    
-    public async Task<GreenHouse?> GetByIdAsync(int greenhouseId)
+    public async Task TestQuery()
     {
         try
         {
-            return await context.GreenHouses.FirstOrDefaultAsync(g => g.GreenHouseId == greenhouseId);
+            var greenHouses = await context.GreenHouses.ToListAsync();
+            foreach (var gh in greenHouses)
+            {
+                Console.WriteLine($"GreenHouse ID: {gh.GreenHouseId}, Name: {gh.GreenHouseName}");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error running test query: {ex.Message}");
+        }
+    }
+
+    
+    public async Task<GreenHouse> GetByIdAsync(int greenhouseId)
+    {
+        try
+        {
+            var greenHouse = await context.GreenHouses.FindAsync(greenhouseId);
+            if (greenHouse == null)
+            {
+                Console.WriteLine($"No GreenHouse found with ID {greenhouseId}");
+            }
+            return greenHouse;
         }
         catch (Exception ex)
         {
             Console.WriteLine($"Error fetching GreenHouse by ID {greenhouseId}: {ex.Message}");
-            Console.WriteLine($"Stack Trace: {ex.StackTrace}");
-            if (ex.InnerException != null)
-            {
-                Console.WriteLine($"Inner Exception: {ex.InnerException.Message}");
-                Console.WriteLine($"Inner Stack Trace: {ex.InnerException.StackTrace}");
-            }
-            throw; // Re-throw the exception after logging
+            throw;
         }
     }
 
@@ -102,4 +127,6 @@ public class GreenHouseEfcDAO : IGreenHouseDAO
         IEnumerable<GreenHouse> result = await usersQuery.ToListAsync();
         return result;
     }
+    
+    
 }

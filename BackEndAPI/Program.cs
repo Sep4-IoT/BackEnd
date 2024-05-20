@@ -4,6 +4,7 @@ using Application.Logic;
 using Application.LogicInterfaces;
 using Domain.Model;
 using EfcDataAccess;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,6 +17,8 @@ builder.Services.AddSwaggerGen(c =>
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Your API", Version = "v1" });
 });
 
+
+
 builder.Services.AddSingleton<List<GreenHouse>>();
 builder.Services.AddScoped<IGreenHouseLogic, GreenHouseLogic>();
 builder.Services.AddScoped<IGreenHouseDAO, GreenHouseEfcDAO>();
@@ -25,7 +28,18 @@ builder.Services.AddScoped<IUserLogic, UserLogic>();
 builder.Services.AddScoped<IUserDAO, UserEfcDAO>();
 
 
-builder.Services.AddDbContext<GreenHouseContext>();
+builder.Services.AddDbContext<GreenHouseContext>(options =>
+    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
+        options.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull;
+    });
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 

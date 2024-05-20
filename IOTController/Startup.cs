@@ -26,11 +26,12 @@ namespace IOTController
 
             // Register Database
             services.AddDbContext<GreenHouseContext>(options =>
-                options.UseSqlite(Configuration.GetConnectionString("GreenHouseDatabase")));
-    
+                options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+
             // Register DAO services
             services.AddTransient<IGreenHouseDAO, GreenHouseEfcDAO>();
             services.AddTransient<IUserDAO, UserEfcDAO>();
+            services.AddScoped<GreenHouseEfcDAO>();
 
             // Register Logic services
             services.AddTransient<IGreenHouseLogic, GreenHouseLogic>();
@@ -40,7 +41,7 @@ namespace IOTController
             services.AddTransient<ClientHandler>();
             services.AddTransient<GreenHouseManager>();
             services.AddTransient<GreenhouseService>();
-            
+
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -59,6 +60,8 @@ namespace IOTController
             app.UseStaticFiles();
             app.UseRouting();
             app.UseAuthorization();
+
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }
 }

@@ -43,6 +43,7 @@ namespace IOTController
 
         private static async Task ProcessCommandsAsync(GreenHouseManager greenhouseManager)
         {
+            
             Console.WriteLine("Server is running. Type 'open', 'close', 'status', or 'set [id] [angle]' followed by the greenhouse ID and optionally an angle to control:");
 
             while (true)

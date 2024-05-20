@@ -5,7 +5,7 @@ namespace IOTController
 {
     public class Server
     {
-        private readonly int port = 50000;
+        private readonly int port = 50005;
         private TcpListener listener;
 
         public event Func<TcpClient, Task> ClientConnected;

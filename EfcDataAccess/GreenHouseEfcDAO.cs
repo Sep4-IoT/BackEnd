@@ -91,12 +91,12 @@ public class GreenHouseEfcDAO : IGreenHouseDAO
         }
     }
 
-    public async Task<IEnumerable<GreenHouse>> GetByOwnerIdAsync(int ownerId)
+    public async Task<IEnumerable<GreenHouse>> GetByOwnerIdAsync(int userId)
     {
         IQueryable<GreenHouse> usersQuery = context.GreenHouses.AsQueryable();
-        if (ownerId != null)
+        if (userId != null)
         {
-            usersQuery = usersQuery.Where(g => g.OwnerId == ownerId);
+            usersQuery = usersQuery.Where(g => g.UserId == userId);
         }
 
         IEnumerable<GreenHouse> result = await usersQuery.ToListAsync();

@@ -2,6 +2,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using System.IO;
 using Domain.Model;
+
 public class GreenHouseContext : DbContext
 {
     public DbSet<User> Users { get; set; }
@@ -20,24 +21,21 @@ public class GreenHouseContext : DbContext
 
             // Log the resolved path for debugging
             Console.WriteLine($"Resolved database path: {absolutePath}");
-        
-            if (!File.Exists(absolutePath))
-            {
-                throw new FileNotFoundException($"Database file not found at path: {absolutePath}");
-            }
 
             optionsBuilder.UseSqlite($"Data Source={absolutePath}");
         }
     }
 
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<GreenHouse>().HasKey(g => g.GreenHouseId);
+
         modelBuilder.Entity<GreenHouse>()
-            .HasOne(greenHouse => greenHouse.Owner)
-            .WithMany()
-            .HasForeignKey(greenhouse => greenhouse.OwnerId);
+            .HasOne(g => g.User)
+            .WithMany(u => u.GreenHouses)
+            .HasForeignKey(g => g.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+
         modelBuilder.Entity<User>().HasKey(u => u.UserId);
     }
 }

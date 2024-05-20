@@ -23,10 +23,10 @@ public class GreenHouseLogic : IGreenHouseLogic
 
     public async Task<GreenHouse> CreateAsync(GreenHouseCreationDTO dto)
     {
-        User? user = await userDao.GetByIdAsync(dto.OwnerId);
+        User? user = await userDao.GetByIdAsync(dto.UserId);
         if (user == null)
         {
-            throw new Exception($"User with id {dto.OwnerId} was not found.");
+            throw new Exception($"User with id {dto.UserId} was not found.");
         }
         
         GreenHouse? existing = await greenHouseDao.GetByNameAsync(dto.GreenHouseName);
@@ -35,7 +35,7 @@ public class GreenHouseLogic : IGreenHouseLogic
 
         ValidateData(dto);
         GreenHouse toCreate = new GreenHouse(
-            dto.OwnerId,
+            dto.UserId,
             dto.GreenHouseName,
             dto.Description,
             dto.Temperature,
@@ -68,9 +68,9 @@ public class GreenHouseLogic : IGreenHouseLogic
         return greenHouseDto;
     }
 
-    public Task<IEnumerable<GreenHouse>> GetByOwnerIdAsync(int ownerId)
+    public Task<IEnumerable<GreenHouse>> GetByOwnerIdAsync(int userId)
     {
-        return greenHouseDao.GetByOwnerIdAsync(ownerId);
+        return greenHouseDao.GetByOwnerIdAsync(userId);
     }
     
     private static void ValidateData(GreenHouseCreationDTO greenHouseCreation)

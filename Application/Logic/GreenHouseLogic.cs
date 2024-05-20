@@ -72,11 +72,6 @@ public class GreenHouseLogic : IGreenHouseLogic
     {
         return greenHouseDao.GetByOwnerIdAsync(ownerId);
     }
-
-    public async Task UpdateTemperature(int greenhouseId, double temperature)
-    {
-        await greenHouseDao.UpdateTemperature(greenhouseId, temperature);
-    }
     
     private static void ValidateData(GreenHouseCreationDTO greenHouseCreation)
     {
@@ -88,6 +83,19 @@ public class GreenHouseLogic : IGreenHouseLogic
         if (greenHouseName.Length > 20)
             throw new Exception("GreenHouse must be less than 21 characters!");
     }
+    
+    public async Task UpdateTemperature(int greenhouseId, double temperature)
+    {
+        GreenHouse? existingGreenHouse = await greenHouseDao.GetByIdAsync(greenhouseId);
+        if (existingGreenHouse == null)
+        {
+            throw new Exception($"GreenHouse with ID {greenhouseId} does not exist!");
+        }
+
+        existingGreenHouse.Temperature = temperature;
+        await greenHouseDao.UpdateTemperature(existingGreenHouse);
+    }
+    
     
     
     

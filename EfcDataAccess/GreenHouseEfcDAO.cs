@@ -64,37 +64,31 @@ public class GreenHouseEfcDAO : IGreenHouseDAO
         return updateGreenHouseDto;
     }
 
-    public async Task UpdateTemperature(int greenhouseId, double temperature)
+    public async Task UpdateTemperature(GreenHouse greenHouse)
     {
-        Console.WriteLine($"Updating temperature for GreenHouse ID {greenhouseId} to {temperature}");
-
+        Console.WriteLine($"Updating temperature for GreenHouse ID {greenHouse.GreenHouseId} to {greenHouse.Temperature}");
+        context.GreenHouses.Update(greenHouse);
+        await context.SaveChangesAsync();
+    }
+    
+    
+    public async Task<GreenHouse?> GetByIdAsync(int greenhouseId)
+    {
         try
         {
-            var existing = await context.GreenHouses
-                .FirstOrDefaultAsync(g => g.GreenHouseId == greenhouseId);
-
-            if (existing == null)
-            {
-                throw new Exception($"GreenHouse with ID {greenhouseId} does not exist!");
-            }
-
-            existing.Temperature = temperature;
-            await context.SaveChangesAsync();
-            Console.WriteLine("Temperature updated successfully.");
+            return await context.GreenHouses.FirstOrDefaultAsync(g => g.GreenHouseId == greenhouseId);
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error updating temperature: {ex.Message}");
+            Console.WriteLine($"Error fetching GreenHouse by ID {greenhouseId}: {ex.Message}");
+            Console.WriteLine($"Stack Trace: {ex.StackTrace}");
+            if (ex.InnerException != null)
+            {
+                Console.WriteLine($"Inner Exception: {ex.InnerException.Message}");
+                Console.WriteLine($"Inner Stack Trace: {ex.InnerException.StackTrace}");
+            }
+            throw; // Re-throw the exception after logging
         }
-    }
-
-
-    
-
-    public async Task<GreenHouse> GetByIdAsync(int id)
-    {
-        GreenHouse? greenHouse = await context.GreenHouses.FindAsync(id);
-        return greenHouse;
     }
 
     public async Task<IEnumerable<GreenHouse>> GetByOwnerIdAsync(int ownerId)

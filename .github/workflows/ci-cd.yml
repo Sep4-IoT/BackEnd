@@ -37,7 +37,7 @@ jobs:
         username: admin
         password: Miraflores281  # or use 'key' if you prefer using SSH keys
         script: |
-          cd /path/to/your/docker-compose/folder
+          cd /root/BackEnd
           docker-compose down
           docker-compose pull
           docker-compose up -d

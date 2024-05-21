@@ -1,0 +1,45 @@
+name: Docker Compose CI/CD
+
+on:
+  push:
+    branches: [ Deployment ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Docker
+      uses: docker/setup-buildx-action@v1
+
+    - name: Login to DockerHub
+      uses: docker/login-action@v1
+      with:
+        username: ${{ Javieruw }}
+        password: ${{ AsSoonAsYouAreAble }}
+
+    - name: Build with Docker Compose
+      run: docker-compose build
+
+    - name: Push Images (Optional)
+      run: |
+        docker-compose push dbapi
+        docker-compose push backendapi
+        docker-compose push iotcontroller
+
+    - name: Deploy to VPS
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ 154.62.108.77 }}
+        username: ${{ admin }}
+        password: ${{ Miraflores281 }}  # or use 'key' if you prefer using SSH keys
+        script: |
+          cd /path/to/your/docker-compose/folder
+          docker-compose down
+          docker-compose pull
+          docker-compose up -d
+
+

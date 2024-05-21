@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EfcDataAccess.Migrations
 {
     [DbContext(typeof(GreenHouseContext))]
-    [Migration("20240520111744_InitialCreateFixed")]
-    partial class InitialCreateFixed
+    [Migration("20240521084342_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

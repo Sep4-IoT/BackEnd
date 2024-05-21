@@ -18,8 +18,8 @@ jobs:
     - name: Login to DockerHub
       uses: docker/login-action@v1
       with:
-        username: ${{ Javieruw }}
-        password: ${{ AsSoonAsYouAreAble }}
+        username: Javieruw
+        password: AsSoonAsYouAreAble
 
     - name: Build with Docker Compose
       run: docker-compose build
@@ -34,8 +34,8 @@ jobs:
       uses: appleboy/ssh-action@master
       with:
         host: ${{ 154.62.108.77 }}
-        username: ${{ admin }}
-        password: ${{ Miraflores281 }}  # or use 'key' if you prefer using SSH keys
+        username: admin
+        password: Miraflores281
         script: |
           cd /path/to/your/docker-compose/folder
           docker-compose down

@@ -1,8 +1,10 @@
 using System;
-using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
+using System.Text;
 using System.Threading.Tasks;
+using System.Net.Http;
 
 namespace IOTController
 {
@@ -10,15 +12,13 @@ namespace IOTController
     {
         private readonly int port = 50000;
         private TcpListener listener;
-        private ClientHandler lastClientHandler;
-        private ConcurrentDictionary<int, ClientHandler> clientVehicles;
+        private readonly HttpClient _dbApiClient;
+        private readonly List<ClientHandler> clients = new List<ClientHandler>();
 
-        public event Func<ClientHandler, Task> ClientConnected;
-
-        public Server()
+        public Server(HttpClient dbApiClient)
         {
+            _dbApiClient = dbApiClient;
             listener = new TcpListener(IPAddress.Any, port);
-            clientVehicles = new ConcurrentDictionary<int, ClientHandler>();
         }
 
         public async Task StartAsync()
@@ -26,7 +26,7 @@ namespace IOTController
             try
             {
                 listener.Start();
-                Console.WriteLine($"Server started on port {port}. Waiting for client...");
+                Console.WriteLine($"Server started on port {port}. Waiting for clients...");
                 await AcceptClientsAsync();
             }
             catch (SocketException ex)
@@ -40,16 +40,9 @@ namespace IOTController
             while (true)
             {
                 TcpClient client = await listener.AcceptTcpClientAsync();
-                Console.WriteLine("Client connected.");
-                lastClientHandler = new ClientHandler(client); // Save the last client handler
-
-                // Assign vehicles to the new client handler
-                foreach (var vehicle in clientVehicles.Keys)
-                {
-                    await lastClientHandler.SendMessageAsync($"VEHICLE,{vehicle}");
-                }
-
-                _ = HandleClientAsync(lastClientHandler); // Handle the client connection without blocking the acceptance loop
+                var clientHandler = new ClientHandler(client, this);
+                clients.Add(clientHandler);
+                _ = HandleClientAsync(clientHandler); // Fire-and-forget to handle clients concurrently
             }
         }
 
@@ -57,40 +50,103 @@ namespace IOTController
         {
             try
             {
-                if (ClientConnected != null)
-                {
-                    await ClientConnected(clientHandler);
-                }
+                await clientHandler.ProcessMessagesAsync();
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error handling client: {ex.Message}");
+                Console.WriteLine($"Error with client: {ex.Message}");
             }
             finally
             {
+                clients.Remove(clientHandler);
                 clientHandler.Dispose();
-                Console.WriteLine("Client disconnected.");
             }
         }
 
-        public ClientHandler GetLastClientHandler()
+        public async Task BroadcastMessageAsync(string message)
         {
-            return lastClientHandler;
+            List<Task> sendTasks = new List<Task>();
+            foreach (var client in clients)
+            {
+                sendTasks.Add(client.SendMessageAsync(message));
+            }
+            await Task.WhenAll(sendTasks);
         }
 
-        public void AddVehicle(int vehicleId, ClientHandler clientHandler)
+        public async Task ProcessMessage(string message)
         {
-            clientVehicles[vehicleId] = clientHandler;
+            string[] parts = message.Split(',');
+
+            if (parts.Length < 4)
+            {
+                Console.WriteLine("Received malformed message: " + message);
+                return;
+            }
+
+            string messageType = parts[0];
+            int greenhouseId;
+            bool? isWindowOpen = null;
+
+            if (!int.TryParse(parts[1], out greenhouseId))
+            {
+                Console.WriteLine("Invalid greenhouse ID: " + parts[1]);
+                return;
+            }
+
+            switch (messageType)
+            {
+                case "ACK":
+                    if (parts.Length >= 5 && parts[2] == "GET" && parts[3] == "SER")
+                    {
+                        isWindowOpen = ParseWindowStatus(parts[4]);
+                        if (isWindowOpen.HasValue)
+                        {
+                            await SendWindowStatusToDatabase(greenhouseId, isWindowOpen.Value);
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Received unexpected ACK message format: " + message);
+                    }
+                    break;
+
+                case "UPD":
+                    if (parts.Length >= 4 && parts[2] == "SER")
+                    {
+                        isWindowOpen = ParseWindowStatus(parts[3]);
+                        if (isWindowOpen.HasValue)
+                        {
+                            await SendWindowStatusToDatabase(greenhouseId, isWindowOpen.Value);
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Received unexpected UPD message format: " + message);
+                    }
+                    break;
+
+                default:
+                    Console.WriteLine("Received unknown message type: " + messageType);
+                    break;
+            }
         }
 
-        public void RemoveVehicle(int vehicleId)
+        private bool? ParseWindowStatus(string status)
         {
-            clientVehicles.TryRemove(vehicleId, out _);
+            return status switch
+            {
+                "180" => true,
+                "0" => false,
+                _ => null,
+            };
         }
 
-        public ConcurrentDictionary<int, ClientHandler> GetClientVehicles()
+        private async Task SendWindowStatusToDatabase(int greenhouseId, bool isWindowOpen)
         {
-            return clientVehicles;
+            Console.WriteLine("Sending data to database...");
+
+            var requestUri = $"/GreenHouse/{greenhouseId}";
+            await _dbApiClient.PostAsync(requestUri, new StringContent($"{{\"isWindowOpen\": {isWindowOpen}}}"));
         }
     }
 }

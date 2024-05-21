@@ -5,72 +5,44 @@ using System.Threading.Tasks;
 
 namespace IOTController
 {
-    public class ClientHandler
+    public class ClientHandler : IDisposable
     {
-        private TcpClient client;
-        private NetworkStream stream;
-        private StringBuilder messageBuilder;
+        private readonly TcpClient client;
+        private readonly NetworkStream stream;
+        private readonly Server server;
 
-        public ClientHandler(TcpClient client)
+        public ClientHandler(TcpClient client, Server server)
         {
-            this.client = client ?? throw new ArgumentNullException(nameof(client));
+            this.client = client;
+            this.server = server;
             this.stream = client.GetStream();
-            this.messageBuilder = new StringBuilder();
         }
 
-        public async Task<string> ReceiveMessageAsync()
+        public async Task ProcessMessagesAsync()
         {
             byte[] buffer = new byte[1024];
-            while (true)
+            int bytesRead;
+
+            while ((bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length)) != 0)
             {
-                try
-                {
-                    int bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length);
-                    if (bytesRead == 0)
-                    {
-                        throw new Exception("Connection closed by remote host.");
-                    }
+                string message = Encoding.ASCII.GetString(buffer, 0, bytesRead);
+                Console.WriteLine($"Received: {message}");
 
-                    string messagePart = Encoding.ASCII.GetString(buffer, 0, bytesRead);
-                    messageBuilder.Append(messagePart);
-
-                    // Check if the message is complete (assumes messages end with a newline)
-                    if (messagePart.Contains("\n"))
-                    {
-                        string completeMessage = messageBuilder.ToString().Trim();
-                        messageBuilder.Clear(); // Clear the buffer for the next message
-                        return completeMessage;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"ReceiveMessageAsync: {ex.Message}");
-                    Dispose();
-                    throw;
-                }
+                await server.ProcessMessage(message);
             }
         }
 
         public async Task SendMessageAsync(string message)
         {
-            try
-            {
-                byte[] dataToSend = Encoding.ASCII.GetBytes(message + "\n"); // Ensure the message ends with a newline
-                await stream.WriteAsync(dataToSend, 0, dataToSend.Length);
-                Console.WriteLine($"Sent: {message}");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"SendMessageAsync: {ex.Message}");
-                Dispose();
-                throw;
-            }
+            byte[] dataToSend = Encoding.ASCII.GetBytes(message);
+            await stream.WriteAsync(dataToSend, 0, dataToSend.Length);
+            Console.WriteLine($"Sent: {message}");
         }
 
         public void Dispose()
         {
-            stream?.Close();
-            client?.Close();
+            stream.Close();
+            client.Close();
         }
     }
 }

@@ -1,11 +1,6 @@
 using Domain.Model;
 using WebAPI.Data;
 using WebAPI.Repositories;
-using WebAPI.Services;
-using Microsoft.Extensions.Options;
-using MongoDB.Driver;
-using Newtonsoft.Json.Linq;
-using Microsoft.Extensions.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,8 +19,6 @@ builder.Services.AddHttpClient("IOTController", client =>
     client.BaseAddress = new Uri(builder.Configuration["IOTControllerBaseUrl"]);
 });
 
-// Register Background Service
-builder.Services.AddHostedService<WindowStatusService>();
 
 var app = builder.Build();
 

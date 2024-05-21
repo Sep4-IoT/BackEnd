@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 namespace IOTController.Controllers
 {
     [ApiController]
-    [Route("IOT/{GreenHouseId}")]
+    [Route("{GreenHouseId}")]
     public class GreenhouseController : ControllerBase
     {
         private readonly GreenhouseService _greenhouseService;
@@ -14,34 +14,26 @@ namespace IOTController.Controllers
             _greenhouseService = greenhouseService;
         }
 
-        [HttpPatch("openWindow")]
+        [HttpPost("openWindow")]
         public async Task<IActionResult> OpenWindow(int GreenHouseId)
         {
             await _greenhouseService.OpenWindow(GreenHouseId);
-            return Ok();
+            return NoContent(); // 204 No Content
         }
 
-        [HttpPatch("closeWindow")]
+        [HttpPost("closeWindow")]
         public async Task<IActionResult> CloseWindow(int GreenHouseId)
         {
             await _greenhouseService.CloseWindow(GreenHouseId);
-            return Ok();
+            return NoContent(); // 204 No Content
         }
 
-        [HttpGet("getStatus")]
+        [HttpPost("getStatus")]
         public async Task<IActionResult> GetStatus(int GreenHouseId)
         {
-            var statusResult = await _greenhouseService.GetWindowStatus(GreenHouseId);
-            if (statusResult.ErrorMessage != null)
-            {
-                return BadRequest(statusResult.ErrorMessage);
-            }
-
-            string statusDescription = statusResult.IsWindowOpen.HasValue
-                ? (statusResult.IsWindowOpen.Value ? "Open" : "Closed")
-                : "Status not determined";
-
-            return Ok(statusDescription);
+            await _greenhouseService.GetWindowStatus(GreenHouseId);
+            return NoContent(); // 204 No Content
         }
+        
     }
 }

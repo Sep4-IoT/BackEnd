@@ -27,7 +27,7 @@ public class GreenHouseController : ControllerBase
     { 
         try
         {
-            var requestUri = $"/api/GreenHouse/{greenHouseId}";
+            var requestUri = $"/GreenHouse/{greenHouseId}";
             var response = await _dbApiClient.GetAsync(requestUri);
 
             response.EnsureSuccessStatusCode();

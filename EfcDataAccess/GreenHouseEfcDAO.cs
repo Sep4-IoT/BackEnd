@@ -63,40 +63,7 @@ public class GreenHouseEfcDAO : IGreenHouseDAO
         
         return updateGreenHouseDto;
     }
-
-    public async Task UpdateTemperature(GreenHouse greenHouse)
-    {
-        try
-        {
-            Console.WriteLine($"Updating temperature for GreenHouse ID {greenHouse.GreenHouseId} to {greenHouse.Temperature}");
-            context.GreenHouses.Update(greenHouse);
-            await context.SaveChangesAsync();
-            Console.WriteLine("Temperature updated successfully.");
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error updating temperature: {ex.Message}");
-            Console.WriteLine($"Stack Trace: {ex.StackTrace}");
-            throw;
-        }
-    }
     
-    public async Task TestQuery()
-    {
-        try
-        {
-            var greenHouses = await context.GreenHouses.ToListAsync();
-            foreach (var gh in greenHouses)
-            {
-                Console.WriteLine($"GreenHouse ID: {gh.GreenHouseId}, Name: {gh.GreenHouseName}");
-            }
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error running test query: {ex.Message}");
-        }
-    }
-
     
     public async Task<GreenHouse> GetByIdAsync(int greenhouseId)
     {

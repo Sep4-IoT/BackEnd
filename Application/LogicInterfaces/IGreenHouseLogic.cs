@@ -10,6 +10,6 @@ public interface IGreenHouseLogic
     Task<GreenHouse> GetByIdAsync(int id);
     Task<UpdateGreenHouseDTO> UpdateAsync(UpdateGreenHouseDTO updateGreenHouse);
     Task<IEnumerable<GreenHouse>> GetByOwnerIdAsync(int userId);
-    Task UpdateTemperature(int greenhouseId, double temperature);
+    
 
 }

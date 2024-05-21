@@ -16,13 +16,7 @@ public class GreenHouseContext : DbContext
     {
         if (!optionsBuilder.IsConfigured)
         {
-            var relativePath = Path.Combine("..", "EfcDataAccess", "GreenHouseDatabase.db");
-            var absolutePath = Path.GetFullPath(relativePath);
-
-            // Log the resolved path for debugging
-            Console.WriteLine($"Resolved database path: {absolutePath}");
-
-            optionsBuilder.UseSqlite($"Data Source={absolutePath}");
+            optionsBuilder.UseSqlite($"Data Source = ../EfcDataAccess/GreenHouseDatabase.db");
         }
     }
 

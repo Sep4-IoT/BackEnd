@@ -29,19 +29,17 @@ namespace IOTController
                 options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
 
             // Register DAO services
-            services.AddTransient<IGreenHouseDAO, GreenHouseEfcDAO>();
-            services.AddTransient<IUserDAO, UserEfcDAO>();
-            services.AddScoped<GreenHouseEfcDAO>();
+            services.AddScoped<IGreenHouseDAO, GreenHouseEfcDAO>();
+            services.AddScoped<IUserDAO, UserEfcDAO>();
+            services.AddScoped<GreenHouseEfcDAO>();  
 
             // Register Logic services
-            services.AddTransient<IGreenHouseLogic, GreenHouseLogic>();
-            services.AddTransient<IUserLogic, UserLogic>();
+            services.AddScoped<IGreenHouseLogic, GreenHouseLogic>();
+            services.AddScoped<IUserLogic, UserLogic>();
 
             // Register other services
-            services.AddTransient<ClientHandler>();
-            services.AddTransient<GreenHouseManager>();
-            services.AddTransient<GreenhouseService>();
-
+            services.AddScoped<ClientHandler>();
+            services.AddScoped<GreenHouseService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -64,4 +62,5 @@ namespace IOTController
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }
+
 }

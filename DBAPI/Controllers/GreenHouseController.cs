@@ -30,13 +30,37 @@ namespace WebAPI.Controllers
             return Ok(greenHouse);
         }
 
-        [HttpPatch("{id}/window/{status}")]
+        /*[HttpPatch("{id}/window/{status}")]
         public async Task<IActionResult> UpdateWindowStatus(string id, bool status)
         {
             var existingGreenHouse = await _repository.GetByIdAsync(id);
             if (existingGreenHouse == null) return NotFound();
 
             existingGreenHouse.IsWindowOpen = status;
+            await _repository.UpdateAsync(existingGreenHouse);
+            //return 200 ok
+            return Ok();
+        }*/
+        
+        [HttpPost("{id}/openWindow")]
+        public async Task<IActionResult> OpenWindow(string id)
+        {
+            var existingGreenHouse = await _repository.GetByIdAsync(id);
+            if (existingGreenHouse == null) return NotFound();
+
+            existingGreenHouse.IsWindowOpen = true;
+            await _repository.UpdateAsync(existingGreenHouse);
+            //return 200 ok
+            return Ok();
+        }
+        
+        [HttpPost("{id}/closeWindow")]
+        public async Task<IActionResult> CloseWindow(string id)
+        {
+            var existingGreenHouse = await _repository.GetByIdAsync(id);
+            if (existingGreenHouse == null) return NotFound();
+
+            existingGreenHouse.IsWindowOpen = false;
             await _repository.UpdateAsync(existingGreenHouse);
             //return 200 ok
             return Ok();

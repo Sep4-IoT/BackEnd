@@ -96,13 +96,10 @@ namespace IOTController
             switch (messageType)
             {
                 case "ACK":
-                    if (parts.Length >= 5 && parts[2] == "GET" && parts[3] == "SER")
+                    if (parts[2] == "GET" && parts[3] == "SER")
                     {
-                        isWindowOpen = ParseWindowStatus(parts[4]);
-                        if (isWindowOpen.HasValue)
-                        {
-                            await SendWindowStatusToDatabase(greenhouseId, isWindowOpen.Value);
-                        }
+                        if (parts[4] == "180") await SendWindowOpened(greenhouseId);
+                        else if (parts[4] == "0") await SendWindowClosed(greenhouseId);
                     }
                     else
                     {
@@ -113,11 +110,8 @@ namespace IOTController
                 case "UPD":
                     if (parts.Length >= 4 && parts[2] == "SER")
                     {
-                        isWindowOpen = ParseWindowStatus(parts[3]);
-                        if (isWindowOpen.HasValue)
-                        {
-                            await SendWindowStatusToDatabase(greenhouseId, isWindowOpen.Value);
-                        }
+                        if (parts[4] == "180") await SendWindowOpened(greenhouseId);
+                        else if (parts[4] == "0") await SendWindowClosed(greenhouseId);
                     }
                     else
                     {
@@ -141,12 +135,20 @@ namespace IOTController
             };
         }
 
-        private async Task SendWindowStatusToDatabase(int greenhouseId, bool isWindowOpen)
+        private async Task SendWindowOpened(int greenhouseId)
         {
             Console.WriteLine("Sending data to database...");
 
-            var requestUri = $"/GreenHouse/{greenhouseId}";
-            await _dbApiClient.PostAsync(requestUri, new StringContent($"{{\"isWindowOpen\": {isWindowOpen}}}"));
+            var requestUri = $"/GreenHouse/{greenhouseId}/openWindow";
+            await _dbApiClient.PostAsync(requestUri, null);
+        }
+        
+        private async Task SendWindowClosed(int greenhouseId)
+        {
+            Console.WriteLine("Sending data to database...");
+
+            var requestUri = $"/GreenHouse/{greenhouseId}/closeWindow";
+            await _dbApiClient.PostAsync(requestUri, null);
         }
     }
 }

@@ -4,7 +4,7 @@ namespace Domain.Model
 {
     public class GreenHouse
     {
-        [BsonId]
+        [BsonId] //mongodb key
         public string GreenHouseId { get; set; }
 
         public string? GreenHouseName { get; set; }

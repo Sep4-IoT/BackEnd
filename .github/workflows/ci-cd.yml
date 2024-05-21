@@ -37,7 +37,12 @@ jobs:
         username: root
         password: Miraflores281  # or use 'key' if you prefer using SSH keys
         script: |
+          export PATH=$PATH:/snap/bin
+          echo "PATH is: $PATH"
+          which docker-compose
+          docker-compose --version
           cd /root/BackEnd
-          docker-compose down
+          docker-compose down --remove-orphans
+          docker-compose rm -f
           docker-compose pull
           docker-compose up -d

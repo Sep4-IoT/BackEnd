@@ -30,49 +30,25 @@ namespace WebAPI.Controllers
             return Ok(greenHouse);
         }
 
-<<<<<<< Updated upstream
-        /*[HttpPatch("{id}/window/{status}")]
-        public async Task<IActionResult> UpdateWindowStatus(string id, bool status)
-        {
-            var existingGreenHouse = await _repository.GetByIdAsync(id);
-            if (existingGreenHouse == null) return NotFound();
-
-            existingGreenHouse.IsWindowOpen = status;
-            await _repository.UpdateAsync(existingGreenHouse);
-            //return 200 ok
-            return Ok();
-        }*/
-        
-        [HttpPost("{id}/openWindow")]
+        [HttpPatch("{id}/openWindow")]  // Use HttpPatch for partial updates
         public async Task<IActionResult> OpenWindow(string id)
-=======
-        [HttpPatch("{id}/openWindow")]
-        public async Task<IActionResult> openWindow(string id)
->>>>>>> Stashed changes
         {
             var existingGreenHouse = await _repository.GetByIdAsync(id);
             if (existingGreenHouse == null) return NotFound();
 
             existingGreenHouse.IsWindowOpen = true;
             await _repository.UpdateAsync(existingGreenHouse);
-            //return 200 ok
             return Ok();
         }
-        
-<<<<<<< Updated upstream
-        [HttpPost("{id}/closeWindow")]
+
+        [HttpPatch("{id}/closeWindow")]  // Use HttpPatch for partial updates
         public async Task<IActionResult> CloseWindow(string id)
-=======
-        [HttpPatch("{id}/closeWindow")]
-        public async Task<IActionResult> closeWindow(string id)
->>>>>>> Stashed changes
         {
             var existingGreenHouse = await _repository.GetByIdAsync(id);
             if (existingGreenHouse == null) return NotFound();
 
             existingGreenHouse.IsWindowOpen = false;
             await _repository.UpdateAsync(existingGreenHouse);
-            //return 200 ok
             return Ok();
         }
     }

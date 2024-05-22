@@ -33,7 +33,6 @@ public class GreenHouseController : ControllerBase
 
             response.EnsureSuccessStatusCode();
             var greenHouse = await response.Content.ReadFromJsonAsync<GreenHouse>();
-
             return Ok(greenHouse);
         }
         catch (Exception e)
@@ -48,15 +47,14 @@ public class GreenHouseController : ControllerBase
     {
         try
         {
+            Console.WriteLine("Begin updating GreenHouse");
             if (updateDto.IsWindowOpen.HasValue)
             {
                 var actionUri = updateDto.IsWindowOpen.Value
                     ? $"{greenHouseId}/openWindow"
                     : $"{greenHouseId}/closeWindow";
-
-                var content = new StringContent("{}", Encoding.UTF8, "application/json");
-                var response = await _iotControllerClient.PostAsync(actionUri, content);
-                response.EnsureSuccessStatusCode();
+                
+                await _iotControllerClient.PostAsync(actionUri, null);
             }
 
             return Ok();

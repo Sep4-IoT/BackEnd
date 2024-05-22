@@ -74,7 +74,6 @@ namespace IOTController
             await Task.WhenAll(sendTasks);
         }
 
-        
         // Process the message received from the iot device and send it to the database
         public async Task ProcessMessage(string message)
         {
@@ -89,7 +88,6 @@ namespace IOTController
             string messageType = parts[0];
             string greenhouseId = parts[1];
 
-            
             Console.WriteLine("I am handling the message: " + message);
             switch (messageType)
             {
@@ -97,8 +95,14 @@ namespace IOTController
                     Console.WriteLine("looks like it is an ack message:");
                     if (parts[2] == "GET" && parts[3] == "SER")
                     {
-                        if (parts[4].Trim().Equals("180", StringComparison.InvariantCulture)) await SendWindowOpened(greenhouseId);
-                        else if (parts[4].Trim().Equals("0", StringComparison.InvariantCulture)) await SendWindowClosed(greenhouseId);
+                        if (parts[4].Trim().Equals("180", StringComparison.InvariantCulture))
+                        {
+                            await SendWindowOpened(greenhouseId);
+                        }
+                        else if (parts[4].Trim().Equals("0", StringComparison.InvariantCulture))
+                        {
+                            await SendWindowClosed(greenhouseId);
+                        }
                         Console.WriteLine("I got problems comparing strings:" + parts[4]);
                     }
                     else
@@ -111,8 +115,14 @@ namespace IOTController
                     Console.WriteLine("looks like it is an update message:");
                     if (parts[2] == "SER")
                     {
-                        if (parts[4].Trim().Equals("180", StringComparison.InvariantCulture)) await SendWindowOpened(greenhouseId);
-                        else if (parts[4].Trim().Equals("180", StringComparison.InvariantCulture)) await SendWindowClosed(greenhouseId);
+                        if (parts[4].Trim().Equals("180", StringComparison.InvariantCulture))
+                        {
+                            await SendWindowOpened(greenhouseId);
+                        }
+                        else if (parts[4].Trim().Equals("0", StringComparison.InvariantCulture))
+                        {
+                            await SendWindowClosed(greenhouseId);
+                        }
                         Console.WriteLine("I got problems comparing strings:" + parts[4]);
                     }
                     else
@@ -127,22 +137,19 @@ namespace IOTController
             }
         }
 
-        
         // methods for postasync to the database
         private async Task SendWindowOpened(string greenhouseId)
         {
             Console.WriteLine("sending window opened to database");
-            var requestUri = $"/Greenhouse/{greenhouseId}/openWindow";
+            var requestUri = $"/GreenHouse/{greenhouseId}/openWindow";
             await _dbApiClient.PostAsync(requestUri, null);
         }
-        
+
         private async Task SendWindowClosed(string greenhouseId)
         {
             Console.WriteLine("sending window closed to database");
-            var requestUri = $"/Greenhouse/{greenhouseId}/closeWindow";
+            var requestUri = $"/GreenHouse/{greenhouseId}/closeWindow";
             await _dbApiClient.PostAsync(requestUri, null);
         }
-        
-        
     }
 }

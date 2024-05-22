@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
 
 namespace IOTController
 {
@@ -18,15 +19,18 @@ namespace IOTController
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddSingleton<Server>(); // Register Server service
-            services.AddSingleton<GreenhouseManager>(); // Register GreenhouseManager
-            services.AddSingleton<GreenhouseService>(); // Register GreenhouseService
+            services.AddSingleton<Server>();
+            services.AddSingleton<GreenhouseManager>();
+            services.AddSingleton<GreenhouseService>();
 
             // Register IHttpContextAccessor
             services.AddHttpContextAccessor();
 
-            // Register HttpClient
-            services.AddHttpClient();
+            // Register HttpClient with BaseAddress
+            services.AddHttpClient<Server>(client =>
+            {
+                client.BaseAddress = new Uri("http://dbapi:80"); // Set the base address to your API
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

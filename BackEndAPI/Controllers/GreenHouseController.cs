@@ -2,6 +2,7 @@ using Domain.Model;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Http;
 using System.Net.Http.Json;
+using System.Text;
 using Domain.DTOs;
 using Microsoft.Extensions.Configuration;
 
@@ -43,22 +44,21 @@ public class GreenHouseController : ControllerBase
     }
     
     [HttpPatch("{greenHouseId}")]
-    public ActionResult UpdateAsync(int greenHouseId, [FromBody] GreenHouseUpdateDTO updateDto)
+    public async Task<ActionResult> UpdateAsync(int greenHouseId, [FromBody] GreenHouseUpdateDTO updateDto)
     {
         try
         {
-            // Check if isWindowOpen is provided and update the window status accordingly
             if (updateDto.IsWindowOpen.HasValue)
             {
                 var actionUri = updateDto.IsWindowOpen.Value
-                    ? $"/IOT/{greenHouseId}/openWindow"
-                    : $"/IOT/{greenHouseId}/closeWindow";
+                    ? $"{greenHouseId}/openWindow"
+                    : $"{greenHouseId}/closeWindow";
 
-                // Fire and forget the PATCH request
-                _ = _iotControllerClient.PatchAsync(actionUri, null);
+                var content = new StringContent("{}", Encoding.UTF8, "application/json");
+                var response = await _iotControllerClient.PostAsync(actionUri, content);
+                response.EnsureSuccessStatusCode();
             }
 
-            // Return 200 OK immediately
             return Ok();
         }
         catch (Exception e)

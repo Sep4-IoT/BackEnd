@@ -43,7 +43,9 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-app.UseHttpsRedirection();
+// Remove the HTTPS redirection middleware
+// app.UseHttpsRedirection();
+
 app.UseAuthorization();
 app.MapControllers();
 app.Run();

@@ -45,4 +45,21 @@ jobs:
           docker-compose down --remove-orphans
           docker-compose rm -f
           docker-compose pull
+<<<<<<< Updated upstream
           docker-compose up -d
+=======
+          docker-compose up -d --force-recreate
+
+    - name: Deploy IOTController to VPS
+      uses: appleboy/ssh-action@master
+      with:
+        host: 154.62.108.77
+        username: root
+        password: Miraflores281 
+        script: |
+	  export PATH=$PATH:/snap/bin
+          docker stop iotcontroller || true
+          docker rm iotcontroller || true
+          docker pull javieruw/iotcontroller:latest
+          docker run -d -p 6000:6000 -p 50000:50000 --name iotcontroller javieruw/iotcontroller:latest
+>>>>>>> Stashed changes

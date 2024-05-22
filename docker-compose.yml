@@ -1,4 +1,4 @@
-version: '3.4'
+version: '3.9'
 
 services:
   mongo:
@@ -11,8 +11,8 @@ services:
 
   dbapi:
     build:
-      context: .
-      dockerfile: DBAPI/Dockerfile
+      context: ./DBAPI
+      dockerfile: Dockerfile
     container_name: dbapi
     ports:
       - "7000:80"
@@ -23,8 +23,8 @@ services:
 
   backendapi:
     build:
-      context: .
-      dockerfile: BackEndAPI/Dockerfile
+      context: ./BackEndAPI
+      dockerfile: Dockerfile
     container_name: backendapi
     ports:
       - "5047:80"
@@ -34,6 +34,7 @@ services:
       - dbapi
 
   iotcontroller:
+<<<<<<< Updated upstream
     build:
       context: .
       dockerfile: IOTController/Dockerfile
@@ -41,6 +42,16 @@ services:
     ports:
       - "50000:50000"
       - "6000:6000"
+=======
+    image: javieruw/iotcontroller:latest
+    build:
+      context: ./IOTController
+      dockerfile: Dockerfile
+    container_name: iotcontroller
+    ports:
+      - "6000:6000"
+      - "50000:50000"
+>>>>>>> Stashed changes
     networks:
       - greenhouse-network
     depends_on:

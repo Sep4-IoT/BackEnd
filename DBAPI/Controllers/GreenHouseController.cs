@@ -30,6 +30,7 @@ namespace WebAPI.Controllers
             return Ok(greenHouse);
         }
 
+<<<<<<< Updated upstream
         /*[HttpPatch("{id}/window/{status}")]
         public async Task<IActionResult> UpdateWindowStatus(string id, bool status)
         {
@@ -44,6 +45,10 @@ namespace WebAPI.Controllers
         
         [HttpPost("{id}/openWindow")]
         public async Task<IActionResult> OpenWindow(string id)
+=======
+        [HttpPatch("{id}/openWindow")]
+        public async Task<IActionResult> openWindow(string id)
+>>>>>>> Stashed changes
         {
             var existingGreenHouse = await _repository.GetByIdAsync(id);
             if (existingGreenHouse == null) return NotFound();
@@ -54,8 +59,13 @@ namespace WebAPI.Controllers
             return Ok();
         }
         
+<<<<<<< Updated upstream
         [HttpPost("{id}/closeWindow")]
         public async Task<IActionResult> CloseWindow(string id)
+=======
+        [HttpPatch("{id}/closeWindow")]
+        public async Task<IActionResult> closeWindow(string id)
+>>>>>>> Stashed changes
         {
             var existingGreenHouse = await _repository.GetByIdAsync(id);
             if (existingGreenHouse == null) return NotFound();

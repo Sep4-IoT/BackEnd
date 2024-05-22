@@ -5,6 +5,7 @@ using System;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 using Application.LogicInterfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace IOTController
 {
@@ -13,17 +14,35 @@ namespace IOTController
         public static async Task Main(string[] args)
         {
             var host = CreateHostBuilder(args).Build();
+
+            // Ensure the database is created
+            using (var scope = host.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+                var context = services.GetRequiredService<GreenHouseContext>();
+                context.Database.Migrate();
+                context.Database.EnsureCreated();
+            }
+
             var greenhouseService = host.Services.GetRequiredService<GreenHouseService>();
 
             // Start the TCP server
             var server = new Server();
             server.ClientConnected += async (TcpClient client) =>
             {
-                var clientHandler = new ClientHandler(client);
-                greenhouseService.Initialize(clientHandler);
+                try
+                {
+                    var clientHandler = new ClientHandler(client);
+                    greenhouseService.Initialize(clientHandler);
 
-                Console.WriteLine("Client connected.");
-                await ProcessCommandsAsync(greenhouseService);
+                    Console.WriteLine("Client connected.");
+                    await ProcessCommandsAsync(greenhouseService);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error: {ex.Message}");
+                    Console.WriteLine($"Stack Trace: {ex.StackTrace}");
+                }
             };
 
             _ = server.StartAsync();

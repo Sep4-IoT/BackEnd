@@ -11,18 +11,18 @@ public class GreenHouseContext : DbContext
     public GreenHouseContext(DbContextOptions<GreenHouseContext> options) : base(options)
     {
     }
-
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         if (!optionsBuilder.IsConfigured)
         {
             var basePath = AppDomain.CurrentDomain.BaseDirectory;
-            var relativePath = Path.Combine(basePath, "..", "EfcDataAccess", "GreenHouseDatabase.db");
+            var relativePath = Path.Combine(basePath, "GreenHouseDatabase.db");
             var absolutePath = Path.GetFullPath(relativePath);
 
             Console.WriteLine($"Resolved database path: {absolutePath}");
 
             optionsBuilder.UseSqlite($"Data Source={absolutePath}");
+            optionsBuilder.LogTo(Console.WriteLine);
         }
     }
 

@@ -49,7 +49,7 @@ public class GreenHouseEfcDAO : IGreenHouseDAO
 
     public async Task<UpdateGreenHouseDTO> UpdateAsync(UpdateGreenHouseDTO updateGreenHouseDto)
     {
-        GreenHouse? existing = context.GreenHouses.FirstOrDefault(g => g.GreenHouseId == updateGreenHouseDto.GreenHouseID);
+        GreenHouse existing = context.GreenHouses.FirstOrDefault(g => g.GreenHouseId == updateGreenHouseDto.GreenHouseID);
         if (existing == null)
         {
             throw new Exception($"GreenHouse with id {updateGreenHouseDto.GreenHouseID} does not exist!");
@@ -86,7 +86,7 @@ public class GreenHouseEfcDAO : IGreenHouseDAO
     public async Task<IEnumerable<GreenHouse>> GetByOwnerIdAsync(int userId)
     {
         IQueryable<GreenHouse> usersQuery = context.GreenHouses.AsQueryable();
-        if (userId != null)
+        if (userId != 0)
         {
             usersQuery = usersQuery.Where(g => g.UserId == userId);
         }

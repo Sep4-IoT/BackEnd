@@ -25,9 +25,9 @@ public class UserEfcDAO : IUserDAO
         return newUser.Entity;
     }
 
-    public async Task<User?> GetByUsernameAsync(string userName)
+    public async Task<User> GetByUsernameAsync(string userName)
     {
-        User? existing = await context.Users.FirstOrDefaultAsync(u =>
+        User existing = await context.Users.FirstOrDefaultAsync(u =>
             u.Username.ToLower().Equals(userName.ToLower())
         );
         return existing;
@@ -35,7 +35,7 @@ public class UserEfcDAO : IUserDAO
 
     public async Task<User> GetByIdAsync(int id)
     {
-        User? user = await context.Users.FindAsync(id);
+        User user = await context.Users.FindAsync(id);
         return user;
     }
 

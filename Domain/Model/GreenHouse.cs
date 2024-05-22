@@ -7,7 +7,7 @@ public class GreenHouse
     [Key] public int GreenHouseId { get; set; }
     
     public int UserId { get; set; }
-    public User User { get; set; }
+    public User? User { get; set; }
     public string? GreenHouseName { get; set; }
     public string? Description { get; set; }
     public double? Temperature { get; set; }

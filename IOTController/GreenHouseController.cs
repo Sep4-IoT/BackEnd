@@ -17,7 +17,6 @@ namespace IOTController.Controllers
         [HttpPost("{greenhouseId}/openWindow")]
         public async Task<IActionResult> OpenWindow(int greenhouseId)
         {
-            Console.WriteLine("pending open window");
             await _greenhouseService.OpenWindow(greenhouseId);
             return NoContent(); // 204 No Content
         }
@@ -25,7 +24,6 @@ namespace IOTController.Controllers
         [HttpPost("{greenhouseId}/closeWindow")]
         public async Task<IActionResult> CloseWindow(int greenhouseId)
         {
-            Console.WriteLine("pending close window");
             await _greenhouseService.CloseWindow(greenhouseId);
             return NoContent(); // 204 No Content
         }
@@ -33,7 +31,6 @@ namespace IOTController.Controllers
         [HttpPost("{greenhouseId}/getWindowStatus")]
         public async Task<IActionResult> GetStatus(int greenhouseId)
         {
-            //create a .txt file with name greenhouseId.txt
             await _greenhouseService.GetWindowStatus(greenhouseId);
             return NoContent(); // 204 No Content
         }

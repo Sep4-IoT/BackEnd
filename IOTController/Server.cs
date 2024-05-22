@@ -125,21 +125,17 @@ namespace IOTController
             }
         }
 
+        
+        // Send info retrieved from iot device to the database
         private async Task SendWindowOpened(int greenhouseId)
         {
-            var requestUri = $"/GreenHouse/{greenhouseId}/openWindow";
+            var requestUri = $"/Greenhouse/{greenhouseId}/openWindow";
             await _dbApiClient.PostAsync(requestUri, null);
         }
         
         private async Task SendWindowClosed(int greenhouseId)
         {
-            var requestUri = $"/GreenHouse/{greenhouseId}/closeWindow";
-            await _dbApiClient.PostAsync(requestUri, null);
-        }
-        
-        private async Task GetWindowStatus(int greenhouseId)
-        {
-            var requestUri = $"/GreenHouse/{greenhouseId}/getWindowStatus";
+            var requestUri = $"/Greenhouse/{greenhouseId}/closeWindow";
             await _dbApiClient.PostAsync(requestUri, null);
         }
         

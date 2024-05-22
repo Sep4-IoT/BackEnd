@@ -30,7 +30,7 @@ namespace WebAPI.Controllers
             return Ok(greenHouse);
         }
 
-        [HttpPatch("{id}/openWindow")]  // Use HttpPatch for partial updates
+        [HttpPost("{id}/openWindow")]  
         public async Task<IActionResult> OpenWindow(string id)
         {
             var existingGreenHouse = await _repository.GetByIdAsync(id);
@@ -41,7 +41,7 @@ namespace WebAPI.Controllers
             return Ok();
         }
 
-        [HttpPatch("{id}/closeWindow")]  // Use HttpPatch for partial updates
+        [HttpPost("{id}/closeWindow")]  
         public async Task<IActionResult> CloseWindow(string id)
         {
             var existingGreenHouse = await _repository.GetByIdAsync(id);

@@ -10,7 +10,7 @@ WORKDIR /src
 
 # Copy the project files and restore dependencies
 COPY ["BackEndAPI/BackEndAPI.csproj", "BackEndAPI/"]
-COPY ["Domain/Domain.csproj", "Domain/"]
+COPY ["../Domain/Domain.csproj", "Domain/"]
 
 RUN dotnet restore "BackEndAPI/BackEndAPI.csproj"
 

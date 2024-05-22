@@ -24,12 +24,6 @@ namespace IOTController
             await server.BroadcastMessageAsync(message);
         }
 
-        public async Task SetWindowAngle(int GreenHouseId, int angle)
-        {
-            string message = $"REQ,{GreenHouseId},SET,SER,{angle}";
-            await server.BroadcastMessageAsync(message);
-        }
-
         public async Task GetWindowStatus(int GreenHouseId)
         {
             string message = $"REQ,{GreenHouseId},GET,SER";

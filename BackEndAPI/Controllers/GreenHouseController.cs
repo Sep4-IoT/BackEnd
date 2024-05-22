@@ -51,8 +51,8 @@ public class GreenHouseController : ControllerBase
             if (updateDto.IsWindowOpen.HasValue)
             {
                 var actionUri = updateDto.IsWindowOpen.Value
-                    ? $"{greenHouseId}/openWindow"
-                    : $"{greenHouseId}/closeWindow";
+                    ? $"Greenhouse/{greenHouseId}/openWindow"
+                    : $"Greenhouse/{greenHouseId}/closeWindow";
                 
                 await _iotControllerClient.PostAsync(actionUri, null);
             }

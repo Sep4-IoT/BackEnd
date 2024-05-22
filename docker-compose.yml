@@ -1,3 +1,4 @@
+
 version: '3.9'
 
 services:
@@ -10,10 +11,9 @@ services:
       - greenhouse-network
 
   dbapi:
-    image: javieruw/dbapi:latest
     build:
-      context: ./DBAPI
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: DBAPI/Dockerfile
     container_name: dbapi
     ports:
       - "7000:80"
@@ -23,10 +23,9 @@ services:
       - mongo
 
   backendapi:
-    image: javieruw/backendapi:latest
     build:
-      context: ./BackEndAPI
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: BackEndAPI/Dockerfile
     container_name: backendapi
     ports:
       - "5047:80"
@@ -36,14 +35,13 @@ services:
       - dbapi
 
   iotcontroller:
-    image: javieruw/iotcontroller:latest
     build:
-      context: ./IOTController
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: IOTController/Dockerfile
     container_name: iotcontroller
     ports:
-      - "6000:6000"
       - "50000:50000"
+      - "6000:6000"
     networks:
       - greenhouse-network
     depends_on:

@@ -33,6 +33,7 @@ namespace IOTController.Controllers
         [HttpPost("{greenhouseId}/getWindowStatus")]
         public async Task<IActionResult> GetStatus(int greenhouseId)
         {
+            //create a .txt file with name greenhouseId.txt
             await _greenhouseService.GetWindowStatus(greenhouseId);
             return NoContent(); // 204 No Content
         }

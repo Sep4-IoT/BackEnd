@@ -18,7 +18,15 @@ namespace IOTController
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddSingleton<GreenhouseService>();
+            services.AddSingleton<Server>(); // Register Server service
+            services.AddSingleton<GreenhouseManager>(); // Register GreenhouseManager
+            services.AddSingleton<GreenhouseService>(); // Register GreenhouseService
+
+            // Register IHttpContextAccessor
+            services.AddHttpContextAccessor();
+
+            // Register HttpClient
+            services.AddHttpClient();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

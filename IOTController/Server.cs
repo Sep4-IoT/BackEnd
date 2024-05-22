@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using System.Net.Http;
 
 namespace IOTController
 {
@@ -40,6 +40,7 @@ namespace IOTController
             while (true)
             {
                 TcpClient client = await listener.AcceptTcpClientAsync();
+                Console.WriteLine("Client connected.");
                 var clientHandler = new ClientHandler(client, this);
                 clients.Add(clientHandler);
                 _ = HandleClientAsync(clientHandler); // Fire-and-forget to handle clients concurrently
@@ -85,7 +86,6 @@ namespace IOTController
 
             string messageType = parts[0];
             int greenhouseId;
-            bool? isWindowOpen = null;
 
             if (!int.TryParse(parts[1], out greenhouseId))
             {
@@ -125,30 +125,24 @@ namespace IOTController
             }
         }
 
-        private bool? ParseWindowStatus(string status)
-        {
-            return status switch
-            {
-                "180" => true,
-                "0" => false,
-                _ => null,
-            };
-        }
-
         private async Task SendWindowOpened(int greenhouseId)
         {
-            Console.WriteLine("Sending data to database...");
-
             var requestUri = $"/GreenHouse/{greenhouseId}/openWindow";
             await _dbApiClient.PostAsync(requestUri, null);
         }
         
         private async Task SendWindowClosed(int greenhouseId)
         {
-            Console.WriteLine("Sending data to database...");
-
             var requestUri = $"/GreenHouse/{greenhouseId}/closeWindow";
             await _dbApiClient.PostAsync(requestUri, null);
         }
+        
+        private async Task GetWindowStatus(int greenhouseId)
+        {
+            var requestUri = $"/GreenHouse/{greenhouseId}/getWindowStatus";
+            await _dbApiClient.PostAsync(requestUri, null);
+        }
+        
+        
     }
 }

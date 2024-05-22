@@ -15,15 +15,21 @@ namespace IOTController
         {
             var host = CreateHostBuilder(args).Build();
 
-            // Ensure the database is created
             using (var scope = host.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
                 var context = services.GetRequiredService<GreenHouseContext>();
-                context.Database.Migrate();
-                context.Database.EnsureCreated();
+                try
+                {
+                    context.Database.EnsureDeleted(); // Delete existing database
+                    context.Database.EnsureCreated(); // Create the database
+                    context.Database.Migrate();       // Apply migrations
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"An error occurred while migrating the database: {ex.Message}");
+                }
             }
-
             var greenhouseService = host.Services.GetRequiredService<GreenHouseService>();
 
             // Start the TCP server

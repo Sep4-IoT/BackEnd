@@ -11,6 +11,8 @@ namespace WebAPI.Controllers
     public class GreenHouseController : ControllerBase
     {
         private readonly GreenHouseDateListRepository _repository;
+        
+        private readonly HttpClient _iotControllerClient;
 
         public GreenHouseController(GreenHouseDateListRepository repository)
         {
@@ -93,6 +95,11 @@ namespace WebAPI.Controllers
 
             latestGreenHouse.Temperature = temperature;
             await _repository.UpdateAsync(greenHouseDateList);
+            
+            if (temperature > 40)
+            {
+                await _iotControllerClient.PostAsync($"Greenhouse/{id}/openWindow", null);
+            }
 
             return Ok();
         }

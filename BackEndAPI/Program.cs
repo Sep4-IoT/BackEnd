@@ -1,7 +1,14 @@
 using Domain.Model;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Secret key for JWT
+var secretKey = "BCDD556A4A3D39415A498ECEFE3C2HOLIAMIWIS"; // Ensure this is the same key used in TokenService
+var key = Encoding.ASCII.GetBytes(secretKey);
 
 // Add services to the container.
 builder.Services.AddControllers();
@@ -23,6 +30,27 @@ builder.Services.AddHttpClient("IOTController", client =>
 });
 
 builder.Services.AddSingleton<List<GreenHouse>>();
+
+// Add JWT authentication
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.RequireHttpsMetadata = false;
+    options.SaveToken = true;
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(key),
+        ValidateIssuer = false,
+        ValidateAudience = false
+    };
+});
+
+builder.Services.AddSingleton(new TokenService(secretKey));
 
 var app = builder.Build();
 
@@ -46,6 +74,7 @@ if (app.Environment.IsDevelopment())
 // Remove the HTTPS redirection middleware
 // app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 app.Run();

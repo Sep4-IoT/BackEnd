@@ -45,4 +45,4 @@ jobs:
           docker-compose down --remove-orphans
           docker-compose rm -f
           docker-compose pull
-          docker-compose up -d
+          docker-compose up --force-recreate -d

@@ -32,7 +32,5 @@ jobs:
           fi
           git clone --branch Deployment https://github.com/Sep4-IoT/BackEnd.git
           cd BackEnd
-          docker-compose down --remove-orphans
-          docker-compose rm -f
           docker-compose build
           docker-compose up -d

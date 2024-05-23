@@ -103,7 +103,6 @@ namespace IOTController
                         {
                             await SendWindowClosed(greenhouseId);
                         }
-                        Console.WriteLine("I got problems comparing strings:" + parts[4]);
                     }
                     else
                     {
@@ -123,7 +122,6 @@ namespace IOTController
                         {
                             await SendWindowClosed(greenhouseId);
                         }
-                        Console.WriteLine("I got problems comparing strings:" + parts[4]);
                     }
                     else
                     {

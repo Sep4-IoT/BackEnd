@@ -1,6 +1,8 @@
 using Domain.Model;
 using WebAPI.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
+using System.Linq;
 
 namespace WebAPI.Controllers
 {
@@ -8,48 +10,76 @@ namespace WebAPI.Controllers
     [ApiController]
     public class GreenHouseController : ControllerBase
     {
-        private readonly GreenHouseRepository _repository;
+        private readonly GreenHouseDateListRepository _repository;
 
-        public GreenHouseController(GreenHouseRepository repository)
+        public GreenHouseController(GreenHouseDateListRepository repository)
         {
             _repository = repository;
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> GetAll()
-        {
-            var greenHouses = await _repository.GetAllAsync();
-            return Ok(greenHouses);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(string id)
         {
-            var greenHouse = await _repository.GetByIdAsync(id);
-            if (greenHouse == null) return NotFound();
-            return Ok(greenHouse);
+            var greenHouseDateList = await _repository.GetByIdAsync(id);
+            if (greenHouseDateList == null) return NotFound();
+
+            var latestGreenHouse = greenHouseDateList.GreenHouses.OrderByDescending(gh => gh.Date).FirstOrDefault();
+            if (latestGreenHouse == null) return NotFound();
+
+            var dto = new GreenHouseDTO
+            {
+                GreenHouseId = latestGreenHouse.GreenHouseId,
+                GreenHouseName = latestGreenHouse.GreenHouseName,
+                Description = latestGreenHouse.Description,
+                Temperature = latestGreenHouse.Temperature,
+                LightIntensity = latestGreenHouse.LightIntensity,
+                Co2Levels = latestGreenHouse.Co2Levels,
+                Humidity = latestGreenHouse.Humidity,
+                IsWindowOpen = latestGreenHouse.IsWindowOpen
+            };
+
+            return Ok(dto);
         }
 
-        [HttpPost("{id}/openWindow")]  
+        [HttpGet("getAll/{id}")]
+        public async Task<IActionResult> GetAll(string id)
+        {
+            var greenHouseDateList = await _repository.GetByIdAsync(id);
+            if (greenHouseDateList == null) return NotFound();
+            return Ok(greenHouseDateList);
+        }
+        
+        //open window on newest greenhouse data
+        [HttpPost("{id}/openWindow")]
         public async Task<IActionResult> OpenWindow(string id)
         {
-            var existingGreenHouse = await _repository.GetByIdAsync(id);
-            if (existingGreenHouse == null) return NotFound();
+            var greenHouseDateList = await _repository.GetByIdAsync(id);
+            if (greenHouseDateList == null) return NotFound();
 
-            existingGreenHouse.IsWindowOpen = true;
-            await _repository.UpdateAsync(existingGreenHouse);
+            var latestGreenHouse = greenHouseDateList.GreenHouses.OrderByDescending(gh => gh.Date).FirstOrDefault();
+            if (latestGreenHouse == null) return NotFound();
+
+            latestGreenHouse.IsWindowOpen = true;
+            await _repository.UpdateAsync(greenHouseDateList);
+
             return Ok();
         }
-
-        [HttpPost("{id}/closeWindow")]  
+        
+        //close window on newest greenhouse data
+        [HttpPost("{id}/closeWindow")]
         public async Task<IActionResult> CloseWindow(string id)
         {
-            var existingGreenHouse = await _repository.GetByIdAsync(id);
-            if (existingGreenHouse == null) return NotFound();
+            var greenHouseDateList = await _repository.GetByIdAsync(id);
+            if (greenHouseDateList == null) return NotFound();
 
-            existingGreenHouse.IsWindowOpen = false;
-            await _repository.UpdateAsync(existingGreenHouse);
+            var latestGreenHouse = greenHouseDateList.GreenHouses.OrderByDescending(gh => gh.Date).FirstOrDefault();
+            if (latestGreenHouse == null) return NotFound();
+
+            latestGreenHouse.IsWindowOpen = false;
+            await _repository.UpdateAsync(greenHouseDateList);
+
             return Ok();
         }
+        
     }
 }

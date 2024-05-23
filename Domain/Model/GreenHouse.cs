@@ -1,10 +1,11 @@
 using MongoDB.Bson.Serialization.Attributes;
+using System;
 
 namespace Domain.Model
 {
     public class GreenHouse
     {
-        [BsonId] //mongodb key
+        [BsonId] // MongoDB key
         public string GreenHouseId { get; set; }
 
         public string? GreenHouseName { get; set; }
@@ -21,8 +22,10 @@ namespace Domain.Model
 
         public bool? IsWindowOpen { get; set; }
 
+        public DateTime Date { get; set; }  // New Date field
+
         public GreenHouse(string? GreenHouseName, string? Description, double? Temperature, double? LightIntensity,
-            double? Co2Levels, double? Humidity, bool? isWindowOpen)
+            double? Co2Levels, double? Humidity, bool? isWindowOpen, DateTime date)
         {
             this.GreenHouseName = GreenHouseName;
             this.Description = Description;
@@ -31,6 +34,7 @@ namespace Domain.Model
             this.Co2Levels = Co2Levels;
             this.Humidity = Humidity;
             IsWindowOpen = isWindowOpen;
+            Date = date;
         }
 
         public GreenHouse() {}

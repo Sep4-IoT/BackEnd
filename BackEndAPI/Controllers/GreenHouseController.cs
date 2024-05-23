@@ -32,8 +32,8 @@ public class GreenHouseController : ControllerBase
             var response = await _dbApiClient.GetAsync(requestUri);
 
             response.EnsureSuccessStatusCode();
-            var greenHouse = await response.Content.ReadFromJsonAsync<GreenHouse>();
-            return Ok(greenHouse);
+            var greenHouseDTO = await response.Content.ReadFromJsonAsync<GreenHouseDTO>();
+            return Ok(greenHouseDTO);
         }
         catch (Exception e)
         {
@@ -65,4 +65,28 @@ public class GreenHouseController : ControllerBase
             return StatusCode(500, e.Message);
         }
     }
+    
+    [HttpGet("getAll/{greenHouseId}")]
+    public async Task<ActionResult<List<GreenHouse>>> GetAllAsync(string greenHouseId)
+    {
+        try
+        {
+            var requestUri = $"/GreenHouse/getAll/{greenHouseId}";
+            var response = await _dbApiClient.GetAsync(requestUri);
+            response.EnsureSuccessStatusCode();
+        
+            var greenHouseDateList = await response.Content.ReadFromJsonAsync<GreenHouseDateList>();
+        
+            return Ok(greenHouseDateList);
+        }
+        catch (Exception e)
+        {
+            // Log the exception and return a 500 status code
+            Console.WriteLine(e);
+            return StatusCode(500, e.Message);
+        }
+    }
+    
+
+
 }

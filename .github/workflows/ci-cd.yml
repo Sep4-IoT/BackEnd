@@ -44,6 +44,6 @@ jobs:
           cd /root/BackEnd
           docker-compose down --remove-orphans
           docker-compose rm -f
-          docker system prune -a
+          docker system prune -a --volumes -f
           docker-compose pull
-          docker-compose up --force-recreate -d
+          docker-compose up --force-recreate --build -d

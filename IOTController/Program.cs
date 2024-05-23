@@ -14,6 +14,9 @@ public class Program
 
         // Run the TCP server in a background task
         var serverTask = server.StartAsync();
+        
+        var greenhouseService = host.Services.GetRequiredService<GreenhouseService>();
+        greenhouseService.Initialize(server);
 
         // Run the HTTP server
         var webHostTask = host.RunAsync();

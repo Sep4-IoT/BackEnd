@@ -4,11 +4,11 @@ namespace IOTController
 {
     public class GreenhouseService
     {
-        private readonly GreenhouseManager _greenhouseManager;
+        private GreenhouseManager _greenhouseManager;
 
-        public GreenhouseService(GreenhouseManager greenhouseManager)
+        public void Initialize(Server server)
         {
-            _greenhouseManager = greenhouseManager;
+            _greenhouseManager = new GreenhouseManager(server);
         }
 
         public async Task OpenWindow(int GreenHouseId)

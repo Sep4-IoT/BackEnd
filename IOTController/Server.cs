@@ -112,8 +112,8 @@ namespace IOTController
 
                 case "UPD":
                     Console.WriteLine("looks like it is an update message:");
-                    if (parts[2] == "SER")
-                    {
+                    if (parts[3] == "SER")
+                    {   
                         if (parts[4].Trim().Equals("180", StringComparison.InvariantCulture))
                         {
                             await SendWindowOpened(greenhouseId);
@@ -122,6 +122,24 @@ namespace IOTController
                         {
                             await SendWindowClosed(greenhouseId);
                         }
+                    }
+                    else if (parts[3] == "TEM")
+                    {
+                        var temperature = parts[4].Trim();
+                        var requestUri = $"/GreenHouse/{greenhouseId}/updateTemperature/{temperature}";
+                        await _dbApiClient.PostAsync(requestUri, null);
+                    }
+                    else if (parts[3] == "HUM")
+                    {
+                        var humidity = parts[4].Trim();
+                        var requestUri = $"/GreenHouse/{greenhouseId}/updateHumidity/{humidity}";
+                        await _dbApiClient.PostAsync(requestUri, null);
+                    }
+                    else if (parts[3] == "LIG")
+                    {
+                        var light = parts[4].Trim();
+                        var requestUri = $"/GreenHouse/{greenhouseId}/updateLight/{light}";
+                        await _dbApiClient.PostAsync(requestUri, null);
                     }
                     else
                     {

@@ -48,8 +48,8 @@ namespace WebAPI.Controllers
             if (greenHouseDateList == null) return NotFound();
             return Ok(greenHouseDateList);
         }
-        
-        //open window on newest greenhouse data
+
+        // Open window on newest greenhouse data
         [HttpPost("{id}/openWindow")]
         public async Task<IActionResult> OpenWindow(string id)
         {
@@ -64,8 +64,8 @@ namespace WebAPI.Controllers
 
             return Ok();
         }
-        
-        //close window on newest greenhouse data
+
+        // Close window on newest greenhouse data
         [HttpPost("{id}/closeWindow")]
         public async Task<IActionResult> CloseWindow(string id)
         {
@@ -80,6 +80,53 @@ namespace WebAPI.Controllers
 
             return Ok();
         }
-        
+
+        // Update temperature on newest greenhouse data
+        [HttpPost("{id}/updateTemperature/{temperature}")]
+        public async Task<IActionResult> UpdateTemperature(string id, double temperature)
+        {
+            var greenHouseDateList = await _repository.GetByIdAsync(id);
+            if (greenHouseDateList == null) return NotFound();
+
+            var latestGreenHouse = greenHouseDateList.GreenHouses.OrderByDescending(gh => gh.Date).FirstOrDefault();
+            if (latestGreenHouse == null) return NotFound();
+
+            latestGreenHouse.Temperature = temperature;
+            await _repository.UpdateAsync(greenHouseDateList);
+
+            return Ok();
+        }
+
+        // Update humidity on newest greenhouse data
+        [HttpPost("{id}/updateHumidity/{humidity}")]
+        public async Task<IActionResult> UpdateHumidity(string id, double humidity)
+        {
+            var greenHouseDateList = await _repository.GetByIdAsync(id);
+            if (greenHouseDateList == null) return NotFound();
+
+            var latestGreenHouse = greenHouseDateList.GreenHouses.OrderByDescending(gh => gh.Date).FirstOrDefault();
+            if (latestGreenHouse == null) return NotFound();
+
+            latestGreenHouse.Humidity = humidity;
+            await _repository.UpdateAsync(greenHouseDateList);
+
+            return Ok();
+        }
+
+        // Update light intensity on newest greenhouse data
+        [HttpPost("{id}/updateLight/{lightIntensity}")]
+        public async Task<IActionResult> UpdateLight(string id, double lightIntensity)
+        {
+            var greenHouseDateList = await _repository.GetByIdAsync(id);
+            if (greenHouseDateList == null) return NotFound();
+
+            var latestGreenHouse = greenHouseDateList.GreenHouses.OrderByDescending(gh => gh.Date).FirstOrDefault();
+            if (latestGreenHouse == null) return NotFound();
+
+            latestGreenHouse.LightIntensity = lightIntensity;
+            await _repository.UpdateAsync(greenHouseDateList);
+
+            return Ok();
+        }
     }
 }

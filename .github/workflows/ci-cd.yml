@@ -42,8 +42,7 @@ jobs:
           which docker-compose
           docker-compose --version
           cd /root/BackEnd
-          docker-compose down --remove-orphans
+          docker-compose down
           docker-compose rm -f
-          docker-compose pull
-          docker-compose up -d
+          docker-compose up
       timeout: 60m

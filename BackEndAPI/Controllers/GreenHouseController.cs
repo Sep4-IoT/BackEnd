@@ -20,7 +20,7 @@ namespace BackEnd.Controllers
         private readonly TokenService _tokenService;
 
         private const string HardcodedUsername = "admin";
-        private const string HardcodedPassword = "kurwa";
+        private const string HardcodedPassword = "via";
 
         public GreenHouseController(IHttpClientFactory httpClientFactory, IConfiguration configuration, TokenService tokenService)
         {

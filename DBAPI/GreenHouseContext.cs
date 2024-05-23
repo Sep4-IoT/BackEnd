@@ -13,6 +13,6 @@ namespace WebAPI.Data
             _database = client.GetDatabase("GreenHouseDb");
         }
 
-        public IMongoCollection<GreenHouse> GreenHouses => _database.GetCollection<GreenHouse>("GreenHouses");
+        public IMongoCollection<GreenHouseDateList> GreenHouseDateLists => _database.GetCollection<GreenHouseDateList>("GreenHouseDateLists");
     }
 }

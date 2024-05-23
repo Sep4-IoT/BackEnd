@@ -7,6 +7,7 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    timeout-minutes: 60  # Set timeout for the entire job
 
     steps:
     - name: Checkout code
@@ -42,7 +43,8 @@ jobs:
           which docker-compose
           docker-compose --version
           cd /root/BackEnd
-          docker-compose down
+          docker-compose down --remove-orphans
           docker-compose rm -f
-          docker-compose up
-      timeout: 60m
+          docker-compose pull
+          docker-compose build
+          docker-compose up -d

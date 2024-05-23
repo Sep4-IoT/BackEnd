@@ -65,5 +65,21 @@ namespace WebAPI.Controllers
             return Ok();
         }
         
+        //close window on newest greenhouse data
+        [HttpPost("{id}/closeWindow")]
+        public async Task<IActionResult> CloseWindow(string id)
+        {
+            var greenHouseDateList = await _repository.GetByIdAsync(id);
+            if (greenHouseDateList == null) return NotFound();
+
+            var latestGreenHouse = greenHouseDateList.GreenHouses.OrderByDescending(gh => gh.Date).FirstOrDefault();
+            if (latestGreenHouse == null) return NotFound();
+
+            latestGreenHouse.IsWindowOpen = false;
+            await _repository.UpdateAsync(greenHouseDateList);
+
+            return Ok();
+        }
+        
     }
 }

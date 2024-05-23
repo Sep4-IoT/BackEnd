@@ -7,7 +7,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,6 +19,9 @@ builder.Services.AddSwaggerGen();
 // Configure MongoDB context and repository
 builder.Services.AddSingleton<GreenHouseContext>();
 builder.Services.AddSingleton<GreenHouseDateListRepository>();
+
+// Register TimerService
+builder.Services.AddHostedService<TimerService>();
 
 // Add HttpClient for IOTController
 builder.Services.AddHttpClient("IOTController", client =>
@@ -43,10 +45,6 @@ async Task SeedDatabaseAsync(IServiceProvider services, ILogger logger)
         {
             GreenHouses = new List<GreenHouse>
             {
-                new GreenHouse("GreenHouse1", "First Green House", 24.0, 250.0, 500.0, 2.0, true, DateTime.UtcNow.AddMinutes(-10))
-                {
-                    GreenHouseId = "1"
-                }, 
                 new GreenHouse("GreenHouse1", "First Green House", 25.5, 310.0, 410.0, 61.0, false, DateTime.UtcNow)
                 {
                     GreenHouseId = "1"
@@ -86,38 +84,3 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
-
-// Simulate adding new data every 10 minutes by duplicating the earliest data
-var timer = new System.Threading.Timer(async (e) =>
-{
-    using var scope = app.Services.CreateScope();
-    var greenHouseRepository = scope.ServiceProvider.GetRequiredService<GreenHouseDateListRepository>();
-
-    foreach (var id in new[] { "1", "10" })
-    {
-        var greenHouseDateList = await greenHouseRepository.GetByIdAsync(id);
-        if (greenHouseDateList != null)
-        {
-            var earliestGreenHouse = greenHouseDateList.GreenHouses.OrderBy(gh => gh.Date).FirstOrDefault();
-            if (earliestGreenHouse != null)
-            {
-                var newGreenHouse = new GreenHouse(
-                    earliestGreenHouse.GreenHouseName,
-                    earliestGreenHouse.Description,
-                    earliestGreenHouse.Temperature,
-                    earliestGreenHouse.LightIntensity,
-                    earliestGreenHouse.Co2Levels,
-                    earliestGreenHouse.Humidity,
-                    earliestGreenHouse.IsWindowOpen,
-                    DateTime.UtcNow
-                )
-                {
-                    GreenHouseId = earliestGreenHouse.GreenHouseId
-                };
-
-                greenHouseDateList.GreenHouses.Add(newGreenHouse);
-                await greenHouseRepository.UpdateAsync(greenHouseDateList);
-            }
-        }
-    }
-}, null, TimeSpan.Zero, TimeSpan.FromMinutes(10));

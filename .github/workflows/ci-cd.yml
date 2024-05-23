@@ -42,9 +42,11 @@ jobs:
           echo "PATH is: $PATH"
           which docker-compose
           docker-compose --version
+          cd /root
+          rm -rf /root/BackEnd
+          git clone -b Deployment https://github.com/Sep4-IoT/BackEnd.git
           cd /root/BackEnd
-          docker-compose down --remove-orphans
+          docker-compose down
           docker-compose rm -f
-          docker-compose pull
           docker-compose build
           docker-compose up -d

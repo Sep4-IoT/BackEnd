@@ -14,9 +14,10 @@ namespace WebAPI.Controllers
         
         private readonly HttpClient _iotControllerClient;
 
-        public GreenHouseController(GreenHouseDateListRepository repository)
+        public GreenHouseController(IHttpClientFactory httpClientFactory, GreenHouseDateListRepository repository)
         {
             _repository = repository;
+            _iotControllerClient = httpClientFactory.CreateClient("IOTController");
         }
 
         [HttpGet("{id}")]

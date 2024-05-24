@@ -11,7 +11,7 @@ namespace WebAPI.Controllers
     public class GreenHouseController : ControllerBase
     {
         private readonly GreenHouseDateListRepository _repository;
-        
+
         private readonly HttpClient _iotControllerClient;
 
         public GreenHouseController(IHttpClientFactory httpClientFactory, GreenHouseDateListRepository repository)
@@ -96,7 +96,7 @@ namespace WebAPI.Controllers
 
             latestGreenHouse.Temperature = temperature;
             await _repository.UpdateAsync(greenHouseDateList);
-            
+
             if (temperature > 40)
             {
                 await _iotControllerClient.PostAsync($"Greenhouse/{id}/openWindow", null);
@@ -132,6 +132,22 @@ namespace WebAPI.Controllers
             if (latestGreenHouse == null) return NotFound();
 
             latestGreenHouse.LightIntensity = lightIntensity;
+            await _repository.UpdateAsync(greenHouseDateList);
+
+            return Ok();
+        }
+
+        // Update CO2 levels on newest greenhouse data
+        [HttpPost("{id}/updateCO2/{co2Levels}")]
+        public async Task<IActionResult> UpdateCO2(int id, double co2Levels)
+        {
+            var greenHouseDateList = await _repository.GetByIdAsync(id);
+            if (greenHouseDateList == null) return NotFound();
+
+            var latestGreenHouse = greenHouseDateList.GreenHouses.OrderByDescending(gh => gh.Date).FirstOrDefault();
+            if (latestGreenHouse == null) return NotFound();
+
+            latestGreenHouse.Co2Levels = co2Levels;
             await _repository.UpdateAsync(greenHouseDateList);
 
             return Ok();

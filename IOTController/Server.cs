@@ -93,7 +93,7 @@ namespace IOTController
             {
                 case "ACK":
                     Console.WriteLine("looks like it is an ack message:");
-                    if (parts[2] == "GET" && parts[3] == "SER")
+                    if (parts[2] == "SET" && parts[3] == "SER")
                     {
                         if (parts[4].Trim().Equals("180", StringComparison.InvariantCulture))
                         {
@@ -139,6 +139,12 @@ namespace IOTController
                     {
                         var light = parts[4].Trim();
                         var requestUri = $"/GreenHouse/{greenhouseId}/updateLight/{light}";
+                        await _dbApiClient.PostAsync(requestUri, null);
+                    }
+                    else if (parts[3] == "CO2")
+                    {
+                        var light = parts[4].Trim();
+                        var requestUri = $"/GreenHouse/{greenhouseId}/updateCO2/{light}";
                         await _dbApiClient.PostAsync(requestUri, null);
                     }
                     else

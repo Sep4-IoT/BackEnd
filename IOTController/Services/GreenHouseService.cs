@@ -20,11 +20,6 @@ namespace IOTController
         {
             await _greenhouseManager.CloseWindow(GreenHouseId);
         }
-
-        public async Task GetWindowStatus(int GreenHouseId)
-        {
-            await _greenhouseManager.GetWindowStatus(GreenHouseId);
-        }
         
     }
 }

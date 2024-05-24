@@ -27,12 +27,5 @@ namespace IOTController.Controllers
             await _greenhouseService.CloseWindow(greenhouseId);
             return NoContent(); // 204 No Content
         }
-
-        [HttpPost("{greenhouseId}/getWindowStatus")]
-        public async Task<IActionResult> GetStatus(int greenhouseId)
-        {
-            await _greenhouseService.GetWindowStatus(greenhouseId);
-            return NoContent(); // 204 No Content
-        }
     }
 }

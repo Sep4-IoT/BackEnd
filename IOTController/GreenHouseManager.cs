@@ -23,11 +23,5 @@ namespace IOTController
             string message = $"REQ,{GreenHouseId},SET,SER,0";
             await server.BroadcastMessageAsync(message);
         }
-
-        public async Task GetWindowStatus(int GreenHouseId)
-        {
-            string message = $"REQ,{GreenHouseId},GET,SER";
-            await server.BroadcastMessageAsync(message);
-        }
     }
 }

@@ -99,7 +99,12 @@ namespace BackEnd.Controllers
 
                 var greenHouseDateList = await response.Content.ReadFromJsonAsync<GreenHouseDateList>();
 
-                return Ok(greenHouseDateList);
+                List <GreenHouse> greenHouseList = new List<GreenHouse>();
+                foreach (var greenHouse in greenHouseDateList.GreenHouses)
+                {
+                    greenHouseList.Add(greenHouse);
+                }
+                return Ok(greenHouseList);
             }
             catch (Exception e)
             {

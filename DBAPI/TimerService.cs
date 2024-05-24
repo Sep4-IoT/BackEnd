@@ -31,7 +31,7 @@ public class TimerService : IHostedService, IDisposable
         using var scope = _services.CreateScope();
         var greenHouseRepository = scope.ServiceProvider.GetRequiredService<GreenHouseDateListRepository>();
 
-        foreach (var id in new[] { "1", "10" })
+        foreach (var id in new[] { 1, 10 })
         {
             var greenHouseDateList = await greenHouseRepository.GetByIdAsync(id);
             if (greenHouseDateList != null)

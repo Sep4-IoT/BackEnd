@@ -20,7 +20,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(string id)
+        public async Task<IActionResult> GetById(int id)
         {
             var greenHouseDateList = await _repository.GetByIdAsync(id);
             if (greenHouseDateList == null) return NotFound();
@@ -44,7 +44,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("getAll/{id}")]
-        public async Task<IActionResult> GetAll(string id)
+        public async Task<IActionResult> GetAll(int id)
         {
             var greenHouseDateList = await _repository.GetByIdAsync(id);
             if (greenHouseDateList == null) return NotFound();
@@ -53,7 +53,7 @@ namespace WebAPI.Controllers
 
         // Open window on newest greenhouse data
         [HttpPost("{id}/openWindow")]
-        public async Task<IActionResult> OpenWindow(string id)
+        public async Task<IActionResult> OpenWindow(int id)
         {
             var greenHouseDateList = await _repository.GetByIdAsync(id);
             if (greenHouseDateList == null) return NotFound();
@@ -69,7 +69,7 @@ namespace WebAPI.Controllers
 
         // Close window on newest greenhouse data
         [HttpPost("{id}/closeWindow")]
-        public async Task<IActionResult> CloseWindow(string id)
+        public async Task<IActionResult> CloseWindow(int id)
         {
             var greenHouseDateList = await _repository.GetByIdAsync(id);
             if (greenHouseDateList == null) return NotFound();
@@ -85,7 +85,7 @@ namespace WebAPI.Controllers
 
         // Update temperature on newest greenhouse data
         [HttpPost("{id}/updateTemperature/{temperature}")]
-        public async Task<IActionResult> UpdateTemperature(string id, double temperature)
+        public async Task<IActionResult> UpdateTemperature(int id, double temperature)
         {
             var greenHouseDateList = await _repository.GetByIdAsync(id);
             if (greenHouseDateList == null) return NotFound();
@@ -106,7 +106,7 @@ namespace WebAPI.Controllers
 
         // Update humidity on newest greenhouse data
         [HttpPost("{id}/updateHumidity/{humidity}")]
-        public async Task<IActionResult> UpdateHumidity(string id, double humidity)
+        public async Task<IActionResult> UpdateHumidity(int id, double humidity)
         {
             var greenHouseDateList = await _repository.GetByIdAsync(id);
             if (greenHouseDateList == null) return NotFound();
@@ -122,7 +122,7 @@ namespace WebAPI.Controllers
 
         // Update light intensity on newest greenhouse data
         [HttpPost("{id}/updateLight/{lightIntensity}")]
-        public async Task<IActionResult> UpdateLight(string id, double lightIntensity)
+        public async Task<IActionResult> UpdateLight(int id, double lightIntensity)
         {
             var greenHouseDateList = await _repository.GetByIdAsync(id);
             if (greenHouseDateList == null) return NotFound();

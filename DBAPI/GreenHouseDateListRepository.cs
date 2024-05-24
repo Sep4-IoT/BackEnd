@@ -13,7 +13,7 @@ namespace WebAPI.Repositories
             _context = context;
         }
 
-        public async Task<GreenHouseDateList> GetByIdAsync(string id)
+        public async Task<GreenHouseDateList> GetByIdAsync(int id)
         {
             return await _context.GreenHouseDateLists.Find(g => g.Id == id).FirstOrDefaultAsync();
         }

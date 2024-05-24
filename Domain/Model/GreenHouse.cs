@@ -1,4 +1,5 @@
 using MongoDB.Bson.Serialization.Attributes;
+using System.Text.Json.Serialization;
 using System;
 
 namespace Domain.Model
@@ -6,22 +7,31 @@ namespace Domain.Model
     public class GreenHouse
     {
         [BsonId] // MongoDB key
-        public string GreenHouseId { get; set; }
+        [JsonPropertyName("GreenHouseId")]
+        public int GreenHouseId { get; set; }
 
+        [JsonPropertyName("GreenHouseName")]
         public string? GreenHouseName { get; set; }
 
+        [JsonPropertyName("Description")]
         public string? Description { get; set; }
 
+        [JsonPropertyName("Temperature")]
         public double? Temperature { get; set; }
 
+        [JsonPropertyName("LightIntensity")]
         public double? LightIntensity { get; set; }
 
+        [JsonPropertyName("Co2Levels")]
         public double? Co2Levels { get; set; }
 
+        [JsonPropertyName("Humidity")]
         public double? Humidity { get; set; }
 
+        [JsonPropertyName("IsWindowOpen")]
         public bool? IsWindowOpen { get; set; }
 
+        [JsonPropertyName("Date")]
         public DateTime Date { get; set; }  // New Date field
 
         public GreenHouse(string? GreenHouseName, string? Description, double? Temperature, double? LightIntensity,

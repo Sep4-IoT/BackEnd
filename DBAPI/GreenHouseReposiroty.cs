@@ -20,7 +20,7 @@ namespace WebAPI.Repositories
             return greenHouseLists.SelectMany(g => g.GreenHouses).ToList();
         }
 
-        public async Task<GreenHouse> GetByIdAsync(string id)
+        public async Task<GreenHouse> GetByIdAsync(int id)
         {
             var greenHouseList = await _context.GreenHouseDateLists.Find(g => g.Id == id).FirstOrDefaultAsync();
             return greenHouseList?.GreenHouses.OrderByDescending(gh => gh.Date).FirstOrDefault();
@@ -56,7 +56,7 @@ namespace WebAPI.Repositories
             }
         }
 
-        public async Task UpdateFieldAsync(string id, string field, object value)
+        public async Task UpdateFieldAsync(int id, string field, object value)
         {
             var filter = Builders<GreenHouseDateList>.Filter.And(
                 Builders<GreenHouseDateList>.Filter.Eq(g => g.Id, id),
@@ -71,7 +71,7 @@ namespace WebAPI.Repositories
             await _context.GreenHouseDateLists.UpdateOneAsync(filter, update, updateOptions);
         }
 
-        public async Task DeleteAsync(string id)
+        public async Task DeleteAsync(int id)
         {
             await _context.GreenHouseDateLists.DeleteOneAsync(g => g.Id == id);
         }

@@ -11,7 +11,7 @@ namespace BackEnd.Controllers
 {
     [Authorize]
     [ApiController]
-    [Route("[controller]")]
+    [Route("SEP4")]
     public class GreenHouseController : ControllerBase
     {
         private readonly HttpClient _dbApiClient;
@@ -22,7 +22,8 @@ namespace BackEnd.Controllers
         private const string HardcodedUsername = "admin";
         private const string HardcodedPassword = "via";
 
-        public GreenHouseController(IHttpClientFactory httpClientFactory, IConfiguration configuration, TokenService tokenService)
+        public GreenHouseController(IHttpClientFactory httpClientFactory, IConfiguration configuration,
+            TokenService tokenService)
         {
             _dbApiClient = httpClientFactory.CreateClient("DBAPI");
             _iotControllerClient = httpClientFactory.CreateClient("IOTController");
@@ -39,11 +40,14 @@ namespace BackEnd.Controllers
                 var token = _tokenService.GenerateToken(userLogin.Username);
                 return Ok(new { Token = token });
             }
+
             return Unauthorized();
         }
 
-        [Authorize]
-        [HttpGet("{greenHouseId}")]
+        
+
+        [AllowAnonymous]//[Authorize]
+        [HttpGet("greenhouses/{greenHouseId}/current")]
         public async Task<ActionResult<GreenHouse>> GetByIdAsync(int greenHouseId)
         {
             try
@@ -62,8 +66,8 @@ namespace BackEnd.Controllers
             }
         }
 
-        [Authorize]
-        [HttpPatch("{greenHouseId}")]
+        [AllowAnonymous]//[Authorize]
+        [HttpPatch("greenhouses/{greenHouseId}")]
         public async Task<ActionResult> UpdateAsync(int greenHouseId, [FromBody] GreenHouseUpdateDTO updateDto)
         {
             try
@@ -77,8 +81,8 @@ namespace BackEnd.Controllers
 
                     await _iotControllerClient.PostAsync(actionUri, null);
                 }
-
-                return Ok();
+                //return 202
+                return Accepted();
             }
             catch (Exception e)
             {
@@ -87,8 +91,8 @@ namespace BackEnd.Controllers
             }
         }
 
-        [Authorize]
-        [HttpGet("getAll/{greenHouseId}")]
+        [AllowAnonymous]//[Authorize]
+        [HttpGet("greenhouses/{greenHouseId}/history")]
         public async Task<ActionResult<List<GreenHouse>>> GetAllAsync(string greenHouseId)
         {
             try

@@ -45,7 +45,7 @@ async Task SeedDatabaseAsync(IServiceProvider services, ILogger logger)
         {
             GreenHouses = new List<GreenHouse>
             {
-                new GreenHouse("GreenHouse1", "First Green House", 25.5, 310.0, 410.0, 61.0, false, DateTime.UtcNow)
+                new GreenHouse("GreenHouse1", "First Green House", null, null, null, null, null, DateTime.UtcNow)
                 {
                     GreenHouseId = 1
                 },
@@ -55,7 +55,7 @@ async Task SeedDatabaseAsync(IServiceProvider services, ILogger logger)
         {
             GreenHouses = new List<GreenHouse>
             {
-                new GreenHouse("GreenHouse2", "Second Green House", 26.0, 320.0, 420.0, 65.0, true, DateTime.UtcNow)
+                new GreenHouse("GreenHouse2", "Second Green House", null, null, null, null, null, DateTime.UtcNow)
                 {
                     GreenHouseId = 10
                 }

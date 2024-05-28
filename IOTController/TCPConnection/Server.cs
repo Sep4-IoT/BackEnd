@@ -10,7 +10,7 @@ namespace IOTController
 {
     public class Server
     {
-        private readonly int port = 50000;
+        private readonly int port = 50001;
         private TcpListener listener;
         private readonly HttpClient _dbApiClient;
         private readonly List<ClientHandler> clients = new List<ClientHandler>();

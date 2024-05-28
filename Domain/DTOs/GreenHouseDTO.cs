@@ -4,10 +4,10 @@ namespace Domain.Model
 {
     public class GreenHouseDTO
     {
-        [JsonPropertyName("GreenHouseId")]
+        [JsonPropertyName("Id")]
         public int GreenHouseId { get; set; }
         
-        [JsonPropertyName("GreenHouseName")]
+        [JsonPropertyName("Name")]
         public string? GreenHouseName { get; set; }
         
         [JsonPropertyName("Description")]

@@ -26,9 +26,9 @@ jobs:
 
     - name: Push Images (Optional)
       run: |
-        docker-compose push dbapi
-        docker-compose push backendapi
-        docker-compose push iotcontroller
+        docker-compose push dbapi:latest
+        docker-compose push backendapi:latest
+        docker-compose push iotcontroller:latest
 
     - name: Deploy to VPS
       uses: appleboy/ssh-action@master
@@ -37,13 +37,10 @@ jobs:
         username: root
         password: Miraflores281  # or use 'key' if you prefer using SSH keys
         script: |
-          export PATH=$PATH:/snap/bin
-          echo "PATH is: $PATH"
-          which docker-compose
-          docker-compose --version
+          docker tag dbapi https://hub.docker.com/repository/docker/javieruw/dbapi:latest
+          docker tag backendapi https://hub.docker.com/repository/docker/javieruw/backendapi:lates
+          docker tag iotcontroller https://hub.docker.com/repository/docker/javieruw/iotcontroller:latest
           cd /root/BackEnd
-          docker-compose down --remove-orphans
+          docker-compose down
           docker-compose rm -f
-          docker-compose pull
-          docker-compose build
           docker-compose up -d

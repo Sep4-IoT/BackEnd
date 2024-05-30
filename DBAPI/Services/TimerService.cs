@@ -22,7 +22,7 @@ public class TimerService : IHostedService, IDisposable
 
     public Task StartAsync(CancellationToken cancellationToken)
     {
-        _timer = new Timer(DuplicateEarliestGreenHouseData, null, TimeSpan.Zero, TimeSpan.FromMinutes(10));
+        _timer = new Timer(DuplicateEarliestGreenHouseData, null, TimeSpan.Zero, TimeSpan.TimeSpan.FromDays(1));
         return Task.CompletedTask;
     }
     private async void DuplicateEarliestGreenHouseData(object state)

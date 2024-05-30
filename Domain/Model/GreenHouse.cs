@@ -31,8 +31,7 @@ namespace Domain.Model
         [JsonPropertyName("IsWindowOpen")]
         public bool? IsWindowOpen { get; set; }
 
-        [JsonPropertyName("Date")]
-        public DateTime Date { get; set; }  // New Date field
+        public DateTime Date { get; set; }  
 
         public GreenHouse(string? GreenHouseName, string? Description, double? Temperature, double? LightIntensity,
             double? Co2Levels, double? Humidity, bool? isWindowOpen, DateTime date)

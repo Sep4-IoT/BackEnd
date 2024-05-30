@@ -22,11 +22,11 @@ services:
     depends_on:
       - mongo
 
-  backendapi:
+  frontendcontroller:
     build:
       context: .
-      dockerfile: BackEndAPI/Dockerfile
-    container_name: backendapi
+      dockerfile: FrontEndController/Dockerfile
+    container_name: frontendcontroller
     ports:
       - "5047:80"
     networks:
@@ -40,7 +40,7 @@ services:
       dockerfile: IOTController/Dockerfile
     container_name: iotcontroller
     ports:
-      - "50000:50000"
+      - "50000:50001"
       - "6000:6000"
     networks:
       - greenhouse-network

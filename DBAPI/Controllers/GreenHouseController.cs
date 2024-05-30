@@ -125,6 +125,7 @@ namespace WebAPI.Controllers
         [HttpPost("{id}/updateLight/{lightIntensity}")]
         public async Task<IActionResult> UpdateLight(int id, double lightIntensity)
         {
+            
             var greenHouseDateList = await _repository.GetByIdAsync(id);
             if (greenHouseDateList == null) return NotFound();
 

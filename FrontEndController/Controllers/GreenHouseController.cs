@@ -46,7 +46,7 @@ namespace BackEnd.Controllers
 
         
 
-        [AllowAnonymous]//[Authorize]
+        [Authorize]
         [HttpGet("greenhouses/{greenHouseId}/current")]
         public async Task<ActionResult<GreenHouse>> GetByIdAsync(int greenHouseId)
         {
@@ -66,7 +66,7 @@ namespace BackEnd.Controllers
             }
         }
 
-        [AllowAnonymous]//[Authorize]
+        [Authorize]
         [HttpPatch("greenhouses/{greenHouseId}")]
         public async Task<ActionResult> UpdateAsync(int greenHouseId, [FromBody] GreenHouseUpdateDTO updateDto)
         {

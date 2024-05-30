@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BackEndAPI", "BackEndAPI\BackEndAPI.csproj", "{C3FC33C1-94B7-47FE-BC30-52EB3F1A6F7E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FrontEndController", "FrontEndController\FrontEndController.csproj", "{C3FC33C1-94B7-47FE-BC30-52EB3F1A6F7E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{2232B434-F1F3-40EC-AF44-0A996F26C53E}"
 EndProject
@@ -8,7 +8,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IOTController", "IOTControl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DBAPI", "DBAPI\DBAPI.csproj", "{99B019AC-5B41-4FED-868D-F32BE0EE2817}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unit Test Project", "Unit Test Project\Unit Test Project.csproj", "{1E1B8CD1-BB13-4ED1-8672-F675406591BE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProject", "TestProject\TestProject.csproj", "{9BA436DA-A992-4F67-8A07-9A55D7F221D7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -32,9 +32,9 @@ Global
 		{99B019AC-5B41-4FED-868D-F32BE0EE2817}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{99B019AC-5B41-4FED-868D-F32BE0EE2817}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{99B019AC-5B41-4FED-868D-F32BE0EE2817}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1E1B8CD1-BB13-4ED1-8672-F675406591BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1E1B8CD1-BB13-4ED1-8672-F675406591BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1E1B8CD1-BB13-4ED1-8672-F675406591BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1E1B8CD1-BB13-4ED1-8672-F675406591BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9BA436DA-A992-4F67-8A07-9A55D7F221D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9BA436DA-A992-4F67-8A07-9A55D7F221D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9BA436DA-A992-4F67-8A07-9A55D7F221D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9BA436DA-A992-4F67-8A07-9A55D7F221D7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

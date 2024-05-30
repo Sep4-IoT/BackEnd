@@ -31,12 +31,7 @@ public class Program
                 webBuilder.UseStartup<Startup>();
                 webBuilder.ConfigureKestrel(serverOptions =>
                 {
-                    serverOptions.ListenAnyIP(6000); // HTTP port
-                    // Comment out HTTPS if not configured
-                    // serverOptions.ListenAnyIP(6001, listenOptions =>
-                    // {
-                    //     listenOptions.UseHttps();
-                    // });
+                    serverOptions.ListenAnyIP(6000); 
                 });
             });
 }

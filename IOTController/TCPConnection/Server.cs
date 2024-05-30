@@ -78,8 +78,14 @@ namespace IOTController
         public async Task ProcessMessage(string message)
         {
             string[] parts = message.Split(',');
+            
+            
+            
+            
+            
+            
 
-            if (parts.Length < 4)
+            if (parts.Length < 3)
             {
                 Console.WriteLine("Received malformed message: " + message);
                 return;
@@ -91,15 +97,18 @@ namespace IOTController
             Console.WriteLine("I am handling the message: " + message);
             switch (messageType)
             {
-                case "ACK":
+                //RES,1,SER,180
+                case "RES":
                     Console.WriteLine("looks like it is an ack message:");
-                    if (parts[2] == "SET" && parts[3] == "SER")
+                    if (parts[2] == "SER")
                     {
-                        if (parts[4].Trim().Equals("180", StringComparison.InvariantCulture))
+                        string numberResponse = parts[3] ;
+                        string processedString = TruncateAfterNumbers(numberResponse);
+                        if (processedString.Trim().Equals("180", StringComparison.InvariantCulture))
                         {
                             await SendWindowOpened(greenhouseId);
                         }
-                        else if (parts[4].Trim().Equals("0", StringComparison.InvariantCulture))
+                        else if (processedString.Trim().Equals("0", StringComparison.InvariantCulture))
                         {
                             await SendWindowClosed(greenhouseId);
                         }
@@ -112,38 +121,37 @@ namespace IOTController
 
                 case "UPD":
                     Console.WriteLine("looks like it is an update message:");
-                    if (parts[3] == "SER")
-                    {   
-                        if (parts[4].Trim().Equals("180", StringComparison.InvariantCulture))
-                        {
-                            await SendWindowOpened(greenhouseId);
-                        }
-                        else if (parts[4].Trim().Equals("0", StringComparison.InvariantCulture))
-                        {
-                            await SendWindowClosed(greenhouseId);
-                        }
-                    }
-                    else if (parts[3] == "TEM")
+                    if (parts[3] == "TEM")
                     {
-                        var temperature = parts[4].Trim();
+                        string numberResponse = parts[4] ;
+                        string processedString = TruncateAfterNumbers(numberResponse);
+                        var temperature = processedString.Trim();
                         var requestUri = $"/GreenHouse/{greenhouseId}/updateTemperature/{temperature}";
                         await _dbApiClient.PostAsync(requestUri, null);
                     }
                     else if (parts[3] == "HUM")
                     {
-                        var humidity = parts[4].Trim();
+                        string numberResponse = parts[4] ;
+                        string processedString = TruncateAfterNumbers(numberResponse);
+                        var humidity = processedString.Trim();
                         var requestUri = $"/GreenHouse/{greenhouseId}/updateHumidity/{humidity}";
+                        
+                        
                         await _dbApiClient.PostAsync(requestUri, null);
                     }
                     else if (parts[3] == "LIG")
                     {
-                        var light = parts[4].Trim();
+                        string numberResponse = parts[4] ;
+                        string processedString = TruncateAfterNumbers(numberResponse);
+                        var light = processedString.Trim();
                         var requestUri = $"/GreenHouse/{greenhouseId}/updateLight/{light}";
                         await _dbApiClient.PostAsync(requestUri, null);
                     }
                     else if (parts[3] == "CO2")
                     {
-                        var light = parts[4].Trim();
+                        string numberResponse = parts[4] ;
+                        string processedString = TruncateAfterNumbers(numberResponse);
+                        var light = processedString.Trim();
                         var requestUri = $"/GreenHouse/{greenhouseId}/updateCO2/{light}";
                         await _dbApiClient.PostAsync(requestUri, null);
                     }
@@ -157,6 +165,29 @@ namespace IOTController
                     Console.WriteLine("Received unknown message type: " + messageType);
                     break;
             }
+        }
+        
+        public static string TruncateAfterNumbers(string input)
+        {
+            if (string.IsNullOrEmpty(input))
+            {
+                return input; // Return the input if it's null or empty
+            }
+
+            int index = 0;
+
+            // Iterate through each character in the string
+            foreach (char c in input)
+            {
+                if (!char.IsDigit(c))
+                {
+                    break; // Stop when we find the first non-numeric character
+                }
+                index++;
+            }
+
+            // Truncate the string up to the point where we found the first non-numeric character
+            return input.Substring(0, index);
         }
 
         // methods for postasync to the database

@@ -91,7 +91,7 @@ namespace BackEnd.Controllers
             }
         }
 
-        [AllowAnonymous]//[Authorize]
+        [Authorize]
         [HttpGet("greenhouses/{greenHouseId}/history")]
         public async Task<ActionResult<List<GreenHouse>>> GetAllAsync(string greenHouseId)
         {

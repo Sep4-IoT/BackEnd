@@ -25,7 +25,6 @@ public class TimerService : IHostedService, IDisposable
         _timer = new Timer(DuplicateEarliestGreenHouseData, null, TimeSpan.Zero, TimeSpan.FromMinutes(10));
         return Task.CompletedTask;
     }
-
     private async void DuplicateEarliestGreenHouseData(object state)
     {
         using var scope = _services.CreateScope();

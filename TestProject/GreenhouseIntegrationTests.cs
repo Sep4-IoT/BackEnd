@@ -160,11 +160,14 @@ public class GreenhouseIntegrationTests
         response.EnsureSuccessStatusCode();
         string jsonResponse = await response.Content.ReadAsStringAsync();
         var jsonObject = JObject.Parse(jsonResponse);
-        bool isWindowOpen = jsonObject["isWindowOpen"].Value<bool>();
+
+        // Check if isWindowOpen is null and treat it as false if so
+        bool isWindowOpen = jsonObject["isWindowOpen"].Type == JTokenType.Null ? false : jsonObject["isWindowOpen"].Value<bool>();
 
         // Toggle the window status
         bool newWindowStatus = !isWindowOpen;
-        var patchContent = new StringContent($"{{ \"id\": 1, \"Name\": null, \"Description\": null, \"isWindowOpen\": {newWindowStatus.ToString().ToLower()} }}", Encoding.UTF8, "application/json");
+        var patchContent = new StringContent($"{{ \"id\": 1, \"Name\": null, \"Description\": null, \"isWindowOpen\": " +
+                                             $"{newWindowStatus.ToString().ToLower()} }}", Encoding.UTF8, "application/json");
         response = await _client.PatchAsync($"greenhouses/{greenhouseId}", patchContent);
         response.EnsureSuccessStatusCode();
 
@@ -175,6 +178,7 @@ public class GreenhouseIntegrationTests
         string expectedTcpMessage = newWindowStatus ? "REQ,1,SET,SER,180" : "REQ,1,SET,SER,0";
         Assert.Equal(expectedTcpMessage, _receivedTcpMessage);
     }
+
 
     private async Task StartMockTcpClient(string address, int port, CancellationToken cancellationToken)
     {
@@ -209,7 +213,7 @@ public class GreenhouseIntegrationTests
         response.EnsureSuccessStatusCode();
         string jsonResponse = await response.Content.ReadAsStringAsync();
         var jsonObject = JObject.Parse(jsonResponse);
-        bool isWindowOpen = jsonObject["isWindowOpen"].Value<bool>();
+        bool isWindowOpen = jsonObject["isWindowOpen"].Type == JTokenType.Null ? false : jsonObject["isWindowOpen"].Value<bool>();
 
         // Toggle the window status using TCP message
         string tcpMessage = isWindowOpen ? "RES,1,SER,0" : "RES,1,SER,180";

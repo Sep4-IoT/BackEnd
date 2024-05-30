@@ -18,28 +18,29 @@ jobs:
     - name: Login to DockerHub
       uses: docker/login-action@v2
       with:
-        username: javieruw
-        password: AsSoonAsYouAreAble
+        username: ${{ secrets.DockerHubUser }}
+        password: ${{ secrets.DockerPass }}
 
     - name: Build with Docker Compose
       run: docker-compose build
 
     - name: Push Images (Optional)
       run: |
-        docker-compose push dbapi:latest
-        docker-compose push backendapi:latest
-        docker-compose push iotcontroller:latest
+        docker-compose push dbapi
+        docker-compose push backendapi
+        docker-compose push iotcontroller
 
     - name: Deploy to VPS
       uses: appleboy/ssh-action@master
       with:
         host: 154.62.108.77
         username: root
-        password: Miraflores281  # or use 'key' if you prefer using SSH keys
+        password: ${{ secrets.ServerPass }}  
         script: |
-          docker tag dbapi https://hub.docker.com/repository/docker/javieruw/dbapi:latest
-          docker tag backendapi https://hub.docker.com/repository/docker/javieruw/backendapi:lates
-          docker tag iotcontroller https://hub.docker.com/repository/docker/javieruw/iotcontroller:latest
+          export PATH=$PATH:/snap/bin
+          echo "PATH is: $PATH"
+          which docker-compose
+          docker-compose --version
           cd /root/BackEnd
           docker-compose down
           docker-compose rm -f

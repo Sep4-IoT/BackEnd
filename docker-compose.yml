@@ -45,7 +45,7 @@ services:
     networks:
       - greenhouse-network
     depends_on:
-      - backendapi
+      - frontendcontroller
 
 networks:
   greenhouse-network:

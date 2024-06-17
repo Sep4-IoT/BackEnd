@@ -22,9 +22,10 @@ public class TimerService : IHostedService, IDisposable
 
     public Task StartAsync(CancellationToken cancellationToken)
     {
-        _timer = new Timer(DuplicateEarliestGreenHouseData, null, TimeSpan.Zero, TimeSpan.TimeSpan.FromDays(1));
+        _timer = new Timer(DuplicateEarliestGreenHouseData, null, TimeSpan.FromDays(1), TimeSpan.FromDays(1));
         return Task.CompletedTask;
     }
+
     private async void DuplicateEarliestGreenHouseData(object state)
     {
         using var scope = _services.CreateScope();

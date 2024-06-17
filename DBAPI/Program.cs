@@ -39,6 +39,14 @@ async Task SeedDatabaseAsync(IServiceProvider services, ILogger logger)
     using var scope = services.CreateScope();
     var greenHouseRepository = scope.ServiceProvider.GetRequiredService<GreenHouseDateListRepository>();
 
+    // Check if the database already has data
+    var existingData = await greenHouseRepository.GetAllAsync();
+    if (existingData.Any())
+    {
+        logger.LogInformation("Database already contains initial data, skipping seeding.");
+        return;
+    }
+
     var initialData = new List<GreenHouseDateList>
     {
         new GreenHouseDateList(1)

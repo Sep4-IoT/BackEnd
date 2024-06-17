@@ -72,7 +72,6 @@ namespace BackEnd.Controllers
         {
             try
             {
-                Console.WriteLine("Begin updating GreenHouse");
                 if (updateDto.IsWindowOpen.HasValue)
                 {
                     var actionUri = updateDto.IsWindowOpen.Value
@@ -81,7 +80,19 @@ namespace BackEnd.Controllers
 
                     await _iotControllerClient.PostAsync(actionUri, null);
                 }
-                //return 202
+
+                if (!string.IsNullOrEmpty(updateDto.Name))
+                {
+                    var nameUri = $"Greenhouse/{greenHouseId}/changeName/{updateDto.Name}";
+                    await _dbApiClient.PostAsync(nameUri, null);
+                }
+
+                if (!string.IsNullOrEmpty(updateDto.Description))
+                {
+                    var descriptionUri = $"Greenhouse/{greenHouseId}/changeDescription/{updateDto.Description}";
+                    await _dbApiClient.PostAsync(descriptionUri, null);
+                }
+
                 return Accepted();
             }
             catch (Exception e)
@@ -90,6 +101,7 @@ namespace BackEnd.Controllers
                 return StatusCode(500, e.Message);
             }
         }
+
 
         [Authorize]
         [HttpGet("greenhouses/{greenHouseId}/history")]

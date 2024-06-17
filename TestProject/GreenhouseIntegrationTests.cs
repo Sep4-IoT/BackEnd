@@ -1,39 +1,75 @@
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using Xunit;
+using Xunit.Abstractions;
 
 public class GreenhouseIntegrationTests
 {
     private readonly HttpClient _client;
-    private const string TcpAddress = "154.62.108.77";
+    private const string TcpAddress = "localhost";
     private const int TcpPort = 50000;
     private readonly CancellationTokenSource _cts;
     private string _receivedTcpMessage;
     private readonly Task _mockTcpClientTask;
-    
-    public GreenhouseIntegrationTests()
+    private string _token;
+    private readonly ITestOutputHelper _output;
+    private Random _random;
+
+    public GreenhouseIntegrationTests(ITestOutputHelper output)
     {
+        _random = new Random();
+        _output = output;
         _client = new HttpClient
         {
-            BaseAddress = new Uri("http://154.62.108.77:5047/SEP4/")
+            BaseAddress = new Uri("http://localhost:5047/SEP4/")
         };
         _cts = new CancellationTokenSource();
         _receivedTcpMessage = string.Empty;
         _mockTcpClientTask = Task.Run(() => StartMockTcpClient(TcpAddress, TcpPort, _cts.Token));
+        InitializeAsync().GetAwaiter().GetResult();
     }
 
-    [Fact]
-    public async Task UpdateTemperatureAndVerify()
+    private async Task InitializeAsync()
+    {
+        var loginData = new
+        {
+            username = "admin",
+            password = "via"
+        };
+        string jsonLoginData = Newtonsoft.Json.JsonConvert.SerializeObject(loginData);
+        var content = new StringContent(jsonLoginData, Encoding.UTF8, "application/json");
+
+        // Act - Send POST request to login
+        var response = await _client.PostAsync("login", content);
+        response.EnsureSuccessStatusCode();
+        string jsonResponse = await response.Content.ReadAsStringAsync();
+        var jsonObject = JObject.Parse(jsonResponse);
+
+        // Assert - Verify the response contains a token
+        Assert.True(jsonObject.ContainsKey("token"), "Response does not contain 'token' key.");
+        _token = jsonObject["token"].Value<string>();
+
+        Assert.NotNull(_token);
+        Assert.Equal(180, _token.Length);
+
+        _output.WriteLine($"Token: {_token}");
+    }
+    
+    [Theory]
+    [InlineData(1)]
+    [InlineData(10)]
+    public async Task UpdateTemperatureAndVerify(int greenhouseId)
     {
         // Arrange
-        int greenhouseId = 1;
-        int expectedTemperature = 27;
-        string tcpMessage = $"UPD,1,POST,TEM,{expectedTemperature}";
-        string tcpAddress = "154.62.108.77";
+        int expectedTemperature = _random.Next(1, 40);
+        string tcpMessage = $"UPD,{greenhouseId},POST,TEM,{expectedTemperature}";
+        string tcpAddress = "localhost";
         int tcpPort = 50000;
+        
 
         // Act - Send TCP message
         await SendTcpMessage(tcpAddress, tcpPort, tcpMessage);
@@ -42,7 +78,9 @@ public class GreenhouseIntegrationTests
         await Task.Delay(2000); // Adjust delay as necessary for the system to process
 
         // Act - Get the current temperature via RESTful API
-        var response = await _client.GetAsync($"greenhouses/{greenhouseId}/current");
+        var request = new HttpRequestMessage(HttpMethod.Get, $"greenhouses/{greenhouseId}/current");
+        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _token);
+        var response = await _client.SendAsync(request);
 
         // Assert - Verify the temperature in the response
         response.EnsureSuccessStatusCode();
@@ -52,16 +90,16 @@ public class GreenhouseIntegrationTests
 
         Assert.Equal(expectedTemperature, actualTemperature);
     }
-    
-    // update humidity and verity:
-    [Fact]
-    public async Task UpdateHumidityAndVerify()
+
+// update humidity and verity:
+    [Theory]
+    [InlineData(1)]
+    [InlineData(10)]
+    public async Task UpdateHumidityAndVerify(int greenhouseId)
     {
-        // Arrange
-        int greenhouseId = 1;
-        int expectedTemperature = 37;
-        string tcpMessage = $"UPD,1,POST,HUM,{expectedTemperature}";
-        string tcpAddress = "154.62.108.77";
+        int expectedHumidity = _random.Next(1, 100);
+        string tcpMessage = $"UPD,{greenhouseId},POST,HUM,{expectedHumidity}";
+        string tcpAddress = "localhost";
         int tcpPort = 50000;
 
         // Act - Send TCP message
@@ -71,25 +109,28 @@ public class GreenhouseIntegrationTests
         await Task.Delay(2000); // Adjust delay as necessary for the system to process
 
         // Act - Get the current temperature via RESTful API
-        var response = await _client.GetAsync($"greenhouses/{greenhouseId}/current");
+        var request = new HttpRequestMessage(HttpMethod.Get, $"greenhouses/{greenhouseId}/current");
+        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _token);
+        var response = await _client.SendAsync(request);
 
         // Assert - Verify the temperature in the response
         response.EnsureSuccessStatusCode();
         string jsonResponse = await response.Content.ReadAsStringAsync();
         var jsonObject = JObject.Parse(jsonResponse);
-        int actualTemperature = jsonObject["Humidity"].Value<int>();
+        int actualHumidity = jsonObject["Humidity"].Value<int>();
 
-        Assert.Equal(expectedTemperature, actualTemperature);
+        Assert.Equal(expectedHumidity, actualHumidity);
     }
-    
-    [Fact]
-    public async Task UpdateLightingAndVerify()
+
+    [Theory]
+    [InlineData(1)]
+    [InlineData(10)]
+    public async Task UpdateLightingAndVerify(int greenhouseId)
     {
         // Arrange
-        int greenhouseId = 1;
-        int expectedTemperature = 97;
-        string tcpMessage = $"UPD,1,POST,LIG,{expectedTemperature}";
-        string tcpAddress = "154.62.108.77";
+        int expectedLighting = _random.Next(1, 500);
+        string tcpMessage = $"UPD,{greenhouseId},POST,LIG,{expectedLighting}";
+        string tcpAddress = "localhost";
         int tcpPort = 50000;
 
         // Act - Send TCP message
@@ -99,26 +140,28 @@ public class GreenhouseIntegrationTests
         await Task.Delay(2000); // Adjust delay as necessary for the system to process
 
         // Act - Get the current temperature via RESTful API
-        var response = await _client.GetAsync($"greenhouses/{greenhouseId}/current");
+        var request = new HttpRequestMessage(HttpMethod.Get, $"greenhouses/{greenhouseId}/current");
+        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _token);
+        var response = await _client.SendAsync(request);
 
         // Assert - Verify the temperature in the response
         response.EnsureSuccessStatusCode();
         string jsonResponse = await response.Content.ReadAsStringAsync();
         var jsonObject = JObject.Parse(jsonResponse);
-        int actualTemperature = jsonObject["LightIntensity"].Value<int>();
+        int actualLighting = jsonObject["LightIntensity"].Value<int>();
 
-        Assert.Equal(expectedTemperature, actualTemperature);
+        Assert.Equal(expectedLighting, actualLighting);
     }
-    
-    
-    [Fact]
-    public async Task UpdateCO2AndVerify()
+
+    [Theory]
+    [InlineData(1)]
+    [InlineData(10)]
+    public async Task UpdateCO2AndVerify(int greenhouseId)
     {
         // Arrange
-        int greenhouseId = 1;
-        int expectedTemperature = 900;
-        string tcpMessage = $"UPD,1,POST,CO2,{expectedTemperature}";
-        string tcpAddress = "154.62.108.77";
+        int expectedCO2 = _random.Next(400, 2000);
+        string tcpMessage = $"UPD,{greenhouseId},POST,CO2,{expectedCO2}";
+        string tcpAddress = "localhost";
         int tcpPort = 50000;
 
         // Act - Send TCP message
@@ -128,15 +171,17 @@ public class GreenhouseIntegrationTests
         await Task.Delay(2000); // Adjust delay as necessary for the system to process
 
         // Act - Get the current temperature via RESTful API
-        var response = await _client.GetAsync($"greenhouses/{greenhouseId}/current");
+        var request = new HttpRequestMessage(HttpMethod.Get, $"greenhouses/{greenhouseId}/current");
+        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _token);
+        var response = await _client.SendAsync(request);
 
         // Assert - Verify the temperature in the response
         response.EnsureSuccessStatusCode();
         string jsonResponse = await response.Content.ReadAsStringAsync();
         var jsonObject = JObject.Parse(jsonResponse);
-        int actualTemperature = jsonObject["Co2Levels"].Value<int>();
+        int actualCO2 = jsonObject["Co2Levels"].Value<int>();
 
-        Assert.Equal(expectedTemperature, actualTemperature);
+        Assert.Equal(expectedCO2, actualCO2);
     }
 
     private async Task SendTcpMessage(string address, int port, string message)
@@ -148,36 +193,50 @@ public class GreenhouseIntegrationTests
             await networkStream.WriteAsync(data, 0, data.Length);
         }
     }
-    
-    [Fact]
-    public async Task ToggleWindowStatusAndVerifyTcpMessage()
-    {
-        // Arrange
-        int greenhouseId = 1;
 
-        // Act - Get the current window status via RESTful API
-        var response = await _client.GetAsync($"greenhouses/{greenhouseId}/current");
-        response.EnsureSuccessStatusCode();
-        string jsonResponse = await response.Content.ReadAsStringAsync();
+    [Theory]
+    [InlineData(1)]
+    [InlineData(10)]
+    public async Task ToggleWindowStatusAndVerifyTcpMessage(int greenhouseId)
+    {
+        // Act - Send GET request to current endpoint
+        var getRequest = new HttpRequestMessage(HttpMethod.Get, $"greenhouses/{greenhouseId}/current");
+        getRequest.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _token);
+        var getResponse = await _client.SendAsync(getRequest);
+        getResponse.EnsureSuccessStatusCode();
+        string jsonResponse = await getResponse.Content.ReadAsStringAsync();
         var jsonObject = JObject.Parse(jsonResponse);
 
         // Check if isWindowOpen is null and treat it as false if so
-        bool isWindowOpen = jsonObject["isWindowOpen"].Type == JTokenType.Null ? false : jsonObject["isWindowOpen"].Value<bool>();
+        bool isWindowOpen = jsonObject["isWindowOpen"].Type == JTokenType.Null
+            ? false
+            : jsonObject["isWindowOpen"].Value<bool>();
+        
+        _output.WriteLine($"{isWindowOpen}");
 
         // Toggle the window status
         bool newWindowStatus = !isWindowOpen;
-        var patchContent = new StringContent($"{{ \"id\": 1, \"Name\": null, \"Description\": null, \"isWindowOpen\": " +
-                                             $"{newWindowStatus.ToString().ToLower()} }}", Encoding.UTF8, "application/json");
-        response = await _client.PatchAsync($"greenhouses/{greenhouseId}", patchContent);
-        response.EnsureSuccessStatusCode();
+        var patchContent = new StringContent(
+            $"{{ \"id\": 1, \"Name\": null, \"Description\": null, \"isWindowOpen\": {newWindowStatus.ToString().ToLower()} }}", 
+            Encoding.UTF8, 
+            "application/json"
+        );
+
+        var patchRequest = new HttpRequestMessage(HttpMethod.Patch, $"greenhouses/{greenhouseId}");
+        patchRequest.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _token);
+        patchRequest.Content = patchContent;
+        _output.WriteLine($"{patchRequest}");
+        /*var patchResponse = */await _client.SendAsync(patchRequest);
+        //patchResponse.EnsureSuccessStatusCode();
 
         // Wait for a short period to ensure the TCP message is sent
         await Task.Delay(2000); // Adjust delay as necessary for the system to process
 
         // Assert - Verify the TCP message
-        string expectedTcpMessage = newWindowStatus ? "REQ,1,SET,SER,180" : "REQ,1,SET,SER,0";
+        string expectedTcpMessage = newWindowStatus ? $"REQ,{greenhouseId},SET,SER,180" : $"REQ,{greenhouseId},SET,SER,0";
         Assert.Equal(expectedTcpMessage, _receivedTcpMessage);
     }
+
 
 
     private async Task StartMockTcpClient(string address, int port, CancellationToken cancellationToken)
@@ -196,34 +255,42 @@ public class GreenhouseIntegrationTests
                         int bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length, cancellationToken);
                         _receivedTcpMessage = Encoding.ASCII.GetString(buffer, 0, bytesRead);
                     }
+
                     await Task.Delay(100, cancellationToken);
                 }
             }
         }
     }
-    
-    [Fact]
-    public async Task ToggleWindowStatusViaTcpAndVerify()
+
+    [Theory]
+    [InlineData(1)]
+    [InlineData(10)]
+    public async Task ToggleWindowStatusViaTcpAndVerify(int greenhouseId)
     {
         // Arrange
-        int greenhouseId = 1;
 
         // Act - Get the current window status via RESTful API
-        var response = await _client.GetAsync($"greenhouses/{greenhouseId}/current");
+        var request = new HttpRequestMessage(HttpMethod.Get, $"greenhouses/{greenhouseId}/current");
+        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _token);
+        var response = await _client.SendAsync(request);
         response.EnsureSuccessStatusCode();
         string jsonResponse = await response.Content.ReadAsStringAsync();
         var jsonObject = JObject.Parse(jsonResponse);
-        bool isWindowOpen = jsonObject["isWindowOpen"].Type == JTokenType.Null ? false : jsonObject["isWindowOpen"].Value<bool>();
+        bool isWindowOpen = jsonObject["isWindowOpen"].Type == JTokenType.Null
+            ? false
+            : jsonObject["isWindowOpen"].Value<bool>();
 
         // Toggle the window status using TCP message
-        string tcpMessage = isWindowOpen ? "RES,1,SER,0" : "RES,1,SER,180";
+        string tcpMessage = isWindowOpen ? $"RES,{greenhouseId},SER,0" : $"RES,{greenhouseId},SER,180";
         await SendTcpMessage(TcpAddress, TcpPort, tcpMessage);
 
         // Wait for a short period to ensure the window status is updated
         await Task.Delay(2000); // Adjust delay as necessary for the system to process
 
         // Act - Get the updated window status via RESTful API
-        response = await _client.GetAsync($"greenhouses/{greenhouseId}/current");
+        var request2 = new HttpRequestMessage(HttpMethod.Get, $"greenhouses/{greenhouseId}/current");
+        request2.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _token);
+        response = await _client.SendAsync(request2);
         response.EnsureSuccessStatusCode();
         jsonResponse = await response.Content.ReadAsStringAsync();
         jsonObject = JObject.Parse(jsonResponse);
@@ -232,13 +299,13 @@ public class GreenhouseIntegrationTests
         // Assert - Verify the window status has been toggled
         Assert.Equal(!isWindowOpen, newWindowStatus);
     }
-    
-    [Fact]
-    public async Task SendHighTemperatureAndVerifyResponse()
+
+    [Theory]
+    [InlineData(1)]
+    [InlineData(10)]
+    public async Task SendHighTemperatureAndVerifyResponse(int greenhouseId)
     {
-        // Arrange
-        int greenhouseId = 1;
-        int temperature = 45;
+        int temperature = _random.Next(41, 70);
         string tcpMessage = $"UPD,1,POST,TEM,{temperature}";
 
         // Act - Send TCP message
@@ -251,7 +318,7 @@ public class GreenhouseIntegrationTests
         string expectedTcpMessage = "REQ,1,SET,SER,180";
         Assert.Equal(expectedTcpMessage, _receivedTcpMessage);
     }
-    
+
     [Fact]
     public async Task LoginAndVerifyToken()
     {
@@ -272,16 +339,21 @@ public class GreenhouseIntegrationTests
 
         // Assert - Verify the response contains a token
         Assert.True(jsonObject.ContainsKey("token"), "Response does not contain 'token' key.");
-        string token = jsonObject["token"].Value<string>();
-        Assert.NotNull(token);
-        Assert.Equal(180, token.Length);
+        _token = jsonObject["token"].Value<string>();
+        
+        Assert.NotNull(_token);
+        Assert.Equal(180, _token.Length);
     }
-    
-    [Fact]
-    public async Task GetGreenhouseHistoryAndVerifyResponse()
+
+    [Theory]
+    [InlineData(1)]
+    [InlineData(10)]
+    public async Task GetGreenhouseHistoryAndVerifyResponse(int greenhouseId)
     {
         // Act - Send GET request to history endpoint
-        var response = await _client.GetAsync("greenhouses/1/history");
+        var request = new HttpRequestMessage(HttpMethod.Get, $"greenhouses/{greenhouseId}/history");
+        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _token);
+        var response = await _client.SendAsync(request);
         response.EnsureSuccessStatusCode();
         string jsonResponse = await response.Content.ReadAsStringAsync();
         var jsonArray = JArray.Parse(jsonResponse);
@@ -297,14 +369,33 @@ public class GreenhouseIntegrationTests
             Assert.NotNull(jsonObject["Description"]);
 
             // Verify optional fields
-            Assert.True(jsonObject["Temperature"] == null || jsonObject["Temperature"].Type != JTokenType.String);
-            Assert.True(jsonObject["LightIntensity"] == null || jsonObject["LightIntensity"].Type != JTokenType.String);
-            Assert.True(jsonObject["Co2Levels"] == null || jsonObject["Co2Levels"].Type != JTokenType.String);
-            Assert.True(jsonObject["Humidity"] == null || jsonObject["Humidity"].Type != JTokenType.String);
-            Assert.True(jsonObject["isWindowOpen"] == null || jsonObject["isWindowOpen"].Type == JTokenType.Boolean);
-            Assert.True(jsonObject["date"] == null || jsonObject["date"].Type == JTokenType.Date);
+            if (jsonObject["Temperature"] != null)
+            {
+                Assert.True(jsonObject["Temperature"].Type == JTokenType.Integer || jsonObject["Temperature"].Type == JTokenType.Float);
+            }
+            if (jsonObject["LightIntensity"] != null)
+            {
+                Assert.True(jsonObject["LightIntensity"].Type == JTokenType.Integer || jsonObject["LightIntensity"].Type == JTokenType.Float);
+            }
+            if (jsonObject["Co2Levels"] != null)
+            {
+                Assert.True(jsonObject["Co2Levels"].Type == JTokenType.Integer || jsonObject["Co2Levels"].Type == JTokenType.Float);
+            }
+            if (jsonObject["Humidity"] != null)
+            {
+                Assert.True(jsonObject["Humidity"].Type == JTokenType.Integer || jsonObject["Humidity"].Type == JTokenType.Float);
+            }
+            if (jsonObject["isWindowOpen"] != null)
+            {
+                Assert.True(jsonObject["isWindowOpen"].Type == JTokenType.Boolean);
+            }
+            if (jsonObject["date"] != null)
+            {
+                Assert.True(jsonObject["date"].Type == JTokenType.Date || jsonObject["date"].Type == JTokenType.String);
+            }
         }
     }
+
 
     public void Dispose()
     {

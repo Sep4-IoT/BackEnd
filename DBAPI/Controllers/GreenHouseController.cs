@@ -153,5 +153,36 @@ namespace WebAPI.Controllers
 
             return Ok();
         }
+
+        [HttpPost("{id}/changeName/{name}")]
+        public async Task<IActionResult> UpdateName(int id, string name)
+        {
+            var greenHouseDateList = await _repository.GetByIdAsync(id);
+            if (greenHouseDateList == null) return NotFound();
+
+            var latestGreenHouse = greenHouseDateList.GreenHouses.OrderByDescending(gh => gh.Date).FirstOrDefault();
+            if (latestGreenHouse == null) return NotFound();
+
+            latestGreenHouse.GreenHouseName = name;
+            await _repository.UpdateAsync(greenHouseDateList);
+
+            return Ok();
+        }
+    
+        [HttpPost("{id}/changeDescription/{description}")]
+        public async Task<IActionResult> UpdateDescription(int id, string description)
+        {
+            var greenHouseDateList = await _repository.GetByIdAsync(id);
+            if (greenHouseDateList == null) return NotFound();
+
+            var latestGreenHouse = greenHouseDateList.GreenHouses.OrderByDescending(gh => gh.Date).FirstOrDefault();
+            if (latestGreenHouse == null) return NotFound();
+
+            latestGreenHouse.Description = description;
+            await _repository.UpdateAsync(greenHouseDateList);
+
+            return Ok();
+        }
+
     }
 }

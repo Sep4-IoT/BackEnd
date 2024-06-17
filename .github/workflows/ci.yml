@@ -38,9 +38,19 @@ jobs:
         sleep 30
         docker-compose ps
 
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '7.x' # Adjust the .NET version as needed
+
+    - name: Restore dependencies
+      run: dotnet restore TestProject/TestProject.csproj
+
+    - name: Build the test project
+      run: dotnet build TestProject/TestProject.csproj --no-restore
+
     - name: Run tests
-      run: |
-        docker-compose exec -T frontendcontroller dotnet test TestProject/TestProject.csproj --logger:trx
+      run: dotnet test TestProject/TestProject.csproj --logger:trx
 
     - name: Stop Docker Compose
       if: always()

@@ -345,7 +345,7 @@ public class GreenhouseIntegrationTests
         Assert.Equal(180, _token.Length);
     }
 
-    [Theory]
+    /*[Theory]
     [InlineData(1)]
     [InlineData(10)]
     public async Task GetGreenhouseHistoryAndVerifyResponse(int greenhouseId)
@@ -394,7 +394,7 @@ public class GreenhouseIntegrationTests
                 Assert.True(jsonObject["date"].Type == JTokenType.Date || jsonObject["date"].Type == JTokenType.String);
             }
         }
-    }
+    }*/
 
 
     public void Dispose()

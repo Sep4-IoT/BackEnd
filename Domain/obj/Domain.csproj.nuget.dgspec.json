@@ -1,25 +1,26 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\dfold\\OneDrive\\Skrivebord\\Aqui\\BackEnd\\Domain\\Domain.csproj": {}
+    "C:\\Users\\Japiye\\Desktop\\Aqui\\BackEnd\\Domain\\Domain.csproj": {}
   },
   "projects": {
-    "C:\\Users\\dfold\\OneDrive\\Skrivebord\\Aqui\\BackEnd\\Domain\\Domain.csproj": {
+    "C:\\Users\\Japiye\\Desktop\\Aqui\\BackEnd\\Domain\\Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\dfold\\OneDrive\\Skrivebord\\Aqui\\BackEnd\\Domain\\Domain.csproj",
+        "projectUniqueName": "C:\\Users\\Japiye\\Desktop\\Aqui\\BackEnd\\Domain\\Domain.csproj",
         "projectName": "Domain",
-        "projectPath": "C:\\Users\\dfold\\OneDrive\\Skrivebord\\Aqui\\BackEnd\\Domain\\Domain.csproj",
-        "packagesPath": "C:\\Users\\dfold\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\dfold\\OneDrive\\Skrivebord\\Aqui\\BackEnd\\Domain\\obj\\",
+        "projectPath": "C:\\Users\\Japiye\\Desktop\\Aqui\\BackEnd\\Domain\\Domain.csproj",
+        "packagesPath": "C:\\Users\\Japiye\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Japiye\\Desktop\\Aqui\\BackEnd\\Domain\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\dfold\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\Japiye\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
         ],
         "sources": {
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -32,6 +33,11 @@
           "warnAsError": [
             "NU1605"
           ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
         }
       },
       "frameworks": {
@@ -54,12 +60,26 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[7.0.20, 7.0.20]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[7.0.20, 7.0.20]"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App.Ref",
+              "version": "[7.0.20, 7.0.20]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.408\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.301\\RuntimeIdentifierGraph.json"
         }
       }
     }
